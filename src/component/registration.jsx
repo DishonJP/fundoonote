@@ -1,7 +1,8 @@
 import React from "react"
-import { TextField, Button, Card } from "@material-ui/core"
+import { TextField, Button, Card, IconButton } from "@material-ui/core"
 import userServices from "../services/userServices";
 import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
 class Registration extends React.Component {
     constructor(props) {
         super(props);
@@ -31,60 +32,86 @@ class Registration extends React.Component {
         this.setState({ rePassword: event.target.value })
     }
     validation = () => {
-        if (this.state.firstName !== '' && this.state.lastName !== '') {
-            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)) {
-                if (this.state.password === this.state.rePassword && this.state.password.length > 5 && this.state.password.length < 17) {
-                    const data = {
-                        firstName: this.state.firstName,
-                        lastName: this.state.lastName,
-                        email: this.state.email,
-                        password: this.state.password
-                    }
-                    userServices.userRegistration(data).then(res => {
-                        if (res.user) {
-                            this.setState({
-                                snackbarOpen: true,
-                                SnackbarMsg: "Registration Successful"
-                            })
-                        }
-                        else {
-                            this.setState({
-                                snackbarOpen: true,
-                                SnackbarMsg: "Some problem occured while Registration"
-                            })
-                        }
+        if (this.state.firstName !== '' && this.state.lastName !== '' && this.state.email !== '' && this.state.password !== '' && this.state.rePassword !== '') {
+            if (/^[a-zA-Z]{2,12}$/i.test(this.state.firstName)) {
+                if (/^[a-zA-Z]{2,12}$/i.test(this.state.lastName)) {
+                    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)) {
+                        if (this.state.password === this.state.rePassword && this.state.password.length > 5 && this.state.password.length < 17) {
+                            const data = {
+                                firstName: this.state.firstName,
+                                lastName: this.state.lastName,
+                                email: this.state.email,
+                                password: this.state.password
+                            }
+                            userServices.userRegistration(data).then(res => {
+                                if (res.user) {
+                                    this.setState({
+                                        snackbarOpen: true,
+                                        SnackbarMsg: "Registration Successful"
+                                    })
+                                    this.props.history.push("/login");
+                                }
+                                else {
+                                    this.setState({
+                                        snackbarOpen: true,
+                                        SnackbarMsg: "Some problem occured while Registration"
+                                    })
+                                }
 
-                    }).catch(err => {
+                            }).catch(err => {
+                                this.setState({
+                                    snackbarOpen: true,
+                                    SnackbarMsg: err
+                                })
+                            }
+                            )
+                        } else {
+                            this.setState({
+                                snackbarOpen: true,
+                                SnackbarMsg: "Invalid password"
+                            })
+                        }
+                    } else {
                         this.setState({
                             snackbarOpen: true,
-                            SnackbarMsg: err
+                            SnackbarMsg: "Invalid e-mail"
                         })
                     }
-                    )
-                } else {
+                }
+                else {
                     this.setState({
                         snackbarOpen: true,
-                        SnackbarMsg: "Invalid password"
+                        SnackbarMsg: "lastName cant contain numbers or special characters"
                     })
                 }
             } else {
                 this.setState({
                     snackbarOpen: true,
-                    SnackbarMsg: "Invalid e-mail"
+                    SnackbarMsg: "firstName cant contain numbers or special characters"
                 })
             }
-        } else {
+        }
+        else {
             this.setState({
                 snackbarOpen: true,
                 SnackbarMsg: "plzs fill all the fields"
             })
         }
     }
+    handleClose = (reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        this.setState({
+            snackbarOpen: false
+        })
+    };
     render() {
         return (
             <div className="registration_Form">
-                <Card className="registration_Container">
-                    <div className="login">Registration</div><br />
+                <Card class="registration_Container">
+                    <div className="login">Registration</div>
                     <Snackbar
                         anchorOrigin={{
                             vertical: 'bottom',
@@ -93,20 +120,24 @@ class Registration extends React.Component {
                         autoHideDuration={6000}
                         open={this.state.snackbarOpen}
                         message={<span id="message-id">{this.state.SnackbarMsg}</span>}
-                        onClick={() => this.setState({ snackbarOpen: false })} />
+                        action={
+                            <React.Fragment>
+                                <IconButton size="small" aria-label="close" color="secondary" onClick={this.handleClose}>
+                                    <CloseIcon fontSize="small" />
+                                </IconButton>
+                            </React.Fragment>
+                        }
+                    />
                     <div className="text_Div">
-                        <div id="firstname">
+                        <div>
                             <TextField
                                 required
+                                fullWidth variant="outlined"
                                 label="firstname"
-                                fullWidth
-                                variant="outlined"
                                 type="text"
                                 value={this.state.firstName}
                                 onChange={this.handleFName} />
                         </div>
-
-
                         <div className="setMargin">
                             <TextField
                                 fullWidth
@@ -125,7 +156,6 @@ class Registration extends React.Component {
                             type="text" value={this.state.email}
                             onChange={this.handleEmail} />
                     </div>
-
                     <div className="text_Div">
                         <div>
                             <TextField
@@ -148,16 +178,16 @@ class Registration extends React.Component {
                         </div>
 
                     </div>
-                    <div className="set_Button">>
-                        <Button
+                    <div className="set_Button">
+                        <Button id="styled_component"
                             type="submit"
                             variant="outlined"
-                            onClick={this.validation}>
+                            onClick={this.validation}
+                        >
                             SUBMIT
                             </Button>
                     </div>
                 </Card>
-
             </div>
         )
     }

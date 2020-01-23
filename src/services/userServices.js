@@ -31,7 +31,6 @@ async function userLogin(data) {
     } catch (err) {
         return err;
     }
-
 }
 
 export default {
