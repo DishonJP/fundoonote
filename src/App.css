@@ -90,7 +90,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 /* ==============================Login page================================ */
@@ -103,9 +103,6 @@
 }
 
 .login_Form {
-  background-image: url(./assets/welcome2.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,6 +137,14 @@
 #styled_component {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   border-radius: 3px;
+}
+
+.forget_style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: small;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #message-id {

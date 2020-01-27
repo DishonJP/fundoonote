@@ -1,5 +1,5 @@
 import React from "react"
-import { TextField, Card , IconButton} from '@material-ui/core';
+import { TextField, Card, IconButton } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import userServices from "../services/userServices";
@@ -29,6 +29,12 @@ class Login extends React.Component {
             snackbarOpen: false
         })
     };
+    forget = (reason)=>{
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.props.history.push("/forgetPassword");
+    }
     validation = () => {
         const data = {
             email: this.state.email,
@@ -66,7 +72,7 @@ class Login extends React.Component {
                     SnackbarMsg: "Invalid Email"
                 })
             }
-        }else{ 
+        } else {
             this.setState({
                 snackbarOpen: true,
                 SnackbarMsg: "Enter your Email"
@@ -79,15 +85,15 @@ class Login extends React.Component {
             <div className="login_Form">
                 <Card class="login_Container">
                     <span className="app_name"><span className="f">F</span>
-                    <span className="f">u</span>
-                    <span className="f">n</span>
-                    <span className="f">d</span>
-                    <span className="o">o</span>
-                    <span className="o">o</span>
-                    <span className="f">N</span>
-                    <span className="f">o</span>
-                    <span className="f">t</span>
-                    <span className="f">e</span></span>
+                        <span className="f">u</span>
+                        <span className="f">n</span>
+                        <span className="f">d</span>
+                        <span className="o">o</span>
+                        <span className="o">o</span>
+                        <span className="f">N</span>
+                        <span className="f">o</span>
+                        <span className="f">t</span>
+                        <span className="f">e</span></span>
                     <div className="login">Login</div>
                     <Snackbar id="snackbar_color"
                         anchorOrigin={{
@@ -104,26 +110,33 @@ class Login extends React.Component {
                                 </IconButton>
                             </React.Fragment>
                         } />
-                   
-                        <div className="set_Div">
-                            <TextField
-                                required
-                                variant="outlined"
-                                label="email"
-                                type="text"
-                                value={this.state.email}
-                                onChange={this.handleEmail} />
-                        </div>
-                        <div className="set_Div">
-                            <TextField
-                                required
-                                variant="outlined"
-                                label="password"
-                                type="password"
-                                value={this.state.password}
-                                onChange={this.handlePassword} />
+
+                    <div className="set_Div">
+                        <TextField
+                            required
+                            variant="outlined"
+                            label="email"
+                            type="text"
+                            value={this.state.email}
+                            onChange={this.handleEmail} />
+                    </div>
+                    <div className="set_Div">
+                        <TextField
+                            required
+                            variant="outlined"
+                            label="password"
+                            type="password"
+                            value={this.state.password}
+                            onChange={this.handlePassword} />
+                    </div>
+                    <div
+                        className="forget_style"
+                        onClick={this.forget}
+                    >
+                            <span>Forget password</span>
                         </div>
                     <div className="set_Button">
+                        
                         <Button id="styled_component"
                             type="submit"
                             variant="contained"
