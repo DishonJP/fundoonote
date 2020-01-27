@@ -111,21 +111,30 @@ class Registration extends React.Component {
         return (
             <div className="registration_Form">
                 <Card class="registration_Container">
+                    <span className="app_name">
+                        <span className="f">F</span>
+                        <span className="f">u</span>
+                        <span className="f">n</span>
+                        <span className="f">d</span>
+                        <span className="o">o</span>
+                        <span className="o">o</span>
+                        <span className="f">N</span>
+                        <span className="f">o</span>
+                        <span className="f">t</span>
+                        <span className="f">e</span></span>
                     <div className="login">Registration</div>
                     <Snackbar
                         anchorOrigin={{
                             vertical: 'bottom',
                             horizontal: 'center',
                         }}
-                        autoHideDuration={6000}
+                        autoHideDuration={3000}
                         open={this.state.snackbarOpen}
                         message={<span id="message-id">{this.state.SnackbarMsg}</span>}
                         action={
-                            <React.Fragment>
                                 <IconButton size="small" aria-label="close" color="secondary" onClick={this.handleClose}>
                                     <CloseIcon fontSize="small" />
                                 </IconButton>
-                            </React.Fragment>
                         }
                     />
                     <div className="text_Div">
@@ -181,7 +190,8 @@ class Registration extends React.Component {
                     <div className="set_Button">
                         <Button id="styled_component"
                             type="submit"
-                            variant="outlined"
+                            variant="contained"
+                            color="primary"
                             onClick={this.validation}
                         >
                             SUBMIT

@@ -78,13 +78,23 @@ class Login extends React.Component {
 
             <div className="login_Form">
                 <Card class="login_Container">
+                    <span className="app_name"><span className="f">F</span>
+                    <span className="f">u</span>
+                    <span className="f">n</span>
+                    <span className="f">d</span>
+                    <span className="o">o</span>
+                    <span className="o">o</span>
+                    <span className="f">N</span>
+                    <span className="f">o</span>
+                    <span className="f">t</span>
+                    <span className="f">e</span></span>
                     <div className="login">Login</div>
                     <Snackbar id="snackbar_color"
                         anchorOrigin={{
                             vertical: 'bottom',
                             horizontal: 'center',
                         }}
-                        autoHideDuration={6000}
+                        autoHideDuration={3000}
                         open={this.state.snackbarOpen}
                         message={<span id="message-id">{this.state.SnackbarMsg}</span>}
                         action={
@@ -116,7 +126,8 @@ class Login extends React.Component {
                     <div className="set_Button">
                         <Button id="styled_component"
                             type="submit"
-                            variant="outlined"
+                            variant="contained"
+                            color="primary"
                             onClick={this.validation}>
                             SUBMIT
                             </Button>

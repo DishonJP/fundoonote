@@ -1,6 +1,6 @@
 import {
   BrowserRouter as Router,
-  Route
+  Route,Switch
 } from "react-router-dom"
 import React from 'react'
 import './App.css';
@@ -10,8 +10,10 @@ class App extends React.Component {
   render() {
     return (
       <Router>
+        <Switch>
         <Route path="/login" component={Login}></Route> 
-        <Route path="/registration" component={Registration}></Route>  
+          <Route path="/registration" component={Registration}></Route>  
+          </Switch>
       </Router>
       )
   }
