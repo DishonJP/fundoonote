@@ -50,6 +50,7 @@ class Login extends React.Component {
                                 snackbarOpen: true,
                                 SnackbarMsg: "Login Successful"
                             })
+                            this.props.history.push('./home')
                         }
                         else {
                             this.setState({

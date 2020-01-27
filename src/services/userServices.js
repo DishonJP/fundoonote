@@ -32,8 +32,22 @@ async function userLogin(data) {
         return err;
     }
 }
+async function emailVerify(data) {
+    try {
+        const datas = {
+            email: data.email
+        }
+        const response = await fire.auth().sendPasswordResetEmail(datas.email);
+        console.log('response',response);
+        
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 
 export default {
     userRegistration,
-    userLogin
+    userLogin,
+    emailVerify
 }
