@@ -1,6 +1,7 @@
 import React from 'react'
-import { Typography, IconButton, AppBar, Toolbar } from '@material-ui/core'
+import { Typography, IconButton, AppBar, Toolbar, MenuList, MenuItem } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -14,11 +15,11 @@ class Home extends React.Component {
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton
-                            edge="start"
                             color="inherit"
                             aria-label="open drawer"
+                            edge="start"
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Typography
                             variant="h4"
@@ -32,4 +33,4 @@ class Home extends React.Component {
         )
     }
 }
-export default Home
+export default Home 

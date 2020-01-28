@@ -29,7 +29,7 @@ class Login extends React.Component {
             snackbarOpen: false
         })
     };
-    forget = (reason)=>{
+    forget = (reason) => {
         if (reason === 'clickaway') {
             return;
         }
@@ -50,7 +50,7 @@ class Login extends React.Component {
                                 snackbarOpen: true,
                                 SnackbarMsg: "Login Successful"
                             })
-                            this.props.history.push('./home')
+                            this.props.history.push('/');
                         }
                         else {
                             this.setState({
@@ -134,10 +134,10 @@ class Login extends React.Component {
                         className="forget_style"
                         onClick={this.forget}
                     >
-                            <span>Forget password</span>
-                        </div>
+                        <span>Forget password</span>
+                    </div>
                     <div className="set_Button">
-                        
+
                         <Button id="styled_component"
                             type="submit"
                             variant="contained"
