@@ -10,7 +10,7 @@ import Registration from "./component/registration";
 import Home from "./component/home";
 import PersistentDrawerLeft from "./component/hi"
 // import  Home  from './component/home';
-class App extends React.Component {
+export  class App extends React.Component {
   render() {
     return (
       <Router>
@@ -25,4 +25,3 @@ class App extends React.Component {
       )
   }
 }
-export default App;
