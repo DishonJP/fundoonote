@@ -19,7 +19,7 @@ class App extends React.Component {
           <Route path="/registration" component={Registration}></Route>
           <Route path="/forgetPassword" component={ForgetPassword}></Route>
           <Route path="/hi" exact={true} component={PersistentDrawerLeft} />
-          <Route path="/" exact={true} component={Home}/>
+          <Route path="/" component={Home} />
         </Switch>
       </Router>
       )
