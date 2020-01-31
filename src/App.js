@@ -8,7 +8,6 @@ import Login from './component/login';
 import ForgetPassword from './component/forgetPassword'
 import Registration from "./component/registration";
 import Home from "./component/home";
-import PersistentDrawerLeft from "./component/hi"
 // import  Home  from './component/home';
 export  class App extends React.Component {
   render() {
@@ -18,7 +17,6 @@ export  class App extends React.Component {
           <Route path="/login" component={Login}></Route> 
           <Route path="/registration" component={Registration}></Route>
           <Route path="/forgetPassword" component={ForgetPassword}></Route>
-          <Route path="/hi" exact={true} component={PersistentDrawerLeft} />
           <Route path="/" component={Home} />
         </Switch>
       </Router>
