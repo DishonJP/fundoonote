@@ -14,11 +14,6 @@ const theme = createMuiTheme({
                 marginTop: "67px",
                 width: "200px"
             }
-        },
-        MuiListItem: {
-            button: {
-                backgroundColor:"lightsalmon"
-            }
         }
     }
 }
@@ -26,6 +21,15 @@ const theme = createMuiTheme({
 class Drawers extends Component{
     constructor(props) {
         super(props);
+        this.state = {
+            bgcolorN: '',
+            bgcolorR: '',
+            bgcolorL: '',
+            bgcolorE: '',
+            bgcolorA: '',
+            bgcolorB: '',
+            nameChange:"Notes"
+        }
     }
     render() {
         return (
@@ -38,7 +42,7 @@ class Drawers extends Component{
                 > 
                     <div className="drawer_head">
                     <div className="name_decor">
-                        <span>DishonJP</span>
+                            <span>{this.state.nameChange}</span>
                     </div>
                     <div className="arrow_decor">
                         <IconButton
@@ -52,30 +56,73 @@ class Drawers extends Component{
                     <div>
                         <List>
                             <ListItem
-                                button>
+                                button
+                                onClick={()=> {
+                                    this.setState({
+                                            bgcolorN: 'lightsalmon',
+                                            bgcolorR: '',
+                                            bgcolorL: '',
+                                            bgcolorE: '',
+                                            bgcolorA: '',
+                                        bgcolorB: '', 
+                                        nameChange:"Notes"
+                                })}}
+                                style={{
+                                    backgroundColor:this.state.bgcolorN
+                                }}
+                            >
                                 <div className="noteIcon_decor">
                                 <ListItemIcon>
                                     <NotesIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Notes"/>
+                                    <ListItemText>
+                                        <span className="listItemName_decor">Notes</span>
+                                </ListItemText>
                                 </div>
-                                
                             </ListItem>
                             <ListItem
-                                button>
+                                button
+                                onClick={()=> {
+                                    this.setState({
+                                        bgcolorN: '',
+                                        bgcolorR: 'lightsalmon',
+                                        bgcolorL: '',
+                                        bgcolorE: '',
+                                        bgcolorA: '',
+                                        bgcolorB: '',
+                                        nameChange:"Remainder"
+                                })}}
+                                style={{
+                                    backgroundColor:this.state.bgcolorR
+                                }}
+                            >
                                 <div className="noteIcon_decor">
                                 <ListItemIcon>
                                     <NotificationsNoneOutlinedIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Remainder"/>
+                                <ListItemText>
+                                        <span className="listItemName_decor">Remainder</span>
+                                </ListItemText>
                                 </div>
-                                
                             </ListItem>
                             <Divider />
-                            <label>Label</label>
+                            <label className="label_decor">Label</label>
                             <div>
                             <ListItem
                                     button
+                                    onClick={()=> {
+                                        this.setState({
+                                            bgcolorN: '',
+                                            bgcolorR: '',
+                                            bgcolorL: 'lightsalmon',
+                                            bgcolorE: '',
+                                            bgcolorA: '',
+                                            bgcolorB: '',
+                                            nameChange:""
+                                    })}}
+                                style={{
+                                    backgroundColor:this.state.bgcolorL
+                                }}
                                 >
                                 <div className="noteIcon_decor">
                                 <ListItemIcon>
@@ -86,34 +133,81 @@ class Drawers extends Component{
                                 
                                 </ListItem>
                                 <ListItem
-                                button>
+                                    button
+                                    onClick={()=> {
+                                        this.setState({
+                                            bgcolorN: '',
+                                            bgcolorR: '',
+                                            bgcolorL: '',
+                                            bgcolorE: 'lightsalmon',
+                                            bgcolorA: '',
+                                            bgcolorB: '',
+                                            nameChange:"Edit Label"
+                                    })}}
+                                    style={{
+                                        backgroundColor:this.state.bgcolorE
+                                    }}
+                                >
                                 <div className="noteIcon_decor">
                                 <ListItemIcon>
                                     <EditOutlinedIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Edit Label"/>
+                                <ListItemText>
+                                        <span className="listItemName_decor">Edit Label</span>
+                                </ListItemText>
                                 </div>
                                 
                             </ListItem>
                             </div>
                             <Divider />
                             <ListItem
-                                button>
+                                button
+                                onClick={()=> {
+                                    this.setState({
+                                        bgcolorN: '',
+                                        bgcolorR: '',
+                                        bgcolorL: '',
+                                        bgcolorE: '',
+                                        bgcolorA: 'lightsalmon',
+                                        bgcolorB: '',
+                                        nameChange:"Archive"
+                                })}}
+                                style={{
+                                    backgroundColor:this.state.bgcolorA
+                                }}
+                            >
                                 <div className="noteIcon_decor">
                                 <ListItemIcon>
                                     <ArchiveOutlinedIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Archive"/>
+                                <ListItemText>
+                                        <span className="listItemName_decor">Archive</span>
+                                </ListItemText>
                                 </div>
-                                
                             </ListItem>
                             <ListItem
-                                button>
+                                button
+                                onClick={()=> {
+                                    this.setState({
+                                        bgcolorN: '',
+                                        bgcolorR: '',
+                                        bgcolorL: '',
+                                        bgcolorE: '',
+                                        bgcolorA: '',
+                                        bgcolorB: 'lightsalmon',
+                                        nameChange:"Bin"
+                                })}}
+                                style={{
+                                    backgroundColor:this.state.bgcolorB
+                                }}
+                            >
                                 <div className="noteIcon_decor">
                                 <ListItemIcon>
                                     <DeleteForeverIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="Bin"/>
+                                <ListItemText>
+                                        <span className="listItemName_decor">Bin</span>
+                                </ListItemText>
                                 </div>
                                 
                             </ListItem>
