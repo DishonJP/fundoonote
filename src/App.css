@@ -322,3 +322,35 @@
   padding: 2px;
   margin-left: 5px;
 }
+.button_decor{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.avatar_decor{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+/* ============================================Notes page======================================== */
+.ncard_decor{
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 40px;
+}
+.note_decor{
+  display: flex;
+  flex-direction: row;
+  margin-left: 5px;
+}
+.title_pin{
+  display: flex;
+  flex-direction: row;
+  margin-left: 5px;
+  margin-top: 2px;
+}

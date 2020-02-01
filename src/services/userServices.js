@@ -32,6 +32,14 @@ async function userLogin(data) {
         return err;
     }
 }
+async function userLogout(){
+    try {
+        const response = await fire.auth().currentUser.signOut();
+    return response;
+    } catch (error) {
+        return error;
+    }
+}
 async function emailVerify(data) {
     try {
         const datas = {
@@ -49,5 +57,5 @@ async function emailVerify(data) {
 export default {
     userRegistration,
     userLogin,
-    emailVerify
+    emailVerify,userLogout
 }

@@ -22,7 +22,7 @@ class Drawers extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            bgcolorN: '',
+            bgcolorN: 'lightgrey',
             bgcolorR: '',
             bgcolorL: '',
             bgcolorE: '',
@@ -59,7 +59,7 @@ class Drawers extends Component{
                                 button
                                 onClick={()=> {
                                     this.setState({
-                                            bgcolorN: 'lightsalmon',
+                                            bgcolorN: 'lightgrey',
                                             bgcolorR: '',
                                             bgcolorL: '',
                                             bgcolorE: '',
@@ -85,7 +85,7 @@ class Drawers extends Component{
                                 onClick={()=> {
                                     this.setState({
                                         bgcolorN: '',
-                                        bgcolorR: 'lightsalmon',
+                                        bgcolorR: 'lightgrey',
                                         bgcolorL: '',
                                         bgcolorE: '',
                                         bgcolorA: '',
@@ -114,7 +114,7 @@ class Drawers extends Component{
                                         this.setState({
                                             bgcolorN: '',
                                             bgcolorR: '',
-                                            bgcolorL: 'lightsalmon',
+                                            bgcolorL: 'lightgrey',
                                             bgcolorE: '',
                                             bgcolorA: '',
                                             bgcolorB: '',
@@ -139,7 +139,7 @@ class Drawers extends Component{
                                             bgcolorN: '',
                                             bgcolorR: '',
                                             bgcolorL: '',
-                                            bgcolorE: 'lightsalmon',
+                                            bgcolorE: 'lightgrey',
                                             bgcolorA: '',
                                             bgcolorB: '',
                                             nameChange:"Edit Label"
@@ -168,7 +168,7 @@ class Drawers extends Component{
                                         bgcolorR: '',
                                         bgcolorL: '',
                                         bgcolorE: '',
-                                        bgcolorA: 'lightsalmon',
+                                        bgcolorA: 'lightgrey',
                                         bgcolorB: '',
                                         nameChange:"Archive"
                                 })}}
@@ -194,7 +194,7 @@ class Drawers extends Component{
                                         bgcolorL: '',
                                         bgcolorE: '',
                                         bgcolorA: '',
-                                        bgcolorB: 'lightsalmon',
+                                        bgcolorB: 'lightgray',
                                         nameChange:"Bin"
                                 })}}
                                 style={{

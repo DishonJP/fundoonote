@@ -8,7 +8,6 @@ import Login from './component/login';
 import ForgetPassword from './component/forgetPassword'
 import Registration from "./component/registration";
 import Home from "./component/home";
-// import  Home  from './component/home';
 export  class App extends React.Component {
   render() {
     return (
