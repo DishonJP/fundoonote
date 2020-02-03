@@ -346,6 +346,8 @@ margin-top: 40px;
 .note_decor{
   display: flex;
   flex-direction: row;
+  justify-content:center;
+  align-items: center;
   margin-left: 5px;
 }
 .title_pin{
@@ -353,4 +355,28 @@ margin-top: 40px;
   flex-direction: row;
   margin-left: 5px;
   margin-top: 5px;
+}
+.button_place{
+  display: flex;
+  justify-content: flex-end;
+}
+.icon_arrange{
+  margin-top: 4px;
+}
+.arrange{
+  display: flex;
+  justify-content: space-between;
+}
+.more_menu{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.clrow_one{
+  display: flex;
+  flex-direction: row;
+}
+.changeiconsize{
+  padding: 0px 0px 0px 0px;
 }

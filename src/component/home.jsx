@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { AppBar, Toolbar, Typography, InputBase, IconButton,Menu,MenuItem,Card, Button,MuiThemeProvider,createMuiTheme,Avatar, Divider } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import SearchIcon from '@material-ui/icons/Search';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import notes from '../assets/notes.png'

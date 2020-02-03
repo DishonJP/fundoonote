@@ -1,5 +1,7 @@
 import firebase from 'firebase'
 import fire from '../config/firebaseConfig'
+import jwt from 'jsonwebtoken'
+import jwt_decode  from 'jwt-decode'
 const db = firebase.firestore();
 async function userRegistration(data) {
     try {
@@ -25,6 +27,10 @@ async function userLogin(data) {
             email: data.email,
             password: data.password
         }
+        // let token = jwt.sign(datas, servicesConstant, firebaseAuthorization.currentUser.uid, {
+        //     expireIn:1440
+        // })
+        // localStorage.setItem('')
         const response = await fire.auth().signInWithEmailAndPassword(datas.email,datas.password)
         console.log("response", response);
         return response
@@ -53,9 +59,31 @@ async function emailVerify(data) {
         return error;
     }
 }
+async function addNote(data) {
+    try {
+        console.log(data,"adfasdf");
+        const datas={
+            title: data.title,
+            notes:data.notes
+        }
+        const response = await db.collection("Notes").doc().set(datas);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+async function getNote() {
+    try {
+        const response = await db.collection("Notes").doc().get();
+        return response;
+    } catch (error) {
+        return error
+    }
+}
 
 export default {
     userRegistration,
     userLogin,
-    emailVerify,userLogout
+    emailVerify, userLogout,
+    addNote,getNote
 }

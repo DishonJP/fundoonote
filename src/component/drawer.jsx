@@ -12,7 +12,7 @@ const theme = createMuiTheme({
         MuiDrawer: {
             paper: {
                 marginTop: "67px",
-                width: "200px"
+                width: "240px"
             }
         }
     }
