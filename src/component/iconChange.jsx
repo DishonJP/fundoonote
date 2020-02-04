@@ -10,10 +10,10 @@ export default class IconChange extends Component{
             return (
                 <IconButton onClick={this.props.change}>
                     {(this.props.data)?<ViewCompactIcon
-                        fontSize="large"
+                        fontSize="medium"
                     />:
                     <ViewListIcon
-                        fontSize="large"
+                        fontSize="medium"
                     />
                     }
                 </IconButton>

@@ -1,7 +1,8 @@
 import firebase from 'firebase'
 import fire from '../config/firebaseConfig'
 import jwt from 'jsonwebtoken'
-import jwt_decode  from 'jwt-decode'
+import jwt_decode from 'jwt-decode'
+import service from '../services/constant'
 const db = firebase.firestore();
 async function userRegistration(data) {
     try {
@@ -25,14 +26,25 @@ async function userLogin(data) {
         console.log("data", data);
         const datas = {
             email: data.email,
-            password: data.password
+            password: data.password,
         }
-        // let token = jwt.sign(datas, servicesConstant, firebaseAuthorization.currentUser.uid, {
-        //     expireIn:1440
-        // })
-        // localStorage.setItem('')
-        const response = await fire.auth().signInWithEmailAndPassword(datas.email,datas.password)
-        console.log("response", response);
+        const response = await fire.auth().signInWithEmailAndPassword(datas.email, datas.password)
+        const userDetails = await service.firestore.collection("users").doc(response.user.uid).get().then(async function (doc) {
+            console.log(response.user.uid,"kjadhsfga");
+            
+            const userData = {
+                email: service.firebaseAuthorization.currentUser.email,
+                fname: doc.data().firstName,
+                lname: doc.data().lastName,
+                userId:response.user.uid    
+            }
+            let token =await jwt.sign(userData, service.firebaseAuthorization.currentUser.uid, {
+                expiresIn:1440
+            })
+            let tokenSet = await localStorage.setItem('usertoken', token)
+            console.log(tokenSet,"khadgsfjg",token);
+            
+        })
         return response
     } catch (err) {
         return err;
@@ -74,7 +86,16 @@ async function addNote(data) {
 }
 async function getNote() {
     try {
-        const response = await db.collection("Notes").doc().get();
+        let getToken = localStorage.usertoken
+        console.log(getToken,"ldahsfkjh");
+        
+        let data = jwt_decode("usertoken")
+        console.log(data);
+        
+        const response = await db.collection("Notes").where("user_id","==",jwt_decode.userId).get();
+        let token = localStorage.getItem("usertoken");
+        console.log(token,"lkfskj");
+        
         return response;
     } catch (error) {
         return error

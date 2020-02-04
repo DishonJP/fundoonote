@@ -237,11 +237,12 @@
 /* ========================================Home Page======================================= */
 
 .appbar_decor{
-  background-color: lightsalmon;
-  height: 10vh;
+  background-color: peachpuff;
+  height:10vh;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  align-items: center;
 }
 .appname_decor{
   display: flex;
@@ -251,7 +252,10 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .header_decor{
-  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
 }
 .menu_name{
   display: flex;
@@ -260,18 +264,19 @@
 .search_icon{
   display: flex;
   width: -webkit-fill-available;
+  height: 7vh;
   flex-direction: row;
-  justify-content: stretch;
+  justify-content: center;
   align-items: center;
-  background-color: lightgray;
+  background-color: white;
   border: 2px solid gray;
-  margin-left: 20px;
-  border-radius: 20px;
-  margin-top: 12px;
-  margin-bottom: 12px;
+  margin-left: 10px;
+  border-radius: 5px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 .img_decor{
-  margin-left: 20px;
+  margin-left: 10px;
   height: 8vh;
 }
 .img_place{
@@ -377,6 +382,27 @@ margin-top: 40px;
   display: flex;
   flex-direction: row;
 }
+.colorrow{
+  display: flex;
+  flex-direction: row;
+}
 .changeiconsize{
   padding: 0px 0px 0px 0px;
+}
+.solidcolor_decor{
+  height: 25px;
+  width: 25px;
+}
+.solidcolor_button{
+  padding: 0px 0px 0px 0px;
+  border: 0px;
+  background-color: white;
+}
+#colorIcon{
+  padding: 0px;
+  width: 25px;
+}
+.notesComponent{
+  display: flex;
+  justify-content: center;
 }
