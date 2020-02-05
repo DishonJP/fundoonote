@@ -9,23 +9,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
-import userServices from '../services/userServices';
-const theme = createMuiTheme({
-    overrides: {
-        MuiMenu: {
-            paper: {
-                width: "auto"
-            }
-        },
-        MuiList: {
-            padding: {
-                paddingTop: "0px",
-                paddingBottom: "0px"
-            }
-        }
-    }
-})
-var notes = [];
+import userServices from '../services/userServices'
 var colorArray = [
     {
         colors: "#7FDBFF",
@@ -33,7 +17,7 @@ var colorArray = [
     },
     {
         colors: "violet",
-        bcolor:"#dab5d7"
+        bcolor: "#dab5d7"
     },
     {
         colors: "teal",
@@ -41,101 +25,55 @@ var colorArray = [
     },
     {
         colors: "#ff3333",
-        bcolor:"#ffcccc"
+        bcolor: "#ffcccc"
     },
     {
         colors: "#00b300",
-        bcolor:"#b3ffb3"
+        bcolor: "#b3ffb3"
     },
     {
         colors: "#0066ff",
-        bcolor:"#b3d1ff"
+        bcolor: "#b3d1ff"
     },
     {
         colors: "#ffff1a",
-        bcolor:"#ffffb3"
+        bcolor: "#ffffb3"
     },
     {
         colors: "#ff6600",
-        bcolor:"#ffd1b3"
+        bcolor: "#ffd1b3"
     },
     {
         colors: "#b35900",
-        bcolor:"#ffbf80"
+        bcolor: "#ffbf80"
     },
     {
         colors: "#00264d",
-        bcolor:"#66b3ff"
+        bcolor: "#66b3ff"
     },
     {
         colors: "#737373",
-        bcolor:"#e6e6e6"
+        bcolor: "#e6e6e6"
     },
     {
         colors: "#ffffff",
-        bcolor:"#e6e6e6"
+        bcolor: "#e6e6e6"
     }
-]
-class Notes extends Component {
+];
+
+class UserNotes extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            change: true,
-            title: "",
-            content: "",
-            cardOpen: false,
-            cardanchorEl: null,
-            menuOpen: false,
-            menuanchorEl: null,
             backcolor: "",
-            inputbcolor:"lightgray"
+            inputbcolor: "lightgray",
         }
-    }
-
-    handleOnClick = (event) => {
-        event.preventDefault();
-        this.setState({
-            cardOpen: true,
-            cardanchorEl: event.currentTarget
-        })
-    }
-    handleLeave(event) {
-        event.preventDefault();
-        this.setState({
-            cardOpen: false,
-            cardanchorEl: event.currentTarget
-        })
-    }
-    componentDidMount() {
-        userServices.getNote().then((res) => {
-            console.log(res,"lsdhafjh");
-            
-        })
-    }
-
-    
-    validation = () => {
-        if (this.state.title !== '') {
-            const data = {
-                title: this.state.title,
-                notes: this.state.content
-            }
-            userServices.addNote(data).then((res) => {
-                    console.log(res); 
-            })
-                .catch((err) => {
-                    console.log("err");
-                })
-            
-        }
-        this.setState({
-            change:true
-        })
-        return notes
     }
     render() {
+        
         let colorArr = colorArray.map(color => {
             return (
+                
                 <IconButton
                     onClick={() => {
                         this.setState({
@@ -150,67 +88,21 @@ class Notes extends Component {
                 </IconButton>
             )
         })
-        if (this.state.change) {
-            return (
-                <div className="ncard_decor">
-                    <MuiThemeProvider theme={theme}>
-                        <Card
+
+        return (
+                <Card
                             style={{
-                                width: "15cm",
-                                height: "auto",
-                                border: "1px solid lightgray",
-                                boxShadow: "0px 0px 5px 1px",
+                                width: "35%",
+                                height: "20%",
                                 borderRadius: "10px",
-                                borderColor: "lightgray"
-                            }}
-                        >
-                            <div className="note_decor">
-                                <InputBase
-                                    onClick={() => {
-                                        this.setState({
-                                            change: false
-                                        })
-                                    }}
-                                    fullWidth
-                                    placeholder="I know about you just take a note"
-                                />
-                                <Tooltip title="Note list">
-                                    <IconButton>
-                                        <ListAltIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="New note with drawing">
-                                    <IconButton>
-                                        <BrushIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="New note with image">
-                                    <IconButton>
-                                        <InsertPhotoOutlinedIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        </Card>
-                    </MuiThemeProvider>
-                </div>
-            )
-        }
-        else {
-            return (
-                <div className="ncard_decor">
-                    <MuiThemeProvider theme={theme}>
-                        <Card
-                            style={{
-                                width: "15cm",
-                                height: "auto",
-                                boxShadow: "0px 0px 5px 1px",
-                                borderRadius: "10px",
-                                borderColor: "lightgray",
-                                backgroundColor: this.state.backcolor
+                                border:"1px solid lightgray",
+                                backgroundColor: this.state.backcolor,
+                                margin: "2%",
+                                flexWrap:"nowrap"
                             }}>
                             <div>
                                 <div className="title_pin">
-                                    <InputBase
+                                    {/* <InputBase
                                         style={{
                                             backgroundColor: this.state.inputbcolor,
                                             borderRadius: "5px",
@@ -218,7 +110,7 @@ class Notes extends Component {
                                             padding: "10px"
                                         }}
                                         multiline
-                                        value={this.state.title}
+                                        value={this.props.allNotes.title}
                                         onChange={(event) => {
                                             this.setState({
                                                 title: event.target.value
@@ -226,7 +118,8 @@ class Notes extends Component {
                                         }}
                                         fullWidth
                                         placeholder="Title"
-                                    />
+                            /> */}
+                            <text>{this.props.allNotes.title}</text>
                                     <Tooltip title="Pin it">
                                         <IconButton>
                                             <PinDropOutlinedIcon
@@ -235,7 +128,7 @@ class Notes extends Component {
                                     </Tooltip>
                                 </div>
                                 <div className="title_pin">
-                                    <InputBase
+                                    {/* <InputBase
                                         style={{
                                             backgroundColor: this.state.inputbcolor,
                                             borderRadius: "5px",
@@ -246,13 +139,13 @@ class Notes extends Component {
                                         multiline
                                         fullWidth
                                         placeholder="I know about U naaa..."
-                                        value={this.state.content}
+                                        value={this.props.allNotes.content}
                                         onChange={(event) => {
                                             this.setState({
                                                 content: event.target.value
                                             })
-                                        }}
-                                    />
+                                        }}/> */}
+                            <text>{this.props.allNotes.notes}</text>
                                 </div>
                                 <div className="arrange">
                                     <div className="icon_arrange">
@@ -294,29 +187,10 @@ class Notes extends Component {
                                             </IconButton>
                                         </Tooltip>
                                     </div>
-                                    <div className="button_place">
-                                        <Button
-                                            variant="contained"
-                                            style={{
-                                                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-                                                border: "1px solid",
-                                                borderColor:this.state.inputbcolor,
-                                                fontSize: "10px",
-                                                padding: "0px 0px 0px 0px",
-                                                marginTop: "10px",
-                                                marginBottom: "10px",
-                                                marginRight: "10px",
-                                                backgroundColor: this.state.backcolor
-                                            }}
-                                            onClick={this.validation}
-                                        >
-                                            close
-                            </Button>
-                                    </div>
+                                    
                                 </div>
-                            </div>
-                        </Card>
-                        <Menu
+                </div>
+                <Menu
                             open={this.state.cardOpen}
                             anchorEl={this.state.cardanchorEl}
                             style={{
@@ -364,13 +238,13 @@ class Notes extends Component {
                                 <MenuItem>Add Drawing</MenuItem>
                                 <Divider />
                                 <MenuItem>Show tick boxes</MenuItem>
-                            </Menu>
-                        </div>
-                    </MuiThemeProvider>
-                    
-                </div>
-            )
-        }
+                    </Menu>
+                    </div>
+                </Card>
+                
+                        
+            
+        )
     }
 }
-export default Notes
+export default UserNotes

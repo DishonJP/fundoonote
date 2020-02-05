@@ -13,8 +13,9 @@ async function userRegistration(data) {
             email: data.email,
             password: data.password
         }
-        const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password)
-        db.collection("users").doc(response.user.uid).set(datas)
+        const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password);
+        db.collection("users").doc(response.user.uid).set(datas);
+        console.log(response,"sgdfgkjafau");
         return response
     } catch (err) {
         return err;
@@ -31,7 +32,6 @@ async function userLogin(data) {
         const response = await fire.auth().signInWithEmailAndPassword(datas.email, datas.password)
         const userDetails = await service.firestore.collection("users").doc(response.user.uid).get().then(async function (doc) {
             console.log(response.user.uid,"kjadhsfga");
-            
             const userData = {
                 email: service.firebaseAuthorization.currentUser.email,
                 fname: doc.data().firstName,
@@ -41,9 +41,8 @@ async function userLogin(data) {
             let token =await jwt.sign(userData, service.firebaseAuthorization.currentUser.uid, {
                 expiresIn:1440
             })
-            let tokenSet = await localStorage.setItem('usertoken', token)
+            let tokenSet = localStorage.setItem('usertoken', token)
             console.log(tokenSet,"khadgsfjg",token);
-            
         })
         return response
     } catch (err) {
@@ -76,7 +75,8 @@ async function addNote(data) {
         console.log(data,"adfasdf");
         const datas={
             title: data.title,
-            notes:data.notes
+            notes: data.notes,
+            curUser: fire.auth().currentUser.uid
         }
         const response = await db.collection("Notes").doc().set(datas);
         return response;
@@ -86,25 +86,33 @@ async function addNote(data) {
 }
 async function getNote() {
     try {
-        let getToken = localStorage.usertoken
-        console.log(getToken,"ldahsfkjh");
+        let getNotes = [];
+        let getToken = localStorage.getItem("usertoken");
+        let data = jwt_decode(getToken)
+        await db.collection('Notes').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
+        console.log(querySnapShot,"poiu");
         
-        let data = jwt_decode("usertoken")
-        console.log(data);
+            querySnapShot.forEach(function(doc){
+                console.log(doc.data(),"kjadhfkjahs");
+                
+                getNotes.push(doc.data());
+            })
+        })
+        console.log(getNotes,"lk123fskj");
         
-        const response = await db.collection("Notes").where("user_id","==",jwt_decode.userId).get();
-        let token = localStorage.getItem("usertoken");
-        console.log(token,"lkfskj");
-        
-        return response;
+        return getNotes;
     } catch (error) {
         return error
     }
+}
+async function getUserData() {
+    let data = localStorage.getItem("users");
+    return data;
 }
 
 export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote
+    addNote,getNote,getUserData
 }

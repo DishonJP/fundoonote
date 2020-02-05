@@ -10,6 +10,7 @@ import IconChange from './iconChange';
 import userServices from '../services/userServices'
 import bunny from '../assets/bunny.jpg'
 import Notes from './notes';
+import UserNotes from './userNotes';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -25,6 +26,7 @@ const theme = createMuiTheme({
     }
 }
 )
+let count = 0;
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -32,8 +34,17 @@ class Home extends Component {
             open: false,
             openMenu: false,
             close: false,
-            anchorEl: null
+            anchorEl: null,
+            title: '',
+            content: '',
+            allNotes:[]
         };
+    }
+    getUserData = () => {
+        let data = userServices.getUserData().then((res) => {
+            console.log(res,"dishon");
+            
+        })
     }
     handleOpen = () => {
         if (this.state.open === false) {
@@ -68,7 +79,22 @@ class Home extends Component {
             close: !(this.state.close)
         })
     }
+    componentDidMount() {
+        let result = userServices.getNote();
+        result.then((res) => {
+                console.log(res,"res in get");
+            this.setState({
+                    allNotes:res
+                })
+            })
+    }
     render() {
+       let notesObj= this.state.allNotes.map(arrNotes => {
+            console.log(arrNotes.title,"title");
+            return (
+                <UserNotes allNotes={arrNotes}/>
+            )
+        })
         return (
                 <MuiThemeProvider theme={theme}>
                     <div>
@@ -80,7 +106,6 @@ class Home extends Component {
                         <div className="menu_name">
                             <Toolbar
                                 color="inherit"
-
                             >
                                 <IconButton
                                     onClick={this.handleOpen}
@@ -164,7 +189,8 @@ class Home extends Component {
                                                 }}
                                                 src={bunny}
                                                 alt="u"
-                                            />
+                                                />
+                                                <span>{this.getUserData()}</span>
                                         </div>
                                         <Divider />
                                         <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
@@ -204,6 +230,9 @@ class Home extends Component {
                     />
                     <div className="notesComponent">
                         <Notes />
+                    </div>
+                    <div className="usernotes_decor">
+                        {notesObj}
                     </div>
                 </div>
             </MuiThemeProvider>
