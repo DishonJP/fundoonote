@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, MuiThemeProvider, createMuiTheme, Divider } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem,DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import BrushIcon from '@material-ui/icons/Brush';
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
@@ -10,6 +10,21 @@ import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import userServices from '../services/userServices'
+const theme = createMuiTheme({
+    overrides: {
+        MuiMenu: {
+            paper: {
+                width: "auto"
+            }
+        },
+        MuiList: {
+            padding: {
+                paddingTop: "0px",
+                paddingBottom: "0px"
+            }
+        }
+    }
+})
 var colorArray = [
     {
         colors: "#7FDBFF",
@@ -61,24 +76,52 @@ var colorArray = [
     }
 ];
 
-class UserNotes extends Component{
+class UserNotes extends Component {
     constructor(props) {
         super(props);
         this.state = {
             backcolor: "",
             inputbcolor: "lightgray",
+            change: true,
+            dialogOpen: false,
+            title: this.props.allNotes.title,
+            content:this.props.allNotes.notes,
+            backcolor: "",
+            inputbcolor:"lightgray",
+            cardOpen: false,
+            cardanchorEl: null,
+            trash: true,
+            docId:this.props.allNotes.id
         }
     }
-    render() {
+    handleMenuClick = () => {
+        let data = {
+            id:this.state.docId,
+            title:this.state.title,
+            notes: this.state.content,
+            trash:this.state.trash
+        }
+        console.log(data.id,"doc id");
         
+        userServices.binNotes(data)
+    }
+    handleOnClick = (event) => {
+        event.preventDefault();
+        this.setState({
+            cardOpen: true,
+            cardanchorEl: event.currentTarget
+        })
+    }
+    render() {
+
         let colorArr = colorArray.map(color => {
             return (
-                
+
                 <IconButton
                     onClick={() => {
                         this.setState({
                             backcolor: color.colors,
-                            inputbcolor:color.bcolor
+                            inputbcolor: color.bcolor
                         })
                     }}
                     style={{
@@ -88,21 +131,58 @@ class UserNotes extends Component{
                 </IconButton>
             )
         })
+        if (this.state.change) {
+            return (
+                <Card onClick={() => {
+                    this.setState({
+                        change: false,
+                        dialogOpen:true
+                    })
+                }}
+                    style={{
+                        width: "30%",
+                        height: "auto%",
+                        borderRadius: "10px",
+                        border: "1px solid lightgray",
+                        margin: "2%",
+                        flexWrap: "nowrap",
+                        padding: "10px"
 
-        return (
-                <Card
-                            style={{
-                                width: "35%",
-                                height: "20%",
-                                borderRadius: "10px",
-                                border:"1px solid lightgray",
-                                backgroundColor: this.state.backcolor,
-                                margin: "2%",
-                                flexWrap:"nowrap"
-                            }}>
+                    }}>
+                    <div>
+                        <div className="title_pin1">
+                            <Typography variant="h5">{this.props.allNotes.title}</Typography>
+                        </div>
+                        <div className="title_pin">
+                            <Typography>{this.props.allNotes.notes}</Typography>
+                        </div>
+                    </div>
+
+
+                </Card>
+
+
+
+            )
+        }
+        else {
+            return (
+                <div className="ncard_decor">
+                    <MuiThemeProvider theme={theme}>
+                        <Dialog
+                            open={this.state.dialogOpen}
+                            >
                             <div>
+                                <DialogContent
+                                style={{
+                                    width: "auto",
+                                    height: "auto",
+                                    borderColor: "lightgray",
+                                    backgroundColor: this.state.backcolor
+                                }}
+                                >
                                 <div className="title_pin">
-                                    {/* <InputBase
+                                    <InputBase
                                         style={{
                                             backgroundColor: this.state.inputbcolor,
                                             borderRadius: "5px",
@@ -110,7 +190,7 @@ class UserNotes extends Component{
                                             padding: "10px"
                                         }}
                                         multiline
-                                        value={this.props.allNotes.title}
+                                        value={this.state.title}
                                         onChange={(event) => {
                                             this.setState({
                                                 title: event.target.value
@@ -118,8 +198,7 @@ class UserNotes extends Component{
                                         }}
                                         fullWidth
                                         placeholder="Title"
-                            /> */}
-                            <text>{this.props.allNotes.title}</text>
+                                    />
                                     <Tooltip title="Pin it">
                                         <IconButton>
                                             <PinDropOutlinedIcon
@@ -128,7 +207,7 @@ class UserNotes extends Component{
                                     </Tooltip>
                                 </div>
                                 <div className="title_pin">
-                                    {/* <InputBase
+                                    <InputBase
                                         style={{
                                             backgroundColor: this.state.inputbcolor,
                                             borderRadius: "5px",
@@ -139,13 +218,13 @@ class UserNotes extends Component{
                                         multiline
                                         fullWidth
                                         placeholder="I know about U naaa..."
-                                        value={this.props.allNotes.content}
+                                        value={this.state.content}
                                         onChange={(event) => {
                                             this.setState({
                                                 content: event.target.value
                                             })
-                                        }}/> */}
-                            <text>{this.props.allNotes.notes}</text>
+                                        }}
+                                    />
                                 </div>
                                 <div className="arrange">
                                     <div className="icon_arrange">
@@ -187,10 +266,30 @@ class UserNotes extends Component{
                                             </IconButton>
                                         </Tooltip>
                                     </div>
-                                    
-                                </div>
-                </div>
-                <Menu
+                                    <div className="button_place">
+                                        <Button
+                                            variant="contained"
+                                            style={{
+                                                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+                                                border: "1px solid",
+                                                borderColor: this.state.inputbcolor,
+                                                fontSize: "10px",
+                                                padding: "0px 0px 0px 0px",
+                                                marginTop: "10px",
+                                                marginBottom: "10px",
+                                                marginRight: "10px",
+                                                backgroundColor: this.state.backcolor
+                                            }}
+                                            onClick={this.validation}
+                                        >
+                                            close
+                </Button>
+                                    </div>
+                                    </div>
+                                    </DialogContent>
+                            </div>
+                                </Dialog>
+                        <Menu
                             open={this.state.cardOpen}
                             anchorEl={this.state.cardanchorEl}
                             style={{
@@ -204,12 +303,12 @@ class UserNotes extends Component{
                                 vertical: 'bottom',
                                 horizontal: 'center',
                             }}
-                        onClick={() => {
-                            this.setState({
-                                cardOpen: false,
-                                cardanchorEl:null
-                            })
-                        }}
+                            onClick={() => {
+                                this.setState({
+                                    cardOpen: false,
+                                    cardanchorEl: null
+                                })
+                            }}
                         >
                             <div className="clrow_one">
                                 {colorArr}
@@ -233,18 +332,18 @@ class UserNotes extends Component{
                                     horizontal: 'bottom',
                                 }}
                             >
-                                <MenuItem>Add Label</MenuItem>
+                                <MenuItem onClick={this.handleMenuClick}
+                                >Delete Note</MenuItem>
                                 <Divider />
                                 <MenuItem>Add Drawing</MenuItem>
                                 <Divider />
                                 <MenuItem>Show tick boxes</MenuItem>
-                    </Menu>
-                    </div>
-                </Card>
-                
-                        
-            
-        )
+                            </Menu>
+                        </div>
+                    </MuiThemeProvider>
+                </div>
+            )
+        }
     }
 }
 export default UserNotes

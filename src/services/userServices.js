@@ -95,7 +95,7 @@ async function getNote() {
             querySnapShot.forEach(function(doc){
                 console.log(doc.data(),"kjadhfkjahs");
                 
-                getNotes.push(doc.data());
+                getNotes.push(doc);
             })
         })
         console.log(getNotes,"lk123fskj");
@@ -109,10 +109,50 @@ async function getUserData() {
     let data = localStorage.getItem("users");
     return data;
 }
-
+async function binNotes(data) {
+    let datas = {
+        curUser: fire.auth().currentUser.uid,
+        title: data.title,
+        notes: data.notes,
+        trash:data.trash
+    }
+    console.log(data.id,"id");
+    
+    await db.collection("Notes").doc(data.id).update(datas).then((res) => {
+       console.log(res,"how lol");
+    }).catch((err) => {
+       console.log(err,"oooh no");
+   })
+}
+async function addArchive(data) {
+    let datas = {
+        title: data.title,
+        notes: data.notes,
+        curUser:fire.auth().currentUser.uid
+    }
+    await db.collection("Archive").doc().set(datas)
+}
+async function getArchiveNotes() {
+    try {
+        let getNotes = [];
+        let getToken = localStorage.getItem("usertoken");
+        let data = jwt_decode(getToken)
+        await db.collection('Archive').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
+        console.log(querySnapShot,"poiu");
+        
+            querySnapShot.forEach(function(doc){
+                getNotes.push(doc.data());
+            })
+        })
+        
+        return getNotes;
+    } catch (error) {
+        return error
+    }
+}
 export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,getUserData
+    addNote,getNote,getUserData,binNotes,addArchive,getArchiveNotes
 }

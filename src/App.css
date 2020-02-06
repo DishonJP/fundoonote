@@ -359,7 +359,12 @@ margin-top: 40px;
   display: flex;
   flex-direction: row;
   margin-left: 5px;
-  margin-top: 5px;
+  margin-top: 10px;
+}
+.title_pin1{
+  display: flex;
+  flex-direction: row;
+  margin-left: 5px;
 }
 .button_place{
   display: flex;

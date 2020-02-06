@@ -11,6 +11,8 @@ import userServices from '../services/userServices'
 import bunny from '../assets/bunny.jpg'
 import Notes from './notes';
 import UserNotes from './userNotes';
+import Archive from './archive';
+import Bin from './bin';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -26,7 +28,6 @@ const theme = createMuiTheme({
     }
 }
 )
-let count = 0;
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -37,8 +38,20 @@ class Home extends Component {
             anchorEl: null,
             title: '',
             content: '',
-            allNotes:[]
+            allNotes: [],
+            panalChange: "Notes",
+            archiveNotes: [],
+            binNotes:[]
         };
+    }
+    changePanalName = (data) => {
+        console.log(data,"why this is happening");
+        this.setState({
+            panalChange:data
+        })
+    }
+    handleRef = ()=> {
+        this.getNote()
     }
     getUserData = () => {
         let data = userServices.getUserData().then((res) => {
@@ -74,12 +87,20 @@ class Home extends Component {
             anchorEl: null
         })
     }
+    getArchive = () => {
+        let result = userServices.getArchiveNotes();
+        result.then((res) => {
+            this.setState({
+                archiveNotes:res
+            })
+        })
+    }
     handleChange = () => {
         this.setState({
             close: !(this.state.close)
         })
     }
-    componentDidMount() {
+    getNote = () => {
         let result = userServices.getNote();
         result.then((res) => {
                 console.log(res,"res in get");
@@ -88,13 +109,46 @@ class Home extends Component {
                 })
             })
     }
-    render() {
-       let notesObj= this.state.allNotes.map(arrNotes => {
-            console.log(arrNotes.title,"title");
-            return (
-                <UserNotes allNotes={arrNotes}/>
-            )
-        })
+    binNote = () => {
+        let result = userServices.getNote();
+        result.then((res) => {
+            this.setState({
+                    binNotes:res
+                })
+            })
+    }
+    componentDidMount() {
+        this.getNote();
+        this.getArchive();
+        this.binNote();
+    }
+    render() { 
+        console.log(this.state.allNotes,"datas");
+        
+        let notesObj = this.state.allNotes.map(arrNotes => {
+           console.log(arrNotes, "all notes");
+           
+           if (arrNotes.data().trash === false) {
+               return (
+                   <UserNotes allNotes={arrNotes.data()} />
+               )
+           }
+       })
+       let archiveObj= this.state.archiveNotes.map(arrNotes => {
+        console.log(arrNotes,"title");
+           if (arrNotes.trash === false) {
+               return (
+                   <Archive archiveNotes={arrNotes.data()} />
+               )
+           }
+       })
+       let binObj= this.state.binNotes.map(arrNotes => {
+           if (arrNotes.trash) {
+               return (
+                   <Bin binNotes={arrNotes.data()} />
+               )
+           }
+    })
         return (
                 <MuiThemeProvider theme={theme}>
                     <div>
@@ -225,15 +279,26 @@ class Home extends Component {
                         </div>
                     </AppBar>
                     </div>
-                    <Drawers change={this.state.open}
+                    <Drawers
+                        panel={this.changePanalName}
+                        change={this.state.open}
                         value={this.handleClose}
                     />
-                    <div className="notesComponent">
-                        <Notes />
-                    </div>
-                    <div className="usernotes_decor">
+                    {this.state.panalChange === "Notes" ?
+                        <div>
+                        <div className="notesComponent">
+                            <Notes change={this.handleRef} />
+                            </div>
+                            <div className="usernotes_decor">
                         {notesObj}
                     </div>
+                        </div>
+                        :this.state.panalChange === "Archive"?
+                        <div className="notesComponent">
+                            {archiveObj}
+                        </div>:this.state.panalChange === "Bin"?<div className="notesComponent">
+                            {binObj}
+                        </div>:<div></div>}
                 </div>
             </MuiThemeProvider>
         )

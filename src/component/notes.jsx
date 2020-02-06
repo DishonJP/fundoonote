@@ -25,7 +25,6 @@ const theme = createMuiTheme({
         }
     }
 })
-var notes = [];
 var colorArray = [
     {
         colors: "#7FDBFF",
@@ -106,12 +105,6 @@ class Notes extends Component {
             cardanchorEl: event.currentTarget
         })
     }
-    componentDidMount() {
-        userServices.getNote().then((res) => {
-            console.log(res,"lsdhafjh");
-            
-        })
-    }
 
     
     validation = () => {
@@ -121,17 +114,26 @@ class Notes extends Component {
                 notes: this.state.content
             }
             userServices.addNote(data).then((res) => {
-                    console.log(res); 
+                console.log(res,"ajhskdjhaksdh211342455"); 
+                this.props.change();
             })
                 .catch((err) => {
-                    console.log("err");
+                    console.log(err);
                 })
             
         }
         this.setState({
             change:true
         })
-        return notes
+    }
+    handleArchive = () => {
+        let data = {
+            title: this.state.title,
+            notes:this.state.content
+        }
+        userServices.addArchive(data).then((res) => {
+            console.log("done");
+        })
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -277,7 +279,7 @@ class Notes extends Component {
                                             </IconButton>
                                         </Tooltip>
                                         <Tooltip title="Archive">
-                                            <IconButton>
+                                            <IconButton onClick={this.handleArchive}>
                                                 <ArchiveOutlinedIcon fontSize="small" />
                                             </IconButton>
                                         </Tooltip>
