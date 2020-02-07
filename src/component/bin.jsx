@@ -80,8 +80,8 @@ class Bin extends React.Component {
             dialogopen: false,
             menuanchorEl: null,
             menuOpen: false,
-            title: this.props.archiveNotes.title,
-            content: this.props.archiveNotes.notes,
+            title: this.props.binNotes.data().title,
+            content: this.props.binNotes.data().notes,
             cardOpen: false,
             cardanchorEl: null,
             backcolor: "",
@@ -98,7 +98,6 @@ class Bin extends React.Component {
     render() {
         let colorArr = colorArray.map(color => {
             return (
-
                 <IconButton
                     onClick={() => {
                         this.setState({
@@ -133,10 +132,10 @@ class Bin extends React.Component {
                     }}>
                     <div>
                         <div className="title_pin1">
-                            <Typography variant="h5">{this.props.archiveNotes.title}</Typography>
+                            <Typography variant="h5">{this.state.title}</Typography>
                         </div>
                         <div className="title_pin">
-                            <Typography>{this.props.archiveNotes.notes}</Typography>
+                            <Typography>{this.state.content}</Typography>
                         </div>
                     </div>
                 </Card>
@@ -155,7 +154,8 @@ class Bin extends React.Component {
                                         width: "auto",
                                         height: "auto",
                                         borderColor: "lightgray",
-                                        backgroundColor: this.state.backcolor
+                                        backgroundColor: this.state.backcolor,
+                                        padding: "5px"
                                     }}
                                 >
                                     <div className="title_pin">
@@ -257,7 +257,12 @@ class Bin extends React.Component {
                                                     marginRight: "10px",
                                                     backgroundColor: this.state.backcolor
                                                 }}
-                                                onClick={this.validation}
+                                                onClick={() => {
+                                                    this.setState({
+                                                        change: true,
+                                                        dialogOpen: false
+                                                    })
+                                                }}
                                             >
                                                 close
                 </Button>

@@ -6,7 +6,8 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
-import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem,DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -80,13 +81,32 @@ class Archive extends React.Component {
             dialogopen: false,
             menuanchorEl: null,
             menuOpen: false,
-            title: this.props.archiveNotes.title,
-            content: this.props.archiveNotes.notes,
+            title: this.props.archiveNotes.data().title,
+            content: this.props.archiveNotes.data().notes,
             cardOpen: false,
             cardanchorEl: null,
-            backcolor: "",
-            inputbcolor:"lightgray"
+            trash:false,
+            backcolor: this.props.archiveNotes.data().backcolor,
+            inputbcolor: this.props.archiveNotes.data().inputbcolor,
+            docId:this.props.archiveNotes.id
         }
+    }
+    handleMenuClick = async () => {
+        await this.setState({
+            trash:true
+        })
+        let data = {
+            id:this.state.docId,
+            title:this.state.title,
+            notes: this.state.content,
+            trash: this.state.trash,
+            name:"Archive",
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        console.log(data.name,"data name");
+        
+        userServices.binNotes(data)
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -133,10 +153,10 @@ class Archive extends React.Component {
                     }}>
                     <div>
                         <div className="title_pin1">
-                            <Typography variant="h5">{this.props.archiveNotes.title}</Typography>
+                            <Typography variant="h5">{this.state.title}</Typography>
                         </div>
                         <div className="title_pin">
-                            <Typography>{this.props.archiveNotes.notes}</Typography>
+                            <Typography>{this.state.content}</Typography>
                         </div>
                     </div>
                 </Card>
@@ -155,7 +175,8 @@ class Archive extends React.Component {
                                         width: "auto",
                                         height: "auto",
                                         borderColor: "lightgray",
-                                        backgroundColor: this.state.backcolor
+                                        backgroundColor: this.state.backcolor,
+                                        padding: "5px"
                                     }}
                                 >
                                     <div className="title_pin">
@@ -257,7 +278,12 @@ class Archive extends React.Component {
                                                     marginRight: "10px",
                                                     backgroundColor: this.state.backcolor
                                                 }}
-                                                onClick={this.validation}
+                                                onClick={() => {
+                                                    this.setState({
+                                                        change: true,
+                                                        dialogOpen: false
+                                                    })
+                                                }}
                                             >
                                                 close
                 </Button>

@@ -115,7 +115,13 @@ class Home extends Component {
             this.setState({
                     binNotes:res
                 })
+        })
+        let rest = userServices.getArchiveNotes();
+        rest.then((res) => {
+            res.map(datas => {
+                this.state.binNotes.push(datas)
             })
+        })
     }
     componentDidMount() {
         this.getNote();
@@ -126,26 +132,28 @@ class Home extends Component {
         console.log(this.state.allNotes,"datas");
         
         let notesObj = this.state.allNotes.map(arrNotes => {
-           console.log(arrNotes, "all notes");
+           console.log(arrNotes.data().trash, "all notes");
            
            if (arrNotes.data().trash === false) {
                return (
-                   <UserNotes allNotes={arrNotes.data()} />
+                   <UserNotes allNotes={arrNotes} />
                )
            }
        })
        let archiveObj= this.state.archiveNotes.map(arrNotes => {
-        console.log(arrNotes,"title");
-           if (arrNotes.trash === false) {
+           console.log(arrNotes, "title");
+           if (arrNotes.data().trash === false) {
                return (
-                   <Archive archiveNotes={arrNotes.data()} />
+                   <Archive archiveNotes={arrNotes} />
                )
            }
        })
-       let binObj= this.state.binNotes.map(arrNotes => {
-           if (arrNotes.trash) {
+        let binObj = this.state.binNotes.map(arrNotes => {
+           console.log(arrNotes,"bin notes");
+           
+           if (arrNotes.data().trash) {
                return (
-                   <Bin binNotes={arrNotes.data()} />
+                   <Bin binNotes={arrNotes} />
                )
            }
     })

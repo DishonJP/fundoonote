@@ -129,7 +129,8 @@ class Notes extends Component {
     handleArchive = () => {
         let data = {
             title: this.state.title,
-            notes:this.state.content
+            notes: this.state.content,
+            trash:false
         }
         userServices.addArchive(data).then((res) => {
             console.log("done");

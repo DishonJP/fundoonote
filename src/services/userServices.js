@@ -117,8 +117,7 @@ async function binNotes(data) {
         trash:data.trash
     }
     console.log(data.id,"id");
-    
-    await db.collection("Notes").doc(data.id).update(datas).then((res) => {
+    await db.collection(data.name).doc(data.id).update(datas).then((res) => {
        console.log(res,"how lol");
     }).catch((err) => {
        console.log(err,"oooh no");
@@ -128,7 +127,10 @@ async function addArchive(data) {
     let datas = {
         title: data.title,
         notes: data.notes,
-        curUser:fire.auth().currentUser.uid
+        curUser: fire.auth().currentUser.uid,
+        trash: data.trash,
+        backcolor: data.backcolor,
+        inputbcolor:data.inputbcolor
     }
     await db.collection("Archive").doc().set(datas)
 }
@@ -139,12 +141,10 @@ async function getArchiveNotes() {
         let data = jwt_decode(getToken)
         await db.collection('Archive').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
         console.log(querySnapShot,"poiu");
-        
             querySnapShot.forEach(function(doc){
-                getNotes.push(doc.data());
+                getNotes.push(doc);
             })
         })
-        
         return getNotes;
     } catch (error) {
         return error
