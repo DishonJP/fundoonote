@@ -93,7 +93,9 @@ class Archive extends React.Component {
     }
     handleMenuClick = async () => {
         await this.setState({
-            trash:true
+            trash: true,
+            dialogOpen: false,
+            menuOpen: false,
         })
         let data = {
             id:this.state.docId,
@@ -105,8 +107,8 @@ class Archive extends React.Component {
             inputbcolor: this.state.inputbcolor
         }
         console.log(data.name,"data name");
-        
         userServices.binNotes(data)
+        this.props.bin()
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -148,11 +150,13 @@ class Archive extends React.Component {
                         border: "1px solid lightgray",
                         margin: "2%",
                         flexWrap: "nowrap",
-                        padding: "10px"
-
+                        backgroundColor: this.state.inputbcolor,
+                        padding: "10px",
+                        boxShadow:"0px 0px 0px 0px"
                     }}>
                     <div>
-                        <div className="title_pin1">
+                        <div
+                            className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
                         </div>
                         <div className="title_pin">

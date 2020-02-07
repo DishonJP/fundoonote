@@ -32,7 +32,7 @@ var colorArray = [
     },
     {
         colors: "violet",
-        bcolor:"#dab5d7"
+        bcolor: "#dab5d7"
     },
     {
         colors: "teal",
@@ -40,39 +40,39 @@ var colorArray = [
     },
     {
         colors: "#ff3333",
-        bcolor:"#ffcccc"
+        bcolor: "#ffcccc"
     },
     {
         colors: "#00b300",
-        bcolor:"#b3ffb3"
+        bcolor: "#b3ffb3"
     },
     {
         colors: "#0066ff",
-        bcolor:"#b3d1ff"
+        bcolor: "#b3d1ff"
     },
     {
         colors: "#ffff1a",
-        bcolor:"#ffffb3"
+        bcolor: "#ffffb3"
     },
     {
         colors: "#ff6600",
-        bcolor:"#ffd1b3"
+        bcolor: "#ffd1b3"
     },
     {
         colors: "#b35900",
-        bcolor:"#ffbf80"
+        bcolor: "#ffbf80"
     },
     {
         colors: "#00264d",
-        bcolor:"#66b3ff"
+        bcolor: "#66b3ff"
     },
     {
         colors: "#737373",
-        bcolor:"#e6e6e6"
+        bcolor: "#e6e6e6"
     },
     {
         colors: "#ffffff",
-        bcolor:"#e6e6e6"
+        bcolor: "#e6e6e6"
     }
 ]
 class Notes extends Component {
@@ -86,8 +86,12 @@ class Notes extends Component {
             cardanchorEl: null,
             menuOpen: false,
             menuanchorEl: null,
-            backcolor: "",
-            inputbcolor:"lightgray"
+            backcolor: "white",
+            inputbcolor: "lightgray",
+            archive: false,
+            pin: false,
+            remainder: false,
+            notelabel: false
         }
     }
 
@@ -106,35 +110,50 @@ class Notes extends Component {
         })
     }
 
-    
+
     validation = () => {
         if (this.state.title !== '') {
             const data = {
                 title: this.state.title,
-                notes: this.state.content
+                notes: this.state.content,
+                trash: false,
+                backcolor: this.state.backcolor,
+                inputbcolor: this.state.inputbcolor,
+                archive: this.state.archive,
+                pin: this.state.pin,
+                remainder: this.state.remainder,
+                notelabel: this.state.notelabel
             }
             userServices.addNote(data).then((res) => {
-                console.log(res,"ajhskdjhaksdh211342455"); 
+                console.log(res, "ajhskdjhaksdh211342455");
                 this.props.change();
             })
                 .catch((err) => {
                     console.log(err);
                 })
-            
         }
         this.setState({
-            change:true
+            title: "",
+            content: '',
+            change: true
         })
     }
     handleArchive = () => {
         let data = {
             title: this.state.title,
-            notes: this.state.content,
-            trash:false
+                notes: this.state.content,
+                trash: false,
+                backcolor: this.state.backcolor,
+                inputbcolor: this.state.inputbcolor,
+                archive: true,
+                pin: this.state.pin,
+                remainder: this.state.remainder,
+                notelabel: this.state.notelabel
         }
-        userServices.addArchive(data).then((res) => {
+        userServices.addNote(data).then((res) => {
             console.log("done");
         })
+        this.props.archive()
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -143,7 +162,7 @@ class Notes extends Component {
                     onClick={() => {
                         this.setState({
                             backcolor: color.colors,
-                            inputbcolor:color.bcolor
+                            inputbcolor: color.bcolor
                         })
                     }}
                     style={{
@@ -303,7 +322,7 @@ class Notes extends Component {
                                             style={{
                                                 fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
                                                 border: "1px solid",
-                                                borderColor:this.state.inputbcolor,
+                                                borderColor: this.state.inputbcolor,
                                                 fontSize: "10px",
                                                 padding: "0px 0px 0px 0px",
                                                 marginTop: "10px",
@@ -333,12 +352,12 @@ class Notes extends Component {
                                 vertical: 'bottom',
                                 horizontal: 'center',
                             }}
-                        onClick={() => {
-                            this.setState({
-                                cardOpen: false,
-                                cardanchorEl:null
-                            })
-                        }}
+                            onClick={() => {
+                                this.setState({
+                                    cardOpen: false,
+                                    cardanchorEl: null
+                                })
+                            }}
                         >
                             <div className="clrow_one">
                                 {colorArr}
@@ -370,7 +389,7 @@ class Notes extends Component {
                             </Menu>
                         </div>
                     </MuiThemeProvider>
-                    
+
                 </div>
             )
         }

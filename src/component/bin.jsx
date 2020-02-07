@@ -1,12 +1,8 @@
 import React from 'react'
-import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
-import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
-import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
-import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
-import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
-import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
-import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem,DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -77,7 +73,7 @@ class Bin extends React.Component {
         super(props);
         this.state = {
             change: true,
-            dialogopen: false,
+            dialogOpen: false,
             menuanchorEl: null,
             menuOpen: false,
             title: this.props.binNotes.data().title,
@@ -85,7 +81,9 @@ class Bin extends React.Component {
             cardOpen: false,
             cardanchorEl: null,
             backcolor: "",
-            inputbcolor:"lightgray"
+            inputbcolor: "lightgray",
+            trash: this.props.binNotes.data().trash,
+            docId: this.props.binNotes.id
         }
     }
     handleOnClick = (event) => {
@@ -94,6 +92,18 @@ class Bin extends React.Component {
             cardOpen: true,
             cardanchorEl: event.currentTarget
         })
+    }
+    handleRestore = async () => {
+        await this.setState({
+            trash: false,
+            dialogOpen: false,
+            menuOpen: false,
+        })
+        let data = {
+            trash: this.state.trash,
+            id:this.state.docId
+        }
+        userServices.binNotes(data)
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -151,177 +161,49 @@ class Bin extends React.Component {
                             <div>
                                 <DialogContent
                                     style={{
-                                        width: "auto",
+                                        width: "240px",
                                         height: "auto",
                                         borderColor: "lightgray",
-                                        backgroundColor: this.state.backcolor,
+                                        backgroundColor: this.state.inputbcolor,
                                         padding: "5px"
                                     }}
                                 >
                                     <div className="title_pin">
-                                        <InputBase
+                                        <Typography
+                                            variant="h4"
                                             style={{
-                                                backgroundColor: this.state.inputbcolor,
-                                                borderRadius: "5px",
-                                                height: "auto",
-                                                padding: "10px"
-                                            }}
-                                            multiline
-                                            value={this.state.title}
-                                            onChange={(event) => {
-                                                this.setState({
-                                                    title: event.target.value
-                                                })
-                                            }}
-                                            fullWidth
-                                            placeholder="Title"
-                                        />
-                                        <Tooltip title="Pin it">
-                                            <IconButton>
-                                                <PinDropOutlinedIcon
-                                                    fontSize="small" />
-                                            </IconButton>
-                                        </Tooltip>
+                                                backgroundColor: this.state.inputbcolor
+                                        }}
+                                        >
+                                            {this.state.title}
+                                        </Typography>
                                     </div>
                                     <div className="title_pin">
-                                        <InputBase
+                                        <Typography
                                             style={{
-                                                backgroundColor: this.state.inputbcolor,
-                                                borderRadius: "5px",
-                                                height: "auto",
-                                                marginRight: "4px",
-                                                padding: "10px"
-                                            }}
-                                            multiline
-                                            fullWidth
-                                            placeholder="I know about U naaa..."
-                                            value={this.state.content}
-                                            onChange={(event) => {
-                                                this.setState({
-                                                    content: event.target.value
-                                                })
-                                            }}
-                                        />
+                                                backgroundColor: this.state.inputbcolor
+                                        }}
+                                        >
+                                            {this.state.content}
+                                        </Typography>
                                     </div>
                                     <div className="arrange">
                                         <div className="icon_arrange">
-                                            <Tooltip title="Add remainder">
-                                                <IconButton>
-                                                    <AddAlertOutlinedIcon fontSize="small" />
+                                            <Tooltip title="Restore">
+                                                <IconButton onClick={this.handleRestore}>
+                                                    <RestoreFromTrashIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Collaborator">
+                                            <Tooltip title="Remove Forever">
                                                 <IconButton >
-                                                    <PersonAddOutlinedIcon fontSize="small" />
+                                                    <DeleteForeverIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Change color" >
-                                                <IconButton onClick={this.handleOnClick}>
-                                                    <ColorLensOutlinedIcon fontSize="small" />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="Insert Photo">
-                                                <IconButton>
-                                                    <InsertPhotoOutlinedIcon fontSize="small" />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="Archive">
-                                                <IconButton>
-                                                    <ArchiveOutlinedIcon fontSize="small" />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="More">
-                                                <IconButton
-                                                    onClick={(event) => {
-                                                        this.setState({
-                                                            menuanchorEl: event.currentTarget,
-                                                            menuOpen: true
-                                                        })
-                                                    }}
-                                                >
-                                                    <MoreVertOutlinedIcon fontSize="small" />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </div>
-                                        <div className="button_place">
-                                            <Button
-                                                variant="contained"
-                                                style={{
-                                                    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-                                                    border: "1px solid",
-                                                    borderColor: this.state.inputbcolor,
-                                                    fontSize: "10px",
-                                                    padding: "0px 0px 0px 0px",
-                                                    marginTop: "10px",
-                                                    marginBottom: "10px",
-                                                    marginRight: "10px",
-                                                    backgroundColor: this.state.backcolor
-                                                }}
-                                                onClick={() => {
-                                                    this.setState({
-                                                        change: true,
-                                                        dialogOpen: false
-                                                    })
-                                                }}
-                                            >
-                                                close
-                </Button>
                                         </div>
                                     </div>
                                 </DialogContent>
                             </div>
                         </Dialog>
-                        <Menu
-                            open={this.state.cardOpen}
-                            anchorEl={this.state.cardanchorEl}
-                            style={{
-                                padding: "0px 0px 0px 0px"
-                            }}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                            transformOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                            }}
-                            onClick={() => {
-                                this.setState({
-                                    cardOpen: false,
-                                    cardanchorEl: null
-                                })
-                            }}
-                        >
-                            <div className="clrow_one">
-                                {colorArr}
-                            </div>
-                        </Menu>
-                        <div className="more_menu">
-                            <Menu
-                                open={this.state.menuOpen}
-                                autoFocusItem={this.state.menuOpen}
-                                anchorEl={this.state.menuanchorEl}
-                                style={{
-                                    padding: "15px"
-                                }}
-                                anchorOrigin={{
-                                    position: "bottom",
-                                    vertical: 'bottom',
-                                    horizontal: 'top',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'bottom',
-                                }}
-                            >
-                                <MenuItem onClick={this.handleMenuClick}
-                                >Delete Note</MenuItem>
-                                <Divider />
-                                <MenuItem>Add Drawing</MenuItem>
-                                <Divider />
-                                <MenuItem>Show tick boxes</MenuItem>
-                            </Menu>
-                        </div>
                     </MuiThemeProvider>
                 </div>
             )

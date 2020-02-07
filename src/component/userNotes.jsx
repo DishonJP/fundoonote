@@ -80,14 +80,12 @@ class UserNotes extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            backcolor: "",
-            inputbcolor: "lightgray",
             change: true,
             dialogOpen: false,
             title: this.props.allNotes.data().title,
             content: this.props.allNotes.data().notes,
-            backcolor: "",
-            inputbcolor: "lightgray",
+            backcolor: this.props.allNotes.data().backcolor,
+            inputbcolor: this.props.allNotes.data().inputbcolor,
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
@@ -96,7 +94,9 @@ class UserNotes extends Component {
     }
     handleMenuClick = async () => {
         await this.setState({
-            trash: true
+            trash: true,
+            dialogOpen: false,
+            menuOpen: false,
         })
         let data = {
             id: this.state.docId,
@@ -108,6 +108,7 @@ class UserNotes extends Component {
         console.log(data.id, "doc id");
 
         userServices.binNotes(data)
+        this.props.bin()
     }
     handleOnClick = (event) => {
         event.preventDefault();

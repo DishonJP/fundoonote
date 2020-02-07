@@ -88,12 +88,13 @@ class Home extends Component {
         })
     }
     getArchive = () => {
-        let result = userServices.getArchiveNotes();
+        let result = userServices.getNote();
         result.then((res) => {
+                console.log(res,"res in get");
             this.setState({
-                archiveNotes:res
+                    archiveNotes:res
+                })
             })
-        })
     }
     handleChange = () => {
         this.setState({
@@ -116,12 +117,6 @@ class Home extends Component {
                     binNotes:res
                 })
         })
-        let rest = userServices.getArchiveNotes();
-        rest.then((res) => {
-            res.map(datas => {
-                this.state.binNotes.push(datas)
-            })
-        })
     }
     componentDidMount() {
         this.getNote();
@@ -132,24 +127,24 @@ class Home extends Component {
         console.log(this.state.allNotes,"datas");
         
         let notesObj = this.state.allNotes.map(arrNotes => {
-           console.log(arrNotes.data().trash, "all notes");
+           console.log(arrNotes.data().trash,arrNotes.data().archive, "all notes");
            
-           if (arrNotes.data().trash === false) {
+           if (arrNotes.data().trash === false && arrNotes.data().archive===false) {
                return (
-                   <UserNotes allNotes={arrNotes} />
+                   <UserNotes allNotes={arrNotes} bin={this.binNote}/>
                )
            }
        })
        let archiveObj= this.state.archiveNotes.map(arrNotes => {
            console.log(arrNotes, "title");
-           if (arrNotes.data().trash === false) {
+           if (arrNotes.data().trash === false && arrNotes.data().archive===true ) {
                return (
-                   <Archive archiveNotes={arrNotes} />
+                   <Archive archiveNotes={arrNotes} change={this.getArchive} bin={this.binNote}/>
                )
            }
        })
         let binObj = this.state.binNotes.map(arrNotes => {
-           console.log(arrNotes,"bin notes");
+           console.log(arrNotes.id,"bin notes");
            
            if (arrNotes.data().trash) {
                return (
@@ -295,7 +290,7 @@ class Home extends Component {
                     {this.state.panalChange === "Notes" ?
                         <div>
                         <div className="notesComponent">
-                            <Notes change={this.handleRef} />
+                                <Notes change={this.handleRef} archive={this.getArchive}/>
                             </div>
                             <div className="usernotes_decor">
                         {notesObj}

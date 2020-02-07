@@ -74,9 +74,16 @@ async function addNote(data) {
     try {
         console.log(data,"adfasdf");
         const datas={
+            curUser: fire.auth().currentUser.uid,
             title: data.title,
-            notes: data.notes,
-            curUser: fire.auth().currentUser.uid
+                notes: data.notes,
+                trash: data.trash,
+                backcolor: data.backcolor,
+                inputbcolor: data.inputbcolor,
+                archive: data.archive,
+                pin: data.pin,
+                remainder: data.remainder,
+                notelabel: data.notelabel
         }
         const response = await db.collection("Notes").doc().set(datas);
         return response;
@@ -112,12 +119,10 @@ async function getUserData() {
 async function binNotes(data) {
     let datas = {
         curUser: fire.auth().currentUser.uid,
-        title: data.title,
-        notes: data.notes,
         trash:data.trash
     }
     console.log(data.id,"id");
-    await db.collection(data.name).doc(data.id).update(datas).then((res) => {
+    await db.collection("Notes").doc(data.id).update(datas).then((res) => {
        console.log(res,"how lol");
     }).catch((err) => {
        console.log(err,"oooh no");
