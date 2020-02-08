@@ -75,6 +75,7 @@ var colorArray = [
         bcolor: "#e6e6e6"
     }
 ]
+
 class Notes extends Component {
     constructor(props) {
         super(props);
@@ -91,7 +92,7 @@ class Notes extends Component {
             archive: false,
             pin: false,
             remainder: false,
-            notelabel: false
+            notelabel: ''
         }
     }
 
@@ -154,8 +155,14 @@ class Notes extends Component {
             console.log("done");
         })
         this.props.archive()
+        this.setState({
+            title: "",
+            content: '',
+            change: true
+        })
     }
     render() {
+        
         let colorArr = colorArray.map(color => {
             return (
                 <IconButton
@@ -366,6 +373,11 @@ class Notes extends Component {
                         <div className="more_menu">
                             <Menu
                                 open={this.state.menuOpen}
+                                onClick={() => {
+                                    this.setState({
+                                        menuOpen:false
+                                    })
+                                }}
                                 autoFocusItem={this.state.menuOpen}
                                 anchorEl={this.state.menuanchorEl}
                                 style={{

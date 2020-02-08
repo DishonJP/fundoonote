@@ -85,11 +85,27 @@ class Archive extends React.Component {
             content: this.props.archiveNotes.data().notes,
             cardOpen: false,
             cardanchorEl: null,
-            trash:false,
+            trash: false,
             backcolor: this.props.archiveNotes.data().backcolor,
             inputbcolor: this.props.archiveNotes.data().inputbcolor,
-            docId:this.props.archiveNotes.id
+            docId: this.props.archiveNotes.id,
+            pin:this.props.archiveNotes.data().pin
         }
+    }
+    validation =() => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash:this.state.trash
+        }
+        userServices.binNotes(data).then((res) => {
+            console.log(res, "done update");
+            this.props.change();
+        })
+            .catch((err) => {
+                console.log(err);
+            })
     }
     handleMenuClick = async () => {
         await this.setState({
@@ -98,15 +114,16 @@ class Archive extends React.Component {
             menuOpen: false,
         })
         let data = {
-            id:this.state.docId,
-            title:this.state.title,
+            id: this.state.docId,
+            title: this.state.title,
             notes: this.state.content,
             trash: this.state.trash,
-            name:"Archive",
+            name: "Archive",
             backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor
+            inputbcolor: this.state.inputbcolor,
+            pin:this.state.pin
         }
-        console.log(data.name,"data name");
+        console.log(data.name, "data name");
         userServices.binNotes(data)
         this.props.bin()
     }
@@ -152,7 +169,7 @@ class Archive extends React.Component {
                         flexWrap: "nowrap",
                         backgroundColor: this.state.inputbcolor,
                         padding: "10px",
-                        boxShadow:"0px 0px 0px 0px"
+                        boxShadow: "0px 0px 0px 0px"
                     }}>
                     <div>
                         <div
@@ -282,11 +299,12 @@ class Archive extends React.Component {
                                                     marginRight: "10px",
                                                     backgroundColor: this.state.backcolor
                                                 }}
-                                                onClick={() => {
-                                                    this.setState({
+                                                onClick={async () => {
+                                                    await this.setState({
                                                         change: true,
                                                         dialogOpen: false
                                                     })
+                                                    this.validation()
                                                 }}
                                             >
                                                 close

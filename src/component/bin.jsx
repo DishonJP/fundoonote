@@ -93,6 +93,15 @@ class Bin extends React.Component {
             cardanchorEl: event.currentTarget
         })
     }
+    handleDelete = () => {
+       let data = {
+            id:this.state.docId
+       }
+        userServices.deleteNote(data);
+        this.setState({
+            dialogOpen: false
+        })
+    }
     handleRestore = async () => {
         await this.setState({
             trash: false,
@@ -135,6 +144,7 @@ class Bin extends React.Component {
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
+                        backgroundColor: this.state.inputbcolor,
                         margin: "2%",
                         flexWrap: "nowrap",
                         padding: "10px"
@@ -196,7 +206,7 @@ class Bin extends React.Component {
                                             </Tooltip>
                                             <Tooltip title="Remove Forever">
                                                 <IconButton >
-                                                    <DeleteForeverIcon fontSize="small" />
+                                                    <DeleteForeverIcon onClick={this.handleDelete} fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
                                         </div>

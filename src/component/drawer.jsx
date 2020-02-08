@@ -7,6 +7,7 @@ import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import userServices from "../services/userServices"
 const theme = createMuiTheme({
     overrides: {
         MuiDrawer: {
@@ -18,6 +19,7 @@ const theme = createMuiTheme({
     }
 }
 )
+
 class Drawers extends Component {
     constructor(props) {
         super(props);
@@ -28,9 +30,35 @@ class Drawers extends Component {
             bgcolorE: '',
             bgcolorA: '',
             bgcolorB: '',
-            nameChange: "Notes"
+            nameChange: "Notes",
+            labelName: "",
+            labelNotes:[]
         }
     }
+    labelNote =  () => {
+        let result = userServices.getNote();
+        result.then(async (res) => {
+            await this.setState({
+                labelNotes: res
+            
+        })
+        
+        })
+        let labelArr = new Set();
+        this.state.labelNotes.forEach(data => {
+            console.log(data.data().notelabel,"notel label");
+            
+            labelArr.push(data.data().notelabel)
+        });
+        console.log(labelArr, "label Array");
+    }
+    nope = () => {
+        
+    }
+    componentDidMount() {
+       this.nope()
+    }
+    
     render() {
         return (
             <MuiThemeProvider theme={theme}>

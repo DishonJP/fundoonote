@@ -1,7 +1,4 @@
-import React, { Component } from 'react'
-import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField } from '@material-ui/core'
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import BrushIcon from '@material-ui/icons/Brush';
+import React, { Component } from "react";
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
@@ -9,6 +6,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
+import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -75,26 +73,39 @@ var colorArray = [
         bcolor: "#e6e6e6"
     }
 ];
-
-class UserNotes extends Component {
+class Pin extends Component {
     constructor(props) {
         super(props);
         this.state = {
             change: true,
-            dialogOpen: false,
-            title: this.props.allNotes.data().title,
-            content: this.props.allNotes.data().notes,
-            backcolor: this.props.allNotes.data().backcolor,
-            inputbcolor: this.props.allNotes.data().inputbcolor,
+            dialogopen: false,
+            menuanchorEl: null,
+            menuOpen: false,
+            title: this.props.pinNotes.data().title,
+            content: this.props.pinNotes.data().notes,
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            docId: this.props.allNotes.id,
-            pin: false,
-            noteLabel: '',
-            labelMenu: false,
-            labelAnchorEl: null
+            backcolor: this.props.pinNotes.data().backcolor,
+            inputbcolor: this.props.pinNotes.data().inputbcolor,
+            docId: this.props.pinNotes.id
         }
+    }
+    validation = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash
+        }
+        userServices.binNotes(data).then((res) => {
+            console.log(res, "done update");
+            this.props.pin()
+        })
+            .catch((err) => {
+                console.log(err);
+            })
+            
     }
     handleMenuClick = async () => {
         await this.setState({
@@ -107,51 +118,24 @@ class UserNotes extends Component {
             title: this.state.title,
             notes: this.state.content,
             trash: this.state.trash,
-            name: "Notes",
-            pin: this.state.pin
+            name: "Archive",
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
-        console.log(data.id, "doc id");
-
+        console.log(data.name, "data name");
         userServices.binNotes(data)
-        this.props.bin()
+        
     }
-    handleOnClick = (event) => {
-        event.preventDefault();
-        this.setState({
-            cardOpen: true,
-            cardanchorEl: event.currentTarget
+    handlePin = async () => {
+        await this.setState({
+            pin: false
         })
-    }
-    validation = () => {
         const data = {
             title: this.state.title,
             notes: this.state.content,
             id: this.state.docId,
             trash: this.state.trash,
-            pin: this.state.pin,
-            label: this.state.noteLabel
-        }
-        userServices.binNotes(data).then((res) => {
-            console.log(res, "done update");
-            this.props.change();
-        })
-            .catch((err) => {
-                console.log(err);
-            })
-        this.setState({
-            labelMenu: false,
-            labelAnchorEl: null,
-            noteLabel: '',
-            dialogOpen: false
-        })
-    }
-    handlePin = () => {
-        const data = {
-            title: this.state.title,
-            notes: this.state.content,
-            id: this.state.docId,
-            trash: this.state.trash,
-            pin: this.state.pin
+            pin:this.state.pin
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
@@ -162,16 +146,14 @@ class UserNotes extends Component {
                 console.log(err);
             })
     }
-    handleClickLabel = (event) => {
+    handleOnClick = (event) => {
+        event.preventDefault();
         this.setState({
-            menuOpen: false,
-            menuanchorEl: false,
-            labelMenu: true,
-            labelAnchorEl: event.currentTarget
+            cardOpen: true,
+            cardanchorEl: event.currentTarget
         })
     }
     render() {
-
         let colorArr = colorArray.map(color => {
             return (
                 <IconButton
@@ -201,13 +183,15 @@ class UserNotes extends Component {
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
-                        backgroundColor: this.state.inputbcolor,
                         margin: "2%",
                         flexWrap: "nowrap",
-                        padding: "10px"
+                        backgroundColor: this.state.inputbcolor,
+                        padding: "10px",
+                        boxShadow: "0px 0px 0px 0px"
                     }}>
                     <div>
-                        <div className="title_pin1">
+                        <div
+                            className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
                         </div>
                         <div className="title_pin">
@@ -253,12 +237,7 @@ class UserNotes extends Component {
                                             placeholder="Title"
                                         />
                                         <Tooltip title="Pin it">
-                                            <IconButton onClick={async () => {
-                                                await this.setState({
-                                                    pin: true
-                                                });
-                                                this.handlePin()
-                                            }}>
+                                            <IconButton onClick={this.handlePin}>
                                                 <PinDropOutlinedIcon
                                                     fontSize="small" />
                                             </IconButton>
@@ -343,7 +322,7 @@ class UserNotes extends Component {
                                                         change: true,
                                                         dialogOpen: false
                                                     })
-                                                    this.validation();
+                                                    this.validation()
                                                 }}
                                             >
                                                 close
@@ -396,8 +375,6 @@ class UserNotes extends Component {
                                     horizontal: 'bottom',
                                 }}
                             >
-                                <MenuItem onClick={this.handleClickLabel}>Add Label</MenuItem>
-                                <Divider />
                                 <MenuItem onClick={this.handleMenuClick}
                                 >Delete Note</MenuItem>
                                 <Divider />
@@ -406,38 +383,10 @@ class UserNotes extends Component {
                                 <MenuItem>Show tick boxes</MenuItem>
                             </Menu>
                         </div>
-                        <Menu
-                            open={this.state.labelMenu}
-                            autoFocusItem={this.state.labelMenu}
-                            anchorEl={this.state.labelAnchorEl}
-                            anchorOrigin={{
-                                position: "bottom",
-                                vertical: 'bottom',
-                                horizontal: 'top',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'bottom',
-                            }}
-                        >
-                            <Typography>Label name</Typography>
-                            <TextField
-                                variant="filled"
-                                value={this.state.noteLabel}
-                                onChange={(event) => {
-                                    this.setState({
-                                        noteLabel: event.target.value
-                                    })
-                                }}
-                            />
-                            <MenuItem onClick={this.validation}>
-                                create : {this.state.noteLabel}
-                            </MenuItem>
-                        </Menu>
                     </MuiThemeProvider>
                 </div>
             )
         }
     }
 }
-export default UserNotes
+export default Pin;

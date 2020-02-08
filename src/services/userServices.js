@@ -117,9 +117,15 @@ async function getUserData() {
     return data;
 }
 async function binNotes(data) {
+    console.log(data.label,"label");
+    
     let datas = {
         curUser: fire.auth().currentUser.uid,
-        trash:data.trash
+        trash: data.trash,
+        title: data.title,
+        notes: data.notes,
+        pin: data.pin,
+        notelabel:data.label
     }
     console.log(data.id,"id");
     await db.collection("Notes").doc(data.id).update(datas).then((res) => {
@@ -128,36 +134,13 @@ async function binNotes(data) {
        console.log(err,"oooh no");
    })
 }
-async function addArchive(data) {
-    let datas = {
-        title: data.title,
-        notes: data.notes,
-        curUser: fire.auth().currentUser.uid,
-        trash: data.trash,
-        backcolor: data.backcolor,
-        inputbcolor:data.inputbcolor
-    }
-    await db.collection("Archive").doc().set(datas)
-}
-async function getArchiveNotes() {
-    try {
-        let getNotes = [];
-        let getToken = localStorage.getItem("usertoken");
-        let data = jwt_decode(getToken)
-        await db.collection('Archive').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
-        console.log(querySnapShot,"poiu");
-            querySnapShot.forEach(function(doc){
-                getNotes.push(doc);
-            })
-        })
-        return getNotes;
-    } catch (error) {
-        return error
-    }
+
+async function deleteNote(data) {
+    await db.collection("Notes").doc(data.id).delete().then((res)=>console.log("done deleting"))
 }
 export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,getUserData,binNotes,addArchive,getArchiveNotes
+    addNote,getNote,getUserData,binNotes,deleteNote
 }
