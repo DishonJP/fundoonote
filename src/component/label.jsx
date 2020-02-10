@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
@@ -6,6 +6,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
+import CloseIcon from '@material-ui/icons/Close';
 import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
@@ -73,7 +74,7 @@ var colorArray = [
         bcolor: "#e6e6e6"
     }
 ];
-class Pin extends Component {
+class Label extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -81,15 +82,16 @@ class Pin extends Component {
             dialogopen: false,
             menuanchorEl: null,
             menuOpen: false,
-            title: this.props.pinNotes.data().title,
-            content: this.props.pinNotes.data().notes,
+            title: this.props.labelNotes.data().title,
+            content: this.props.labelNotes.data().notes,
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            backcolor: this.props.pinNotes.data().backcolor,
-            inputbcolor: this.props.pinNotes.data().inputbcolor,
-            docId: this.props.pinNotes.id,
-            notelabel: this.props.pinNotes.data().notelabel
+            backcolor: this.props.labelNotes.data().backcolor,
+            inputbcolor: this.props.labelNotes.data().inputbcolor,
+            docId: this.props.labelNotes.id,
+            pin: this.props.labelNotes.data().pin,
+            label: this.props.labelNotes.data().notelabel
         }
     }
     validation = () => {
@@ -101,12 +103,15 @@ class Pin extends Component {
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
-            this.props.pin()
+            this.props.change();
         })
             .catch((err) => {
                 console.log(err);
             })
-            
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
     }
     handleMenuClick = async () => {
         await this.setState({
@@ -119,35 +124,17 @@ class Pin extends Component {
             title: this.state.title,
             notes: this.state.content,
             trash: this.state.trash,
-            name: "Archive",
+            name: "label",
             backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor
+            inputbcolor: this.state.inputbcolor,
+            pin: this.state.pin
         }
         console.log(data.name, "data name");
         userServices.binNotes(data)
-        
-    }
-    handlePin = async () => {
-        await this.setState({
-            pin: false
-        })
-        const data = {
-            title: this.state.title,
-            notes: this.state.content,
-            id: this.state.docId,
-            trash: this.state.trash,
-            pin:this.state.pin,
-            label:this.state.notelabel
-        }
-        userServices.binNotes(data).then((res) => {
-            console.log(res, "done update");
-            this.props.pin();
-            this.props.bin();
-            this.props.get();
-        })
-            .catch((err) => {
-                console.log(err);
-            })
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -155,6 +142,26 @@ class Pin extends Component {
             cardOpen: true,
             cardanchorEl: event.currentTarget
         })
+    }
+    removeLabel = async () => {
+        await this.setState({
+            label: ""
+        })
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.label
+        }
+        console.log(this.state.docId);
+        userServices.binNotes(data);
+        userServices.deletelabel(data)
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -201,6 +208,16 @@ class Pin extends Component {
                             <Typography>{this.state.content}</Typography>
                         </div>
                     </div>
+                    <div className="label_close" style={{
+                        backgroundColor: this.state.inputbcolor
+                    }}>
+                        <Typography>{this.state.label}</Typography>
+                        <Tooltip title="remove label">
+                            <IconButton onClick={this.removeLabel}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
                 </Card>
             )
         }
@@ -239,8 +256,8 @@ class Pin extends Component {
                                             fullWidth
                                             placeholder="Title"
                                         />
-                                        <Tooltip title="unpin it">
-                                            <IconButton onClick={this.handlePin}>
+                                        <Tooltip title="Pin it">
+                                            <IconButton>
                                                 <PinDropOutlinedIcon
                                                     fontSize="small" />
                                             </IconButton>
@@ -265,6 +282,16 @@ class Pin extends Component {
                                                 })
                                             }}
                                         />
+                                    </div>
+                                    <div className="label_close" style={{
+                                        backgroundColor: this.state.inputbcolor
+                                    }}>
+                                        <Typography>{this.state.label}</Typography>
+                                        <Tooltip title="remove label">
+                                            <IconButton onClick={this.removeLabel}>
+                                                <CloseIcon fontSize="small" />
+                                            </IconButton>
+                                        </Tooltip>
                                     </div>
                                     <div className="arrange">
                                         <div className="icon_arrange">
@@ -392,4 +419,4 @@ class Pin extends Component {
         }
     }
 }
-export default Pin;
+export default Label;

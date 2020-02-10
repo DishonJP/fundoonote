@@ -8,6 +8,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import userServices from "../services/userServices"
+import Home from './home';
 const theme = createMuiTheme({
     overrides: {
         MuiDrawer: {
@@ -31,35 +32,63 @@ class Drawers extends Component {
             bgcolorA: '',
             bgcolorB: '',
             nameChange: "Notes",
-            labelName: "",
-            labelNotes:[]
+            labelNotes: []
         }
     }
-    labelNote =  () => {
-        let result = userServices.getNote();
-        result.then(async (res) => {
-            await this.setState({
-                labelNotes: res
-            
-        })
-        
-        })
-        let labelArr = new Set();
-        this.state.labelNotes.forEach(data => {
-            console.log(data.data().notelabel,"notel label");
-            
-            labelArr.push(data.data().notelabel)
-        });
-        console.log(labelArr, "label Array");
-    }
-    nope = () => {
-        
-    }
     componentDidMount() {
-       this.nope()
+        this.labelNote();
     }
-    
+    labelNote = () => {
+        let result = userServices.getLabel();
+        result.then( (res) => {
+             this.setState({
+                labelNotes: res
+            })
+            console.log(this.state.labelNotes,"label names");
+            
+            this.props.drawerName(this.state.labelNotes);
+        })
+    }
+
+   
     render() {
+        let arrData = [];
+        this.state.labelNotes.forEach(element => {
+            arrData.push(element.data().notelabel)
+        });
+        let filterArr = arrData.filter((index, data) => {
+            return arrData.indexOf(index) == data
+        })
+        let labelObj = filterArr.map(arrNotes => {
+            return (
+                <div className="noteIcon_decor">
+                    <ListItem
+                        button
+                        onClick={async () => {
+                            await this.setState({
+                                bgcolorN: '',
+                                bgcolorR: '',
+                                bgcolorL: 'lightgrey',
+                                bgcolorE: '',
+                                bgcolorA: '',
+                                bgcolorB: '',
+                                nameChange: arrNotes
+                            })
+                            this.props.panel(this.state.nameChange)
+                        }}
+                        style={{
+                            backgroundColor: this.state.bgcolorL
+                        }}
+                    >
+                        <ListItemIcon>
+                            <LabelOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={arrNotes} />
+                    </ListItem>
+
+                </div>
+            )
+        })
         return (
             <MuiThemeProvider theme={theme}>
                 <Drawer
@@ -140,32 +169,7 @@ class Drawers extends Component {
                             <Divider />
                             <label className="label_decor">Label</label>
                             <div>
-                                <ListItem
-                                    button
-                                    onClick={async () => {
-                                        await this.setState({
-                                            bgcolorN: '',
-                                            bgcolorR: '',
-                                            bgcolorL: 'lightgrey',
-                                            bgcolorE: '',
-                                            bgcolorA: '',
-                                            bgcolorB: '',
-                                            nameChange: "Label"
-                                        })
-                                        this.props.panel(this.state.nameChange)
-                                    }}
-                                    style={{
-                                        backgroundColor: this.state.bgcolorL
-                                    }}
-                                >
-                                    <div className="noteIcon_decor">
-                                        <ListItemIcon>
-                                            <LabelOutlinedIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="" />
-                                    </div>
-
-                                </ListItem>
+                                {labelObj}
                                 <ListItem
                                     button
                                     onClick={async () => {

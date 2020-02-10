@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField } from '@material-ui/core'
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import BrushIcon from '@material-ui/icons/Brush';
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
@@ -88,12 +86,14 @@ class UserNotes extends Component {
             inputbcolor: this.props.allNotes.data().inputbcolor,
             cardOpen: false,
             cardanchorEl: null,
-            trash: false,
+            trash: this.props.allNotes.data().trash,
             docId: this.props.allNotes.id,
-            pin: false,
-            noteLabel: '',
+            pin: this.props.allNotes.data().pin,
+            noteLabel: this.props.allNotes.data().notelabel,
             labelMenu: false,
-            labelAnchorEl: null
+            labelAnchorEl: null,
+            remainder: this.props.allNotes.data().remainder,
+            archive: this.props.allNotes.data().archive
         }
     }
     handleMenuClick = async () => {
@@ -113,7 +113,10 @@ class UserNotes extends Component {
         console.log(data.id, "doc id");
 
         userServices.binNotes(data)
-        this.props.bin()
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -129,11 +132,18 @@ class UserNotes extends Component {
             id: this.state.docId,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.noteLabel
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
-            this.props.change();
+            this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
         })
             .catch((err) => {
                 console.log(err);
@@ -151,16 +161,45 @@ class UserNotes extends Component {
             notes: this.state.content,
             id: this.state.docId,
             trash: this.state.trash,
-            pin: this.state.pin
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
-            this.props.pin();
+            this.props.get();
             this.props.bin();
+            this.props.pin();
+            this.props.label();
         })
             .catch((err) => {
                 console.log(err);
             })
+
+    }
+    handleAddLabel = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data);
+        userServices.addLabel(data).then((res) => {
+            console.log(res, "done update");
+            this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
+        })
     }
     handleClickLabel = (event) => {
         this.setState({
@@ -422,6 +461,9 @@ class UserNotes extends Component {
                         >
                             <Typography>Label name</Typography>
                             <TextField
+                                style={{
+                                    height:"8vh"
+                                }}
                                 variant="filled"
                                 value={this.state.noteLabel}
                                 onChange={(event) => {
@@ -430,7 +472,7 @@ class UserNotes extends Component {
                                     })
                                 }}
                             />
-                            <MenuItem onClick={this.validation}>
+                            <MenuItem onClick={this.handleAddLabel}>
                                 create : {this.state.noteLabel}
                             </MenuItem>
                         </Menu>

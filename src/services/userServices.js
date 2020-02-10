@@ -6,7 +6,6 @@ import service from '../services/constant'
 const db = firebase.firestore();
 async function userRegistration(data) {
     try {
-        console.log("hh", data);
         const datas = {
             firstName: data.firstName,
             lastName: data.lastName,
@@ -15,7 +14,6 @@ async function userRegistration(data) {
         }
         const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password);
         db.collection("users").doc(response.user.uid).set(datas);
-        console.log(response,"sgdfgkjafau");
         return response
     } catch (err) {
         return err;
@@ -31,7 +29,6 @@ async function userLogin(data) {
         }
         const response = await fire.auth().signInWithEmailAndPassword(datas.email, datas.password)
         const userDetails = await service.firestore.collection("users").doc(response.user.uid).get().then(async function (doc) {
-            console.log(response.user.uid,"kjadhsfga");
             const userData = {
                 email: service.firebaseAuthorization.currentUser.email,
                 fname: doc.data().firstName,
@@ -42,7 +39,6 @@ async function userLogin(data) {
                 expiresIn:1440
             })
             let tokenSet = localStorage.setItem('usertoken', token)
-            console.log(tokenSet,"khadgsfjg",token);
         })
         return response
     } catch (err) {
@@ -63,16 +59,24 @@ async function emailVerify(data) {
             email: data.email
         }
         const response = await fire.auth().sendPasswordResetEmail(datas.email);
-        console.log('response',response);
-        
         return response;
     } catch (error) {
         return error;
     }
 }
+async function getUserDetails() {
+    try {
+        let getToken = localStorage.getItem("usertoken");
+        let data = jwt_decode(getToken)
+        await db.collection('users').doc(data.userId).get().then((res) => {
+            return res
+        })
+    } catch (error) {
+        return error
+    }
+}
 async function addNote(data) {
     try {
-        console.log(data,"adfasdf");
         const datas={
             curUser: fire.auth().currentUser.uid,
             title: data.title,
@@ -96,17 +100,11 @@ async function getNote() {
         let getNotes = [];
         let getToken = localStorage.getItem("usertoken");
         let data = jwt_decode(getToken)
-        await db.collection('Notes').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
-        console.log(querySnapShot,"poiu");
-        
-            querySnapShot.forEach(function(doc){
-                console.log(doc.data(),"kjadhfkjahs");
-                
+        await db.collection('Notes').where("curUser", '==', data.userId).get().then(function (querySnapShot) {      
+            querySnapShot.forEach(function(doc){   
                 getNotes.push(doc);
             })
         })
-        console.log(getNotes,"lk123fskj");
-        
         return getNotes;
     } catch (error) {
         return error
@@ -117,7 +115,7 @@ async function getUserData() {
     return data;
 }
 async function binNotes(data) {
-    console.log(data.label,"label");
+    console.log(data.label,data.title,data.notes,data.pin,data.trash,"label");
     
     let datas = {
         curUser: fire.auth().currentUser.uid,
@@ -134,13 +132,52 @@ async function binNotes(data) {
        console.log(err,"oooh no");
    })
 }
-
+async function addLabel(data) {
+    try {
+        console.log(data,"adfasdf");
+        const datas={
+            curUser: fire.auth().currentUser.uid,
+            title: data.title,
+                notes: data.notes,
+                trash: data.trash,
+                backcolor: data.backcolor,
+                inputbcolor: data.inputbcolor,
+                archive: data.archive,
+                pin: data.pin,
+                remainder: data.remainder,
+                notelabel: data.label
+        }
+        const response = await db.collection("label").doc().set(datas);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+async function getLabel() {
+    try {
+        let getLabel = [];
+        let getToken = localStorage.getItem("usertoken");
+        let data = jwt_decode(getToken)
+        await db.collection('label').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
+            querySnapShot.forEach(function(doc){
+                getLabel.push(doc);
+            })
+        })
+        
+        return getLabel;
+    } catch (error) {
+        return error
+    }
+}
 async function deleteNote(data) {
     await db.collection("Notes").doc(data.id).delete().then((res)=>console.log("done deleting"))
+}
+async function deletelabel(data) {
+    await db.collection("label").doc(data.id).delete().then((res)=>console.log("done deleting"))
 }
 export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,getUserData,binNotes,deleteNote
+    addNote,getNote,getUserData,binNotes,deleteNote,addLabel,getLabel,deletelabel,getUserDetails
 }

@@ -14,6 +14,7 @@ import UserNotes from './userNotes';
 import Archive from './archive';
 import Bin from './bin';
 import Pin from './pin'
+import Label from './label';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -43,23 +44,23 @@ class Home extends Component {
             panalChange: "Notes",
             archiveNotes: [],
             binNotes: [],
-            pinNotes: []
+            pinNotes: [],
+            labelNotes: [],
+            userData:""
         };
     }
-    changePanalName = (data) => {
-        console.log(data, "why this is happening");
+    changeDrawerName = async (data) => {
+        await console.log(data, "Drawer naot");
+
+    }
+    changePanalName = async (data) => {
+        await console.log(data, "why this is happening");
         this.setState({
             panalChange: data
         })
     }
     handleRef = () => {
         this.getNote()
-    }
-    getUserData = () => {
-        let data = userServices.getUserData().then((res) => {
-            console.log(res, "dishon");
-
-        })
     }
     handleOpen = () => {
         if (this.state.open === false) {
@@ -71,6 +72,13 @@ class Home extends Component {
                 open: false
             })
         }
+    }
+    getUserDetails = async () => {
+        await this.setState({
+            userData:userServices.getUserDetails()
+        })
+        console.log(this.state.userData,"uiyteruigaerlhaewrlhaoewhro;iahewor;iha;lewrh;ahew");
+        
     }
     handleClose = () => {
         this.setState({
@@ -128,21 +136,36 @@ class Home extends Component {
             })
         })
     }
+    getLabel = () => {
+        let result = userServices.getLabel();
+        result.then((res) => {
+            this.setState({
+                labelNotes: res
+            })
+        })
+    }
     componentDidMount() {
+        this.getUserDetails();
         this.getNote();
         this.getArchive();
         this.binNote();
         this.pinNote();
+        this.getLabel();
     }
     render() {
+        console.log(this.state.panalChange, "name panel");
         console.log(this.state.allNotes, "datas");
-
+        let count = 0;
         let notesObj = this.state.allNotes.map(arrNotes => {
             console.log(arrNotes.data().trash, arrNotes.data().archive, "all notes");
 
-            if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false) {
+            if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '') {
                 return (
-                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} />
+                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel}/>
+                )
+            } else if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel!=='') {
+                return (
+                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel}/>
                 )
             }
         })
@@ -167,8 +190,21 @@ class Home extends Component {
             console.log(arrNotes.data().trash, arrNotes.data().archive, "pin notes");
 
             if (arrNotes.data().trash === false && arrNotes.data().pin === true) {
+                count++;
                 return (
-                    <Pin pinNotes={arrNotes} pin={this.pinNote} bin={this.binNote} />
+                    <Pin pinNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} />
+                )
+            }
+        })
+        let labelObj = this.state.labelNotes.map(arrNotes => {
+            console.log(arrNotes.data().notelabel, "label notes");
+
+            if (arrNotes.data().notelabel && this.state.panalChange === arrNotes.data().notelabel) {
+                count++;
+                console.log(this.state.panalChange, "name panel");
+
+                return (
+                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} />
                 )
             }
         })
@@ -176,7 +212,6 @@ class Home extends Component {
             <MuiThemeProvider theme={theme}>
                 <div>
                     <div className="header_decor">
-
                         <AppBar
                             class="appbar_decor"
                             position="fixed">
@@ -252,10 +287,8 @@ class Home extends Component {
                                                 marginTop: "52px",
                                                 padding: "10px"
                                             }}
-                                            anchorOrigin={{
-                                                horizontal: "right"
-                                            }}
                                             open={this.state.openMenu}
+                                            anchorEl={this.state.anchorEl}
                                         >
                                             <div className="avatar_decor">
                                                 <img
@@ -267,7 +300,7 @@ class Home extends Component {
                                                     src={bunny}
                                                     alt="u"
                                                 />
-                                                <span>{this.getUserData()}</span>
+                                               
                                             </div>
                                             <Divider />
                                             <MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
@@ -307,6 +340,8 @@ class Home extends Component {
                         panel={this.changePanalName}
                         change={this.state.open}
                         value={this.handleClose}
+                        drawerName={this.changeDrawerName}
+
                     />
                     <div>
                         {this.state.panalChange === "Notes" ?
@@ -314,14 +349,14 @@ class Home extends Component {
                                 <div className="notesComponent">
                                     <Notes change={this.handleRef} archive={this.getArchive} />
                                 </div>
-                                {this.state.pinNotes.length !== 0 ?
+                                {count > 0 ?
                                     <span className="pinText">pinned</span> : <div></div>
                                 }
                                 <div className="usernotes_decor">
                                     {pinObj}
                                 </div>
                                 {
-                                    this.state.pinNotes.length !== 0 ?
+                                    count > 0 ?
                                         <div>
                                             <Divider />
                                             <span className="pinText">others</span></div> : <div></div>
@@ -335,7 +370,9 @@ class Home extends Component {
                                     {archiveObj}
                                 </div> : this.state.panalChange === "Bin" ? <div className="notesComponent">
                                     {binObj}
-                                </div> : <div></div>}
+                                </div> : <div className="notesComponent">
+                                        {labelObj}
+                                    </div>}
                     </div>
                 </div>
             </MuiThemeProvider>
