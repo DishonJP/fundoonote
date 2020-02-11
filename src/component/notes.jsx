@@ -91,7 +91,7 @@ class Notes extends Component {
             inputbcolor: "lightgray",
             archive: false,
             pin: false,
-            remainder: false,
+            remainder: "",
             notelabel: ''
         }
     }
@@ -127,11 +127,15 @@ class Notes extends Component {
             }
             userServices.addNote(data).then((res) => {
                 console.log(res, "ajhskdjhaksdh211342455");
-                this.props.change();
+                
             })
                 .catch((err) => {
                     console.log(err);
                 })
+                this.props.change();
+                this.props.pin();
+                this.props.bin();
+                this.props.get();
         }
         this.setState({
             title: "",
@@ -142,19 +146,22 @@ class Notes extends Component {
     handleArchive = () => {
         let data = {
             title: this.state.title,
-                notes: this.state.content,
-                trash: false,
-                backcolor: this.state.backcolor,
-                inputbcolor: this.state.inputbcolor,
-                archive: true,
-                pin: this.state.pin,
-                remainder: this.state.remainder,
-                notelabel: this.state.notelabel
+            notes: this.state.content,
+            trash: false,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor,
+            archive: true,
+            pin: this.state.pin,
+            remainder: this.state.remainder,
+            notelabel: this.state.notelabel
         }
         userServices.addNote(data).then((res) => {
             console.log("done");
+            this.props.change();
+            this.props.pin();
+            this.props.bin();
+            this.props.get();
         })
-        this.props.archive()
         this.setState({
             title: "",
             content: '',
@@ -162,7 +169,7 @@ class Notes extends Component {
         })
     }
     render() {
-        
+
         let colorArr = colorArray.map(color => {
             return (
                 <IconButton
@@ -375,7 +382,7 @@ class Notes extends Component {
                                 open={this.state.menuOpen}
                                 onClick={() => {
                                     this.setState({
-                                        menuOpen:false
+                                        menuOpen: false
                                     })
                                 }}
                                 autoFocusItem={this.state.menuOpen}

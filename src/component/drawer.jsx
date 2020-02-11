@@ -44,12 +44,10 @@ class Drawers extends Component {
              this.setState({
                 labelNotes: res
             })
-            console.log(this.state.labelNotes,"label names");
-            
+            console.log(this.state.labelNotes,"label names");  
             this.props.drawerName(this.state.labelNotes);
         })
     }
-
    
     render() {
         let arrData = [];

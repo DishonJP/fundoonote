@@ -15,6 +15,7 @@ import Archive from './archive';
 import Bin from './bin';
 import Pin from './pin'
 import Label from './label';
+import Remainder from './remainder';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -36,7 +37,7 @@ class Home extends Component {
         this.state = {
             open: false,
             openMenu: false,
-            close: false,
+            close: true,
             anchorEl: null,
             title: '',
             content: '',
@@ -46,7 +47,10 @@ class Home extends Component {
             binNotes: [],
             pinNotes: [],
             labelNotes: [],
-            userData:""
+            userData: "",
+            remNotes: [],
+            grid: "usernotes_decor",
+            list: "usersNote_decor"
         };
     }
     changeDrawerName = async (data) => {
@@ -56,7 +60,7 @@ class Home extends Component {
     changePanalName = async (data) => {
         await console.log(data, "why this is happening");
         this.setState({
-            panalChange: data
+            panalChange: data,
         })
     }
     handleRef = () => {
@@ -106,6 +110,15 @@ class Home extends Component {
             })
         })
     }
+    getRemainder = () => {
+        let result = userServices.getNote();
+        result.then((res) => {
+            console.log(res, "res in get");
+            this.setState({
+                remNotes: res
+            })
+        })
+    }
     handleChange = () => {
         this.setState({
             close: !(this.state.close)
@@ -151,6 +164,7 @@ class Home extends Component {
         this.binNote();
         this.pinNote();
         this.getLabel();
+        this.changeDrawerName();
     }
     render() {
         console.log(this.state.panalChange, "name panel");
@@ -161,7 +175,7 @@ class Home extends Component {
 
             if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '') {
                 return (
-                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel}/>
+                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList}/>
                 )
             } else if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel!=='') {
                 return (
@@ -205,6 +219,18 @@ class Home extends Component {
 
                 return (
                     <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} />
+                )
+            }
+        })
+        let remObj = this.state.remNotes.map(arrNotes => {
+            console.log(arrNotes.data().notelabel, "label notes");
+
+            if (arrNotes.data().remainder!=="") {
+                count++;
+                console.log(this.state.panalChange, "name panel");
+
+                return (
+                    <Remainder remNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} />
                 )
             }
         })
@@ -347,12 +373,12 @@ class Home extends Component {
                         {this.state.panalChange === "Notes" ?
                             <div>
                                 <div className="notesComponent">
-                                    <Notes change={this.handleRef} archive={this.getArchive} />
+                                    <Notes change={this.getArchive} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel}  />
                                 </div>
                                 {count > 0 ?
                                     <span className="pinText">pinned</span> : <div></div>
                                 }
-                                <div className="usernotes_decor">
+                                <div className={this.state.close?this.state.grid:this.state.list}>
                                     {pinObj}
                                 </div>
                                 {
@@ -361,16 +387,20 @@ class Home extends Component {
                                             <Divider />
                                             <span className="pinText">others</span></div> : <div></div>
                                 }
-                                <div className="usernotes_decor">
+                                <div className={this.state.close?this.state.grid:this.state.list}>
                                     {notesObj}
                                 </div>
                             </div>
                             : this.state.panalChange === "Archive" ?
-                                <div className="notesComponent">
+                                <div className={this.state.close?this.state.grid:this.state.list}>
                                     {archiveObj}
-                                </div> : this.state.panalChange === "Bin" ? <div className="notesComponent">
+                                </div> : this.state.panalChange === "Bin" ? <div className={this.state.close?this.state.grid:this.state.list}>
                                     {binObj}
-                                </div> : <div className="notesComponent">
+                                </div> : this.state.panalChange === "Remainder" ?
+                                        <div className={this.state.close?this.state.grid:this.state.list}>
+                                        {remObj}
+                                    </div>:
+                                        <div className={this.state.close?this.state.grid:this.state.list}>
                                         {labelObj}
                                     </div>}
                     </div>
