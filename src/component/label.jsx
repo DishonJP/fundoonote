@@ -91,7 +91,20 @@ class Label extends Component {
             inputbcolor: this.props.labelNotes.data().inputbcolor,
             docId: this.props.labelNotes.id,
             pin: this.props.labelNotes.data().pin,
-            label: this.props.labelNotes.data().notelabel
+            label: this.props.labelNotes.data().notelabel,
+            width: this.props.layout,
+            cardWidth:""
+        }
+    }
+    componentDidMount() {
+        if (this.state.width) {
+            this.setState({
+                cardWidth:"40%"
+            })
+        } else {
+            this.setState({
+                cardWidth:"60%"
+            })
         }
     }
     validation = () => {
@@ -112,6 +125,7 @@ class Label extends Component {
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.props.getRem();
     }
     handleMenuClick = async () => {
         await this.setState({
@@ -124,17 +138,22 @@ class Label extends Component {
             title: this.state.title,
             notes: this.state.content,
             trash: this.state.trash,
-            name: "label",
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
             backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor,
-            pin: this.state.pin
+            inputbcolor: this.state.inputbcolor
         }
-        console.log(data.name, "data name");
+        console.log(data.id, "doc id");
         userServices.binNotes(data)
+        userServices.updateLabel(data)
         this.props.get();
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.props.archive();
+        this.props.getRem();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -162,6 +181,7 @@ class Label extends Component {
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.props.getRem();
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -189,7 +209,7 @@ class Label extends Component {
                     })
                 }}
                     style={{
-                        width: "30%",
+                        width: this.state.cardWidth,
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",

@@ -8,7 +8,7 @@ import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, TextField, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -92,7 +92,26 @@ class Remainder extends Component {
             inputbcolor: this.props.remNotes.data().inputbcolor,
             docId: this.props.remNotes.id,
             pin: this.props.remNotes.data().pin,
-            label: this.props.remNotes.data().notelabel
+            label: this.props.remNotes.data().notelabel,
+            remainder: this.props.remNotes.data().remainder,
+            archive: this.props.remNotes.data().archive,
+            remOpen: false,
+            remAnchorEl: null,
+            labelMenu: false,
+            labelAnchorEl: null,
+            width: this.props.layout,
+            cardWidth:""
+        }
+    }
+    componentDidMount() {
+        if (this.state.width) {
+            this.setState({
+                cardWidth:"40%"
+            })
+        } else {
+            this.setState({
+                cardWidth:"60%"
+            })
         }
     }
     validation = () => {
@@ -109,6 +128,7 @@ class Remainder extends Component {
             .catch((err) => {
                 console.log(err);
             })
+            userServices.updateLabel(data)
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -125,17 +145,207 @@ class Remainder extends Component {
             title: this.state.title,
             notes: this.state.content,
             trash: this.state.trash,
-            name: "label",
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
             backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor,
-            pin: this.state.pin
+            inputbcolor: this.state.inputbcolor
         }
-        console.log(data.name, "data name");
+        console.log(data.id, "doc id");
+        userServices.updateLabel(data)
         userServices.binNotes(data)
         this.props.get();
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.props.archive();
+        this.props.getRem();
+    }
+    handleRemainder = () => {
+        let date = Date.now();
+        let da = new Date(date);
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        let daata = "";
+        for (let i = 0; i < this.state.remainder.length; i++) {
+            if (i < 4) {
+                daata = daata + this.state.remainder[i];
+                if (i == 3) {
+                    console.log(daata);
+                    console.log(da.getFullYear());
+                    if (da.getFullYear() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else if (da.getFullYear() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad year");
+                    }
+                }
+            }
+            if (i > 4 && i < 7) {
+                daata += this.state.remainder[i];
+                if (i == 6) {
+                    if (da.getMonth() + 1 < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getMonth() + 1 == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad mon");
+                    }
+                }
+            }
+            if (i > 7 && i < 10) {
+                daata += this.state.remainder[i];
+                if (i == 9) {
+                    if (da.getDay() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getDay() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad Day");
+                    }
+                }
+            }
+            if (i > 10 && i < 13) {
+                daata += this.state.remainder[i];
+                if (i == 12) {
+                    if (da.getHours() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getHours() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad hour");
+                    }
+                }
+            }
+            if (i > 13 && i < this.state.remainder.length) {
+                daata += this.state.remainder[i];
+                if (i == (this.state.remainder.length - 1)) {
+                    if (da.getMinutes() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else {
+                        console.log("bad min");
+                    }
+                }
+            }
+        }
+
+        alert(this.state.remainder);
+    }
+    handleAddLabel = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data);
+        userServices.addLabel(data).then((res) => {
+            console.log(res, "done update");
+            this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
+            this.props.archive();
+            this.props.getRem();
+        })
+        this.setState({
+            dialogOpen: false,
+            labelMenu:false
+        })
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -154,7 +364,11 @@ class Remainder extends Component {
             id: this.state.docId,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.label
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         console.log(this.state.docId);
         userServices.binNotes(data);
@@ -163,6 +377,42 @@ class Remainder extends Component {
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.props.archive();
+        this.props.getRem();
+    }
+    removeRemainder = async () => {
+        await this.setState({
+            remainder: ""
+        })
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        console.log(this.state.docId);
+        userServices.binNotes(data);
+        userServices.updateLabel(data)
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
+    }
+    addMenuLabel = (event) => {
+        this.setState({
+            menuOpen: false,
+            menuanchorEl: false,
+            labelMenu: true,
+            labelAnchorEl: event.currentTarget
+        })
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -190,7 +440,7 @@ class Remainder extends Component {
                     })
                 }}
                     style={{
-                        width: "30%",
+                        width: this.state.cardWidth,
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
@@ -209,7 +459,7 @@ class Remainder extends Component {
                             <Typography>{this.state.content}</Typography>
                         </div>
                     </div>
-                    <div className="label_close" style={{
+                    {this.state.label !== "" ? <div className="label_close" style={{
                         backgroundColor: this.state.inputbcolor
                     }}>
                         <Typography>{this.state.label}</Typography>
@@ -218,14 +468,14 @@ class Remainder extends Component {
                                 <CloseIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
-                    </div>
+                    </div> : <div></div>}
                     <div className="label_close" style={{
                         backgroundColor: this.state.inputbcolor
                     }}>
                         <AccessAlarmIcon />
-                        <Typography>{this.state.label}</Typography>
-                        <Tooltip title="remove label">
-                            <IconButton onClick={this.removeLabel}>
+                        <Typography>{this.state.remainder}</Typography>
+                        <Tooltip title="remove remainder">
+                            <IconButton onClick={this.removeRemainder}>
                                 <CloseIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
@@ -295,11 +545,35 @@ class Remainder extends Component {
                                             }}
                                         />
                                     </div>
-                                    <div className="label_close" style={{
+                                    {this.state.label !== "" ? <div className="label_close" style={{
                                         backgroundColor: this.state.inputbcolor
                                     }}>
                                         <Typography>{this.state.label}</Typography>
                                         <Tooltip title="remove label">
+                                            <IconButton onClick={this.removeLabel}>
+                                                <CloseIcon fontSize="small" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </div> : <div></div>}
+                                    <div className="label_close" style={{
+                                        backgroundColor: this.state.inputbcolor
+                                    }}>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                flexDirection:"row"
+                                            }}
+                                            onClick={(event) => {
+                                            this.setState({
+                                                remOpen: true,
+                                                remAnchorEl: event.currentTarget
+                                            })
+                                        }}>
+                                            <AccessAlarmIcon />
+                                            <Typography>{this.state.remainder}</Typography>
+                                        </div>
+                                        <Tooltip title="remove remainder">
                                             <IconButton onClick={this.removeLabel}>
                                                 <CloseIcon fontSize="small" />
                                             </IconButton>
@@ -401,6 +675,43 @@ class Remainder extends Component {
                         </Menu>
                         <div className="more_menu">
                             <Menu
+                                open={this.state.remOpen}
+                                anchorEl={this.state.remAnchorEl}
+                                style={{
+                                    marginTop: "93px"
+                                }}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <MenuItem
+                                    style={{
+                                        backgroundColor: 'white'
+                                    }}
+                                >
+                                    <TextField
+                                        type="datetime-local"
+                                        value={this.state.remainder}
+                                        onChange={(event) => {
+                                            this.setState({
+                                                remainder: event.target.value
+                                            })
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                    <Button onClick={this.handleRemainder}>submit</Button>
+                                </MenuItem>
+                            </Menu>
+                        </div>
+                        <div className="more_menu">
+                            <Menu
                                 open={this.state.menuOpen}
                                 autoFocusItem={this.state.menuOpen}
                                 anchorEl={this.state.menuanchorEl}
@@ -417,6 +728,8 @@ class Remainder extends Component {
                                     horizontal: 'bottom',
                                 }}
                             >
+                                <MenuItem onClick={this.addMenuLabel}
+                                >Add Label</MenuItem>
                                 <MenuItem onClick={this.handleMenuClick}
                                 >Delete Note</MenuItem>
                                 <Divider />
@@ -425,6 +738,37 @@ class Remainder extends Component {
                                 <MenuItem>Show tick boxes</MenuItem>
                             </Menu>
                         </div>
+                        <Menu
+                            open={this.state.labelMenu}
+                            autoFocusItem={this.state.labelMenu}
+                            anchorEl={this.state.labelAnchorEl}
+                            anchorOrigin={{
+                                position: "bottom",
+                                vertical: 'bottom',
+                                horizontal: 'top',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'bottom',
+                            }}
+                        >
+                            <Typography>Label name</Typography>
+                            <TextField
+                                style={{
+                                    height: "8vh"
+                                }}
+                                variant="filled"
+                                value={this.state.noteLabel}
+                                onChange={(event) => {
+                                    this.setState({
+                                        noteLabel: event.target.value
+                                    })
+                                }}
+                            />
+                            <MenuItem onClick={this.handleAddLabel}>
+                                create : {this.state.noteLabel}
+                            </MenuItem>
+                        </Menu>
                     </MuiThemeProvider>
                 </div>
             )

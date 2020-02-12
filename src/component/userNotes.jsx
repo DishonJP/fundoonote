@@ -96,28 +96,13 @@ class UserNotes extends Component {
             archive: this.props.allNotes.data().archive,
             remAnchorEl: null,
             remOpen: false,
+            width: this.props.layout,
+            cardWidth:''
         }
     }
     handleRemainder = () => {
         let date = Date.now();
         let da = new Date(date);
-        let daata = "";
-        for (let i = 0; i < this.state.remainder.length; i++) {
-            if (i < 4) {
-                daata = daata + this.state.remainder[i];
-                if (i == 3) {
-                    console.log(daata);
-                    console.log(da.getFullYear());
-                    if (da.getFullYear() <= daata) {
-                        console.log("true");
-                    } else {
-                        
-                    }
-                }
-            }
-            if(i>4 && i<7){}
-            
-        }
         let data = {
             title: this.state.title,
             notes: this.state.content,
@@ -130,6 +115,146 @@ class UserNotes extends Component {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
+        let daata = "";
+        for (let i = 0; i < this.state.remainder.length; i++) {
+            if (i < 4) {
+                daata = daata + this.state.remainder[i];
+                if (i == 3) {
+                    console.log(daata);
+                    console.log(da.getFullYear());
+                    if (da.getFullYear() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else if (da.getFullYear() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad year");
+                    }
+                }
+            }
+            if (i > 4 && i < 7) {
+                daata += this.state.remainder[i];
+                if (i == 6) {
+                    if (da.getMonth() + 1 < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getMonth() + 1 == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad mon");
+                    }
+                }
+            }
+            if (i > 7 && i < 10) {
+                daata += this.state.remainder[i];
+                if (i == 9) {
+                    if (da.getDay() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getDay() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad Day");
+                    }
+                }
+            }
+            if (i > 10 && i < 13) {
+                daata += this.state.remainder[i];
+                if (i == 12) {
+                    if (da.getHours() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getHours() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad hour");
+                    }
+                }
+            }
+            if (i > 13 && i < this.state.remainder.length) {
+                daata += this.state.remainder[i];
+                if (i == (this.state.remainder.length - 1)) {
+                    if (da.getMinutes() < daata) {
+                        userServices.binNotes(data);
+                        userServices.updateLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else {
+                        console.log("bad min");
+                    }
+                }
+            }
+        }
+
         alert(this.state.remainder);
     }
     handleMenuClick = async () => {
@@ -143,17 +268,22 @@ class UserNotes extends Component {
             title: this.state.title,
             notes: this.state.content,
             trash: this.state.trash,
-            name: "Notes",
-            pin: this.state.pin
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         console.log(data.id, "doc id");
-
+        userServices.updateLabel(data)
         userServices.binNotes(data)
         this.props.get();
         this.props.bin();
         this.props.pin();
         this.props.label();
         this.props.archive();
+        this.props.getRem();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -202,6 +332,7 @@ class UserNotes extends Component {
             trash: this.state.trash,
             pin: this.state.pin,
             label: this.state.noteLabel,
+            archive:this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
@@ -249,8 +380,19 @@ class UserNotes extends Component {
             labelAnchorEl: event.currentTarget
         })
     }
+    componentDidMount() {
+        if (this.state.width) {
+            this.setState({
+                cardWidth:"40%"
+            })
+        } else {
+            this.setState({
+                cardWidth:"60%"
+            })
+        }
+    }
     render() {
-
+            
         let colorArr = colorArray.map(color => {
             return (
                 <IconButton
@@ -276,7 +418,7 @@ class UserNotes extends Component {
                     })
                 }}
                     style={{
-                        width: "30%",
+                        width: this.state.cardWidth,
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
@@ -369,7 +511,7 @@ class UserNotes extends Component {
                                                 <IconButton onClick={(event) => {
                                                     this.setState({
                                                         remOpen: true,
-                                                        remAnchorEl:event.currentTarget
+                                                        remAnchorEl: event.currentTarget
                                                     })
                                                 }}>
                                                     <AddAlertOutlinedIcon fontSize="small" />
@@ -495,7 +637,7 @@ class UserNotes extends Component {
                                 open={this.state.remOpen}
                                 anchorEl={this.state.remAnchorEl}
                                 style={{
-                                    marginTop:"93px"
+                                    marginTop: "93px"
                                 }}
                                 anchorOrigin={{
                                     vertical: 'top',
@@ -508,7 +650,7 @@ class UserNotes extends Component {
                             >
                                 <MenuItem
                                     style={{
-                                        backgroundColor:'white'
+                                        backgroundColor: 'white'
                                     }}
                                 >
                                     <TextField
@@ -516,15 +658,15 @@ class UserNotes extends Component {
                                         value={this.state.remainder}
                                         onChange={(event) => {
                                             this.setState({
-                                                remainder:event.target.value
+                                                remainder: event.target.value
                                             })
                                         }}
                                         InputLabelProps={{
                                             shrink: true,
-                                          }}
+                                        }}
                                     />
                                     <Button onClick={this.handleRemainder}>submit</Button>
-                                    </MenuItem>
+                                </MenuItem>
                             </Menu>
                         </div>
                         <Menu

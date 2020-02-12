@@ -123,7 +123,11 @@ async function binNotes(data) {
         title: data.title,
         notes: data.notes,
         pin: data.pin,
-        notelabel:data.label
+        notelabel: data.label,
+        archive: data.archive,
+        remainder: data.remainder,
+        backcolor: data.backcolor,
+        inputbcolor:data.inputbcolor
     }
     console.log(data.id,"id");
     await db.collection("Notes").doc(data.id).update(datas).then((res) => {
@@ -175,9 +179,31 @@ async function deleteNote(data) {
 async function deletelabel(data) {
     await db.collection("label").doc(data.id).delete().then((res)=>console.log("done deleting"))
 }
+async function updateLabel(data) {
+    console.log(data.label,data.title,data.notes,data.pin,data.trash,"label");
+    
+    let datas = {
+        curUser: fire.auth().currentUser.uid,
+        trash: data.trash,
+        title: data.title,
+        notes: data.notes,
+        pin: data.pin,
+        notelabel: data.label,
+        archive: data.archive,
+        remainder: data.remainder,
+        backcolor: data.backcolor,
+        inputbcolor:data.inputbcolor
+    }
+    console.log(data.id,"id");
+    await db.collection("label").doc(data.id).update(datas).then((res) => {
+       console.log(res,"how lol");
+    }).catch((err) => {
+       console.log(err,"oooh no");
+   })
+}
 export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,getUserData,binNotes,deleteNote,addLabel,getLabel,deletelabel,getUserDetails
+    addNote,getNote,getUserData,binNotes,deleteNote,addLabel,getLabel,deletelabel,getUserDetails,updateLabel
 }

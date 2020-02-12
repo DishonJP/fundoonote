@@ -89,7 +89,20 @@ class Archive extends React.Component {
             backcolor: this.props.archiveNotes.data().backcolor,
             inputbcolor: this.props.archiveNotes.data().inputbcolor,
             docId: this.props.archiveNotes.id,
-            pin:this.props.archiveNotes.data().pin
+            pin: this.props.archiveNotes.data().pin,
+            width: this.props.layout,
+            cardWidth:""
+        }
+    }
+    componentDidMount() {
+        if (this.state.width) {
+            this.setState({
+                cardWidth:"40%"
+            })
+        } else {
+            this.setState({
+                cardWidth:"60%"
+            })
         }
     }
     validation =() => {
@@ -118,14 +131,23 @@ class Archive extends React.Component {
             title: this.state.title,
             notes: this.state.content,
             trash: this.state.trash,
-            name: "Archive",
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
             backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor,
-            pin:this.state.pin
+            inputbcolor: this.state.inputbcolor
         }
-        console.log(data.name, "data name");
+        console.log(data.id, "doc id");
+
         userServices.binNotes(data)
-        this.props.bin()
+        userServices.updateLabel(data)
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -161,7 +183,7 @@ class Archive extends React.Component {
                     })
                 }}
                     style={{
-                        width: "30%",
+                        width: this.state.cardWidth,
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",

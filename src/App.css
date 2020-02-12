@@ -237,7 +237,7 @@
 /* ========================================Home Page======================================= */
 
 .appbar_decor{
-  background-color: peachpuff;
+  background-color: #41b3a3;
   height:10vh;
   display: flex;
   justify-content: space-between;
@@ -429,13 +429,16 @@ margin-top: 40px;
 }
 .label_close{
   display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  flex-direction: column;
   padding: 1px;
   border: 1px solid grey;
-  justify-content:stretch;
+  justify-content:center;
   align-items: center;
   margin-top: 10px;
   height: 20px;
-  width: 90px;
+  width: auto;
   border-radius:5px;
   margin-left: 5px;
 }

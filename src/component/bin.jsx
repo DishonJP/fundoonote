@@ -83,7 +83,20 @@ class Bin extends React.Component {
             backcolor: "",
             inputbcolor: "lightgray",
             trash: this.props.binNotes.data().trash,
-            docId: this.props.binNotes.id
+            docId: this.props.binNotes.id,
+            width:this.props.layout,
+            cardWidth:""
+        }
+    }
+    componentDidMount() {
+        if (this.state.width) {
+            this.setState({
+                cardWidth:"40%"
+            })
+        } else {
+            this.setState({
+                cardWidth:"60%"
+            })
         }
     }
     handleOnClick = (event) => {
@@ -140,7 +153,7 @@ class Bin extends React.Component {
                     })
                 }}
                     style={{
-                        width: "30%",
+                        width: this.state.cardWidth,
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",

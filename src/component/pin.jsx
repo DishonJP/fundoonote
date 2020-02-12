@@ -89,7 +89,50 @@ class Pin extends Component {
             backcolor: this.props.pinNotes.data().backcolor,
             inputbcolor: this.props.pinNotes.data().inputbcolor,
             docId: this.props.pinNotes.id,
-            notelabel: this.props.pinNotes.data().notelabel
+            notelabel: this.props.pinNotes.data().notelabel,
+            archive: this.props.pinNotes.data().archive,
+            remainder:this.props.pinNotes.data().remainder,
+            width: this.props.layout,
+            cardWidth:""
+        }
+    }
+    handleMenuClick = async () => {
+        await this.setState({
+            trash: true,
+            dialogOpen: false,
+            menuOpen: false,
+        })
+        let data = {
+            id: this.state.docId,
+            title: this.state.title,
+            notes: this.state.content,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        console.log(data.id, "doc id");
+        userServices.updateLabel(data)
+        userServices.binNotes(data)
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
+    }
+    componentDidMount() {
+        if (this.state.width) {
+            this.setState({
+                cardWidth:"40%"
+            })
+        } else {
+            this.setState({
+                cardWidth:"60%"
+            })
         }
     }
     validation = () => {
@@ -108,42 +151,29 @@ class Pin extends Component {
             })
             
     }
-    handleMenuClick = async () => {
-        await this.setState({
-            trash: true,
-            dialogOpen: false,
-            menuOpen: false,
-        })
-        let data = {
-            id: this.state.docId,
-            title: this.state.title,
-            notes: this.state.content,
-            trash: this.state.trash,
-            name: "Archive",
-            backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor
-        }
-        console.log(data.name, "data name");
-        userServices.binNotes(data)
-        
-    }
     handlePin = async () => {
         await this.setState({
             pin: false
         })
         const data = {
+            id: this.state.docId,
             title: this.state.title,
             notes: this.state.content,
-            id: this.state.docId,
             trash: this.state.trash,
-            pin:this.state.pin,
-            label:this.state.notelabel
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
+            userServices.updateLabel(data)
             this.props.pin();
             this.props.bin();
             this.props.get();
+            this.props.getRem();
         })
             .catch((err) => {
                 console.log(err);
@@ -182,7 +212,7 @@ class Pin extends Component {
                     })
                 }}
                     style={{
-                        width: "30%",
+                        width: this.state.cardWidth,
                         height: "auto%",
                         borderRadius: "10px",
                         border: "1px solid lightgray",

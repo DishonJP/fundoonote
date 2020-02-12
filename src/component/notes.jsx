@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, MuiThemeProvider, createMuiTheme, Divider } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, Tooltip,TextField,Typography, Menu, MenuItem, MuiThemeProvider, createMuiTheme, Divider } from '@material-ui/core'
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import BrushIcon from '@material-ui/icons/Brush';
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
@@ -92,10 +92,231 @@ class Notes extends Component {
             archive: false,
             pin: false,
             remainder: "",
-            notelabel: ''
+            notelabel: '',
+            labelMenu: false,
+            labelAnchorEl: null,
+            remOpen: false,
+            remAnchorEl: null,
+            trash:false
         }
     }
+    handlePin = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive:this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.addNote(data).then((res) => {
+            console.log(res, "done update");
 
+        })
+            .catch((err) => {
+                console.log(err);
+            })
+        userServices.addLabel(data);
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
+    }
+    handleRemainder = () => {
+        let date = Date.now();
+        let da = new Date(date);
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        let daata = "";
+        for (let i = 0; i < this.state.remainder.length; i++) {
+            if (i < 4) {
+                daata = daata + this.state.remainder[i];
+                if (i == 3) {
+                    console.log(daata);
+                    console.log(da.getFullYear());
+                    if (da.getFullYear() < daata) {
+                        userServices.addNote(data);
+                        userServices.addLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else if (da.getFullYear() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad year");
+                    }
+                }
+            }
+            if (i > 4 && i < 7) {
+                daata += this.state.remainder[i];
+                if (i == 6) {
+                    if (da.getMonth() + 1 < daata) {
+                        userServices.addNote(data);
+                        userServices.addLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getMonth() + 1 == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad mon");
+                    }
+                }
+            }
+            if (i > 7 && i < 10) {
+                daata += this.state.remainder[i];
+                if (i == 9) {
+                    if (da.getDay() < daata) {
+                        userServices.addNote(data);
+                        userServices.addLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getDay() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad Day");
+                    }
+                }
+            }
+            if (i > 10 && i < 13) {
+                daata += this.state.remainder[i];
+                if (i == 12) {
+                    if (da.getHours() < daata) {
+                        userServices.addNote(data);
+                        userServices.addLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getHours() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad hour");
+                    }
+                }
+            }
+            if (i > 13 && i < this.state.remainder.length) {
+                daata += this.state.remainder[i];
+                if (i == (this.state.remainder.length - 1)) {
+                    if (da.getMinutes() < daata) {
+                        userServices.addNote(data);
+                        userServices.addLabel(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else {
+                        console.log("bad min");
+                    }
+                }
+            }
+        }
+
+        alert(this.state.remainder);
+    }
+    handleAddLabel = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.addNote(data);
+        userServices.addLabel(data).then((res) => {
+            console.log(res, "done update");
+            this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
+            this.props.archive();
+            this.props.getRem();
+        })
+    }
+    handleClickLabel = (event) => {
+        this.setState({
+            menuOpen: false,
+            menuanchorEl: null,
+            labelMenu: true,
+            labelAnchorEl: event.currentTarget
+        })
+    }
     handleOnClick = (event) => {
         event.preventDefault();
         this.setState({
@@ -110,32 +331,34 @@ class Notes extends Component {
             cardanchorEl: event.currentTarget
         })
     }
-
-
     validation = () => {
         if (this.state.title !== '') {
             const data = {
-                title: this.state.title,
-                notes: this.state.content,
-                trash: false,
-                backcolor: this.state.backcolor,
-                inputbcolor: this.state.inputbcolor,
-                archive: this.state.archive,
-                pin: this.state.pin,
-                remainder: this.state.remainder,
-                notelabel: this.state.notelabel
+                    title: this.state.title,
+                    notes: this.state.content,
+                    id: this.state.docId,
+                    trash: this.state.trash,
+                    pin: this.state.pin,
+                    label: this.state.notelabel,
+                    archive:this.state.archive,
+                    remainder: this.state.remainder,
+                    backcolor: this.state.backcolor,
+                    inputbcolor: this.state.inputbcolor
             }
             userServices.addNote(data).then((res) => {
                 console.log(res, "ajhskdjhaksdh211342455");
-                
+
             })
                 .catch((err) => {
                     console.log(err);
                 })
-                this.props.change();
-                this.props.pin();
-                this.props.bin();
-                this.props.get();
+            userServices.addLabel(data)
+            this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
+            this.props.archive();
+            this.props.getRem();
         }
         this.setState({
             title: "",
@@ -157,11 +380,14 @@ class Notes extends Component {
         }
         userServices.addNote(data).then((res) => {
             console.log("done");
-            this.props.change();
-            this.props.pin();
-            this.props.bin();
             this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
+            this.props.archive();
+            this.props.getRem();
         })
+        userServices.addLabel(data)
         this.setState({
             title: "",
             content: '',
@@ -264,7 +490,12 @@ class Notes extends Component {
                                         placeholder="Title"
                                     />
                                     <Tooltip title="Pin it">
-                                        <IconButton>
+                                        <IconButton onClick={async () => {
+                                                await this.setState({
+                                                    pin: true
+                                                });
+                                                this.handlePin()
+                                            }}>
                                             <PinDropOutlinedIcon
                                                 fontSize="small" />
                                         </IconButton>
@@ -293,7 +524,12 @@ class Notes extends Component {
                                 <div className="arrange">
                                     <div className="icon_arrange">
                                         <Tooltip title="Add remainder">
-                                            <IconButton>
+                                            <IconButton onClick={(event) => {
+                                                    this.setState({
+                                                        remOpen: true,
+                                                        remAnchorEl: event.currentTarget
+                                                    })
+                                                }}>
                                                 <AddAlertOutlinedIcon fontSize="small" />
                                             </IconButton>
                                         </Tooltip>
@@ -400,13 +636,81 @@ class Notes extends Component {
                                     horizontal: 'bottom',
                                 }}
                             >
-                                <MenuItem>Add Label</MenuItem>
+                                <MenuItem onClick={this.handleClickLabel}>Add Label</MenuItem>
                                 <Divider />
                                 <MenuItem>Add Drawing</MenuItem>
                                 <Divider />
                                 <MenuItem>Show tick boxes</MenuItem>
                             </Menu>
                         </div>
+                        <div className="more_menu">
+                            <Menu
+                                open={this.state.remOpen}
+                                anchorEl={this.state.remAnchorEl}
+                                style={{
+                                    marginTop: "93px"
+                                }}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <MenuItem
+                                    style={{
+                                        backgroundColor: 'white'
+                                    }}
+                                >
+                                    <TextField
+                                        type="datetime-local"
+                                        value={this.state.remainder}
+                                        onChange={(event) => {
+                                            this.setState({
+                                                remainder: event.target.value
+                                            })
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                    <Button onClick={this.handleRemainder}>submit</Button>
+                                </MenuItem>
+                            </Menu>
+                        </div>
+                        <Menu
+                            open={this.state.labelMenu}
+                            autoFocusItem={this.state.labelMenu}
+                            anchorEl={this.state.labelAnchorEl}
+                            anchorOrigin={{
+                                position: "bottom",
+                                vertical: 'bottom',
+                                horizontal: 'top',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'bottom',
+                            }}
+                        >
+                            <Typography>Label name</Typography>
+                            <TextField
+                                style={{
+                                    height: "8vh"
+                                }}
+                                variant="filled"
+                                value={this.state.notelabel}
+                                onChange={(event) => {
+                                    this.setState({
+                                        notelabel: event.target.value
+                                    })
+                                }}
+                            />
+                            <MenuItem onClick={this.handleAddLabel}>
+                                create : {this.state.notelabel}
+                            </MenuItem>
+                        </Menu>
                     </MuiThemeProvider>
 
                 </div>

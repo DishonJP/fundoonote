@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Car
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
-import notes from '../assets/notes.png'
+import notes from '../assets/keep.png'
 import Drawers from '../component/drawer'
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconChange from './iconChange';
@@ -164,6 +164,7 @@ class Home extends Component {
         this.binNote();
         this.pinNote();
         this.getLabel();
+        this.getRemainder();
         this.changeDrawerName();
     }
     render() {
@@ -173,13 +174,13 @@ class Home extends Component {
         let notesObj = this.state.allNotes.map(arrNotes => {
             console.log(arrNotes.data().trash, arrNotes.data().archive, "all notes");
 
-            if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '') {
+            if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '' && arrNotes.data().remainder==="") {
                 return (
-                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList}/>
+                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close}/>
                 )
-            } else if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel!=='') {
+            } else if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel!=='' && arrNotes.data().remainder==="") {
                 return (
-                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel}/>
+                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} layout={this.state.close}/>
                 )
             }
         })
@@ -187,7 +188,7 @@ class Home extends Component {
             console.log(arrNotes, "title");
             if (arrNotes.data().trash === false && arrNotes.data().archive === true && arrNotes.data().pin === false) {
                 return (
-                    <Archive archiveNotes={arrNotes} change={this.getArchive} bin={this.binNote} />
+                    <Archive archiveNotes={arrNotes} change={this.getArchive} bin={this.binNote} getRem={this.getRemainder} layout={this.state.close}/>
                 )
             }
         })
@@ -196,7 +197,7 @@ class Home extends Component {
 
             if (arrNotes.data().trash) {
                 return (
-                    <Bin binNotes={arrNotes} />
+                    <Bin binNotes={arrNotes} layout={this.state.close}/>
                 )
             }
         })
@@ -206,31 +207,28 @@ class Home extends Component {
             if (arrNotes.data().trash === false && arrNotes.data().pin === true) {
                 count++;
                 return (
-                    <Pin pinNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} />
+                    <Pin pinNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close}/>
                 )
             }
         })
         let labelObj = this.state.labelNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
 
-            if (arrNotes.data().notelabel && this.state.panalChange === arrNotes.data().notelabel) {
-                count++;
+            if (arrNotes.data().notelabel && this.state.panalChange === arrNotes.data().notelabel && arrNotes.data().remainder==="") {
+               
                 console.log(this.state.panalChange, "name panel");
 
                 return (
-                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} />
+                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close}/>
                 )
             }
         })
         let remObj = this.state.remNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
-
             if (arrNotes.data().remainder!=="") {
-                count++;
                 console.log(this.state.panalChange, "name panel");
-
                 return (
-                    <Remainder remNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} />
+                    <Remainder remNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close}/>
                 )
             }
         })
@@ -373,7 +371,7 @@ class Home extends Component {
                         {this.state.panalChange === "Notes" ?
                             <div>
                                 <div className="notesComponent">
-                                    <Notes change={this.getArchive} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel}  />
+                                    <Notes pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} archive={this.getArchive} layout={this.state.close} />
                                 </div>
                                 {count > 0 ?
                                     <span className="pinText">pinned</span> : <div></div>
