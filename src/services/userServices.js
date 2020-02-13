@@ -6,13 +6,17 @@ import service from '../services/constant'
 const db = firebase.firestore();
 async function userRegistration(data) {
     try {
+        
+        console.log(data);
+        
+        const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password);
         const datas = {
+            curUser:response.user.uid,
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
             password: data.password
         }
-        const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password);
         db.collection("users").doc(response.user.uid).set(datas);
         return response
     } catch (err) {
@@ -38,7 +42,10 @@ async function userLogin(data) {
             let token =await jwt.sign(userData, service.firebaseAuthorization.currentUser.uid, {
                 expiresIn:1440
             })
-            let tokenSet = localStorage.setItem('usertoken', token)
+            let tokenSet = localStorage.setItem('usertoken', token);
+            localStorage.setItem("firstName", userData.fname);
+            localStorage.setItem("lastName", userData.lname);
+            localStorage.setItem("email",userData.email)
         })
         return response
     } catch (err) {
@@ -64,17 +71,6 @@ async function emailVerify(data) {
         return error;
     }
 }
-async function getUserDetails() {
-    try {
-        let getToken = localStorage.getItem("usertoken");
-        let data = jwt_decode(getToken)
-        await db.collection('users').doc(data.userId).get().then((res) => {
-            return res
-        })
-    } catch (error) {
-        return error
-    }
-}
 async function addNote(data) {
     try {
         const datas={
@@ -87,7 +83,7 @@ async function addNote(data) {
                 archive: data.archive,
                 pin: data.pin,
                 remainder: data.remainder,
-                notelabel: data.notelabel
+                notelabel: data.label
         }
         const response = await db.collection("Notes").doc().set(datas);
         return response;
@@ -109,10 +105,6 @@ async function getNote() {
     } catch (error) {
         return error
     }
-}
-async function getUserData() {
-    let data = localStorage.getItem("users");
-    return data;
 }
 async function binNotes(data) {
     console.log(data.label,data.title,data.notes,data.pin,data.trash,"label");
@@ -205,5 +197,5 @@ export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,getUserData,binNotes,deleteNote,addLabel,getLabel,deletelabel,getUserDetails,updateLabel
+    addNote,getNote,binNotes,deleteNote,addLabel,getLabel,deletelabel,updateLabel
 }

@@ -235,12 +235,19 @@
 }
 
 /* ========================================Home Page======================================= */
-
+.uName_style{
+  margin-top: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .appbar_decor{
-  background-color: #41b3a3;
+  background-color: #FFFFE0;
   height:10vh;
   display: flex;
   justify-content: space-between;
+  box-shadow: 0px 0px 10px;
   flex-direction: row;
   align-items: center;
 }
@@ -263,12 +270,12 @@
 }
 .search_icon{
   display: flex;
-  width: -webkit-fill-available;
+  width: 650px;
   height: 7vh;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: gainsboro;
   border: 2px solid gray;
   margin-left: 10px;
   border-radius: 5px;
@@ -277,7 +284,7 @@
 }
 .img_decor{
   margin-left: 10px;
-  height: 8vh;
+  height: 6vh;
 }
 .img_place{
   display: flex;
@@ -364,6 +371,8 @@ margin-top: 40px;
 .title_pin1{
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   margin-left: 5px;
 }
 .button_place{
@@ -375,7 +384,7 @@ margin-top: 40px;
 }
 .arrange{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .more_menu{
   display: flex;

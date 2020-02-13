@@ -127,6 +127,26 @@ class Notes extends Component {
         this.props.label();
         this.props.archive();
         this.props.getRem();
+        this.setState({
+            change: true,
+            title: "",
+            content: "",
+            cardOpen: false,
+            cardanchorEl: null,
+            menuOpen: false,
+            menuanchorEl: null,
+            backcolor: "white",
+            inputbcolor: "lightgray",
+            archive: false,
+            pin: false,
+            remainder: "",
+            notelabel: '',
+            labelMenu: false,
+            labelAnchorEl: null,
+            remOpen: false,
+            remAnchorEl: null,
+            trash:false
+        })
     }
     handleRemainder = () => {
         let date = Date.now();
@@ -160,9 +180,24 @@ class Notes extends Component {
                         this.props.archive();
                         this.props.getRem();
                         this.setState({
-                            remAnchorEl: null,
-                            dialogOpen: false,
+                            change: true,
+                            title: "",
+                            content: "",
+                            cardOpen: false,
+                            cardanchorEl: null,
+                            menuOpen: false,
+                            menuanchorEl: null,
+                            backcolor: "white",
+                            inputbcolor: "lightgray",
+                            archive: false,
+                            pin: false,
+                            remainder: "",
+                            notelabel: '',
+                            labelMenu: false,
+                            labelAnchorEl: null,
                             remOpen: false,
+                            remAnchorEl: null,
+                            trash:false
                         })
                         break;
                     } else if (da.getFullYear() == daata) {
@@ -187,9 +222,24 @@ class Notes extends Component {
                         this.props.archive();
                         this.props.getRem();
                         this.setState({
-                            remAnchorEl: null,
-                            dialogOpen: false,
+                            change: true,
+                            title: "",
+                            content: "",
+                            cardOpen: false,
+                            cardanchorEl: null,
+                            menuOpen: false,
+                            menuanchorEl: null,
+                            backcolor: "white",
+                            inputbcolor: "lightgray",
+                            archive: false,
+                            pin: false,
+                            remainder: "",
+                            notelabel: '',
+                            labelMenu: false,
+                            labelAnchorEl: null,
                             remOpen: false,
+                            remAnchorEl: null,
+                            trash:false
                         })
                         break;
                     }
@@ -215,9 +265,24 @@ class Notes extends Component {
                         this.props.archive();
                         this.props.getRem();
                         this.setState({
-                            remAnchorEl: null,
-                            dialogOpen: false,
+                            change: true,
+                            title: "",
+                            content: "",
+                            cardOpen: false,
+                            cardanchorEl: null,
+                            menuOpen: false,
+                            menuanchorEl: null,
+                            backcolor: "white",
+                            inputbcolor: "lightgray",
+                            archive: false,
+                            pin: false,
+                            remainder: "",
+                            notelabel: '',
+                            labelMenu: false,
+                            labelAnchorEl: null,
                             remOpen: false,
+                            remAnchorEl: null,
+                            trash:false
                         })
                         break;
                     }
@@ -243,9 +308,24 @@ class Notes extends Component {
                         this.props.archive();
                         this.props.getRem();
                         this.setState({
-                            remAnchorEl: null,
-                            dialogOpen: false,
+                            change: true,
+                            title: "",
+                            content: "",
+                            cardOpen: false,
+                            cardanchorEl: null,
+                            menuOpen: false,
+                            menuanchorEl: null,
+                            backcolor: "white",
+                            inputbcolor: "lightgray",
+                            archive: false,
+                            pin: false,
+                            remainder: "",
+                            notelabel: '',
+                            labelMenu: false,
+                            labelAnchorEl: null,
                             remOpen: false,
+                            remAnchorEl: null,
+                            trash:false
                         })
                         break;
                     }
@@ -271,9 +351,24 @@ class Notes extends Component {
                         this.props.archive();
                         this.props.getRem();
                         this.setState({
-                            remAnchorEl: null,
-                            dialogOpen: false,
+                            change: true,
+                            title: "",
+                            content: "",
+                            cardOpen: false,
+                            cardanchorEl: null,
+                            menuOpen: false,
+                            menuanchorEl: null,
+                            backcolor: "white",
+                            inputbcolor: "lightgray",
+                            archive: false,
+                            pin: false,
+                            remainder: "",
+                            notelabel: '',
+                            labelMenu: false,
+                            labelAnchorEl: null,
                             remOpen: false,
+                            remAnchorEl: null,
+                            trash:false
                         })
                         break;
                     } else {
@@ -307,6 +402,26 @@ class Notes extends Component {
             this.props.label();
             this.props.archive();
             this.props.getRem();
+        })
+        this.setState({
+            change: true,
+            title: "",
+            content: "",
+            cardOpen: false,
+            cardanchorEl: null,
+            menuOpen: false,
+            menuanchorEl: null,
+            backcolor: "white",
+            inputbcolor: "lightgray",
+            archive: false,
+            pin: false,
+            remainder: "",
+            notelabel: '',
+            labelMenu: false,
+            labelAnchorEl: null,
+            remOpen: false,
+            remAnchorEl: null,
+            trash:false
         })
     }
     handleClickLabel = (event) => {
@@ -361,9 +476,24 @@ class Notes extends Component {
             this.props.getRem();
         }
         this.setState({
+            change: true,
             title: "",
-            content: '',
-            change: true
+            content: "",
+            cardOpen: false,
+            cardanchorEl: null,
+            menuOpen: false,
+            menuanchorEl: null,
+            backcolor: "white",
+            inputbcolor: "lightgray",
+            archive: false,
+            pin: false,
+            remainder: "",
+            notelabel: '',
+            labelMenu: false,
+            labelAnchorEl: null,
+            remOpen: false,
+            remAnchorEl: null,
+            trash:false
         })
     }
     handleArchive = () => {
@@ -389,9 +519,24 @@ class Notes extends Component {
         })
         userServices.addLabel(data)
         this.setState({
+            change: true,
             title: "",
-            content: '',
-            change: true
+            content: "",
+            cardOpen: false,
+            cardanchorEl: null,
+            menuOpen: false,
+            menuanchorEl: null,
+            backcolor: "white",
+            inputbcolor: "lightgray",
+            archive: false,
+            pin: false,
+            remainder: "",
+            notelabel: '',
+            labelMenu: false,
+            labelAnchorEl: null,
+            remOpen: false,
+            remAnchorEl: null,
+            trash:false
         })
     }
     render() {
@@ -428,6 +573,7 @@ class Notes extends Component {
                         >
                             <div className="note_decor">
                                 <InputBase
+                                    multiline
                                     onClick={() => {
                                         this.setState({
                                             change: false

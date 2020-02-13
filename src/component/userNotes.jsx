@@ -18,7 +18,12 @@ const theme = createMuiTheme({
         MuiList: {
             padding: {
                 paddingTop: "0px",
-                paddingBottom: "0px"
+                paddingBottom: "0px",
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                width: "100px",
+                height: "auto",
             }
         }
     }
@@ -97,8 +102,39 @@ class UserNotes extends Component {
             remAnchorEl: null,
             remOpen: false,
             width: this.props.layout,
-            cardWidth:''
+            cardWidth: '',
+            displayIcon: false
         }
+    }
+    handleArchive = () => {
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: true,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data).then((res) => {
+            console.log("done");
+
+        })
+        if (this.state.noteLabel !== "") {
+            userServices.updateLabel(data)
+        }
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
+        this.setState({
+            dialogOpen: false
+        })
     }
     handleRemainder = () => {
         let date = Date.now();
@@ -124,7 +160,9 @@ class UserNotes extends Component {
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
-                        userServices.updateLabel(data);
+                        if (this.state.noteLabel !== "") {
+                            userServices.updateLabel(data)
+                        }
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -151,7 +189,9 @@ class UserNotes extends Component {
                 if (i == 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
-                        userServices.updateLabel(data);
+                        if (this.state.noteLabel !== "") {
+                            userServices.updateLabel(data)
+                        }
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -179,7 +219,9 @@ class UserNotes extends Component {
                 if (i == 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-                        userServices.updateLabel(data);
+                        if (this.state.noteLabel !== "") {
+                            userServices.updateLabel(data)
+                        }
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -207,7 +249,9 @@ class UserNotes extends Component {
                 if (i == 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-                        userServices.updateLabel(data);
+                        if (this.state.noteLabel !== "") {
+                            userServices.updateLabel(data)
+                        }
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -235,7 +279,9 @@ class UserNotes extends Component {
                 if (i == (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-                        userServices.updateLabel(data);
+                        if (this.state.noteLabel !== "") {
+                            userServices.updateLabel(data)
+                        }
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -276,7 +322,9 @@ class UserNotes extends Component {
             inputbcolor: this.state.inputbcolor
         }
         console.log(data.id, "doc id");
-        userServices.updateLabel(data)
+        if (this.state.noteLabel !== "") {
+            userServices.updateLabel(data)
+        }
         userServices.binNotes(data)
         this.props.get();
         this.props.bin();
@@ -312,6 +360,9 @@ class UserNotes extends Component {
             .catch((err) => {
                 console.log(err);
             })
+        if (this.state.noteLabel !== "") {
+            userServices.updateLabel(data)
+        }
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -332,7 +383,7 @@ class UserNotes extends Component {
             trash: this.state.trash,
             pin: this.state.pin,
             label: this.state.noteLabel,
-            archive:this.state.archive,
+            archive: this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
@@ -383,16 +434,16 @@ class UserNotes extends Component {
     componentDidMount() {
         if (this.state.width) {
             this.setState({
-                cardWidth:"40%"
+                cardWidth: "40%"
             })
         } else {
             this.setState({
-                cardWidth:"60%"
+                cardWidth: "60%"
             })
         }
     }
     render() {
-            
+
         let colorArr = colorArray.map(color => {
             return (
                 <IconButton
@@ -403,7 +454,7 @@ class UserNotes extends Component {
                         })
                     }}
                     style={{
-                        backgroundColor: color.colors
+                        backgroundColor: color.colors,
                     }}
                 >
                 </IconButton>
@@ -411,31 +462,236 @@ class UserNotes extends Component {
         })
         if (this.state.change) {
             return (
-                <Card onClick={() => {
-                    this.setState({
-                        change: false,
-                        dialogOpen: true
-                    })
-                }}
-                    style={{
-                        width: this.state.cardWidth,
-                        height: "auto%",
-                        borderRadius: "10px",
-                        border: "1px solid lightgray",
-                        backgroundColor: this.state.inputbcolor,
-                        margin: "2%",
-                        flexWrap: "nowrap",
-                        padding: "10px"
-                    }}>
-                    <div>
-                        <div className="title_pin1">
-                            <Typography variant="h5">{this.state.title}</Typography>
+                <MuiThemeProvider>
+                    <Card
+                        onMouseEnter={() => {
+                            this.setState({
+                                displayIcon: true
+                            })
+                        }}
+                        onMouseLeave={() => {
+                            this.setState({
+                                displayIcon: false
+                            })
+                        }}
+                        style={{
+                            width: this.state.cardWidth,
+                            minHeight: "20vh",
+                            height: "auto%",
+                            borderRadius: "10px",
+                            border: "1px solid lightgray",
+                            backgroundColor: this.state.inputbcolor,
+                            margin: "2%",
+                            flexWrap: "nowrap",
+                            padding: "10px"
+                        }}>
+                        <div>
+                            <div onClick={() => {
+                                this.setState({
+                                    change: false,
+                                    dialogOpen: true
+                                })
+                            }}
+                                className="title_pin1">
+                                <Typography variant="h5">{this.state.title}</Typography>
+                                {this.state.displayIcon ? <Tooltip title="Pin it">
+                                    <IconButton onClick={async () => {
+                                        await this.setState({
+                                            pin: true
+                                        });
+                                        this.handlePin()
+                                    }}>
+                                        <PinDropOutlinedIcon
+                                            fontSize="small" />
+                                    </IconButton>
+                                </Tooltip> : <div></div>}
+                            </div>
+                            <div onClick={() => {
+                                this.setState({
+                                    change: false,
+                                    dialogOpen: true
+                                })
+                            }}
+                                className="title_pin">
+                                <InputBase
+                                    fullWidth
+                                    multiline
+                                    readOnly={true}
+                                    value={this.state.content}
+                                ></InputBase>
+                            </div>
+                            {this.state.displayIcon ? <div className="arrange">
+                                <div className="icon_arrange">
+                                    <Tooltip title="Add remainder">
+                                        <IconButton onClick={(event) => {
+                                            this.setState({
+                                                remOpen: true,
+                                                remAnchorEl: event.currentTarget
+                                            })
+                                        }}>
+                                            <AddAlertOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Collaborator">
+                                        <IconButton >
+                                            <PersonAddOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Change color" >
+                                        <IconButton onClick={this.handleOnClick}>
+                                            <ColorLensOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Insert Photo">
+                                        <IconButton>
+                                            <InsertPhotoOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Archive">
+                                        <IconButton onClick={this.handleArchive}>
+                                            <ArchiveOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="More">
+                                        <IconButton
+                                            onClick={(event) => {
+                                                this.setState({
+                                                    menuanchorEl: event.currentTarget,
+                                                    menuOpen: true
+                                                })
+                                            }}
+                                        >
+                                            <MoreVertOutlinedIcon fontSize="small" />
+                                        </IconButton>
+                                    </Tooltip>
+
+                                </div>
+                            </div> : <div></div>}
+                            <Menu
+                                open={this.state.cardOpen}
+                                anchorEl={this.state.cardanchorEl}
+                                style={{
+                                    padding: "0px 0px 0px 0px"
+                                }}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                onClick={() => {
+                                    this.setState({
+                                        cardOpen: false,
+                                        cardanchorEl: null
+                                    })
+                                }}
+                            >
+                                <div >
+                                    {colorArr}
+                                </div>
+                            </Menu>
+                            <div className="more_menu">
+                                <Menu
+                                    open={this.state.menuOpen}
+                                    autoFocusItem={this.state.menuOpen}
+                                    anchorEl={this.state.menuanchorEl}
+                                    style={{
+                                        padding: "15px"
+                                    }}
+                                    anchorOrigin={{
+                                        position: "bottom",
+                                        vertical: 'bottom',
+                                        horizontal: 'top',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'bottom',
+                                    }}
+                                >
+                                    <MenuItem onClick={this.handleClickLabel}>Add Label</MenuItem>
+                                    <Divider />
+                                    <MenuItem onClick={this.handleMenuClick}
+                                    >Delete Note</MenuItem>
+                                    <Divider />
+                                    <MenuItem>Add Drawing</MenuItem>
+                                    <Divider />
+                                    <MenuItem>Show tick boxes</MenuItem>
+                                </Menu>
+                            </div>
+                            <div className="more_menu">
+                                <Menu
+                                    open={this.state.remOpen}
+                                    anchorEl={this.state.remAnchorEl}
+                                    style={{
+                                        marginTop: "93px"
+                                    }}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'center',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
+                                    }}
+                                >
+                                    <MenuItem
+                                        style={{
+                                            backgroundColor: 'white'
+                                        }}
+                                    >
+                                        <TextField
+                                            type="datetime-local"
+                                            value={this.state.remainder}
+                                            onChange={(event) => {
+                                                this.setState({
+                                                    remainder: event.target.value
+                                                })
+                                            }}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                        <Button onClick={this.handleRemainder}>submit</Button>
+                                    </MenuItem>
+                                </Menu>
+                            </div>
+                            <Menu
+                                open={this.state.labelMenu}
+                                autoFocusItem={this.state.labelMenu}
+                                anchorEl={this.state.labelAnchorEl}
+                                anchorOrigin={{
+                                    position: "bottom",
+                                    vertical: 'bottom',
+                                    horizontal: 'top',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'bottom',
+                                }}
+                            >
+                                <Typography>Label name</Typography>
+                                <TextField
+                                    style={{
+                                        height: "8vh"
+                                    }}
+                                    variant="filled"
+                                    value={this.state.noteLabel}
+                                    onChange={(event) => {
+                                        this.setState({
+                                            noteLabel: event.target.value
+                                        })
+                                    }}
+                                />
+                                <MenuItem onClick={this.handleAddLabel}>
+                                    create : {this.state.noteLabel}
+                                </MenuItem>
+                            </Menu>
                         </div>
-                        <div className="title_pin">
-                            <Typography>{this.state.content}</Typography>
-                        </div>
-                    </div>
-                </Card>
+                    </Card>
+                </MuiThemeProvider>
+
             )
         }
         else {
@@ -533,7 +789,7 @@ class UserNotes extends Component {
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Archive">
-                                                <IconButton>
+                                                <IconButton onClick={this.handleArchive}>
                                                     <ArchiveOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
@@ -600,7 +856,7 @@ class UserNotes extends Component {
                                 })
                             }}
                         >
-                            <div className="clrow_one">
+                            <div>
                                 {colorArr}
                             </div>
                         </Menu>
