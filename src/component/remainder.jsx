@@ -100,7 +100,8 @@ class Remainder extends Component {
             labelMenu: false,
             labelAnchorEl: null,
             width: this.props.layout,
-            cardWidth: ""
+            cardWidth: "",
+            border:"none"
         }
     }
     componentDidMount() {
@@ -121,7 +122,7 @@ class Remainder extends Component {
             notes: this.state.content,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.noteLabel,
+            label: this.state.label,
             archive: this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
@@ -134,9 +135,6 @@ class Remainder extends Component {
             .catch((err) => {
                 console.log(err);
             })
-        if (data.label!=="") {
-            userServices.updateLabel(data)
-        }
             
         this.props.get();
         this.props.bin();
@@ -155,16 +153,14 @@ class Remainder extends Component {
             notes: this.state.content,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.noteLabel,
+            label: this.state.label,
             archive: this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
         console.log(data.id, "doc id");
-        if (data.label!=="") {
-            userServices.updateLabel(data)
-        }
+        
         userServices.binNotes(data)
         this.props.get();
         this.props.bin();
@@ -197,9 +193,7 @@ class Remainder extends Component {
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
-                        if (data.label!=="") {
-                            userServices.updateLabel(data)
-                        }
+                        
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -226,9 +220,7 @@ class Remainder extends Component {
                 if (i == 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
-                        if (data.label!=="") {
-                            userServices.updateLabel(data)
-                        }
+                        
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -256,9 +248,7 @@ class Remainder extends Component {
                 if (i == 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-                        if (data.label!=="") {
-                            userServices.updateLabel(data)
-                        }
+                        
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -286,9 +276,7 @@ class Remainder extends Component {
                 if (i == 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-                        if (data.label!=="") {
-                            userServices.updateLabel(data)
-                        }
+                        
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -316,9 +304,7 @@ class Remainder extends Component {
                 if (i == (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-                        if (data.label!=="") {
-                            userServices.updateLabel(data)
-                        }
+                        
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -347,22 +333,19 @@ class Remainder extends Component {
             id: this.state.docId,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.noteLabel,
+            label: this.state.label,
             archive: this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data);
-        userServices.addLabel(data).then((res) => {
-            console.log(res, "done update");
             this.props.get();
             this.props.bin();
             this.props.pin();
             this.props.label();
             this.props.archive();
             this.props.getRem();
-        })
         this.setState({
             dialogOpen: false,
             labelMenu:false
@@ -393,7 +376,6 @@ class Remainder extends Component {
         }
         console.log(data.pin);
         userServices.binNotes(data);
-        userServices.deletelabel(data)
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -419,9 +401,7 @@ class Remainder extends Component {
         }
         console.log(this.state.docId);
         userServices.binNotes(data);
-        if (data.label!=="") {
-            userServices.updateLabel(data)
-        }
+        
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -459,25 +439,27 @@ class Remainder extends Component {
                 <Card 
                 onMouseEnter={() => {
                     this.setState({
-                        displayIcon:true
+                        displayIcon: true,
+                        border:"0px 0px 3px 1px"
                     })
                 }}
                 onMouseLeave={() => {
                     this.setState({
-                        displayIcon:false
+                        displayIcon: false,
+                        border:"none"
                     })
                 }}
                     style={{
                         width: this.state.cardWidth,
-                        height: "auto%",
-                        minHeight:"20vh",
+                        height: "fit-content",
+                        minHeight:"22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
                         margin: "2%",
                         flexWrap: "nowrap",
                         backgroundColor: this.state.inputbcolor,
                         padding: "10px",
-                        boxShadow: "0px 0px 0px 0px"
+                        boxShadow: this.state.border
                     }}>
                     <div>
                         <div
@@ -704,15 +686,15 @@ class Remainder extends Component {
                         height: "8vh"
                     }}
                     variant="filled"
-                    value={this.state.noteLabel}
+                    value={this.state.label}
                     onChange={(event) => {
                         this.setState({
-                            noteLabel: event.target.value
+                            label: event.target.value
                         })
                     }}
                 />
                 <MenuItem onClick={this.handleAddLabel}>
-                    create : {this.state.noteLabel}
+                    create : {this.state.label}
                 </MenuItem>
                 </Menu>
                 </Card>
@@ -993,15 +975,15 @@ class Remainder extends Component {
                                     height: "8vh"
                                 }}
                                 variant="filled"
-                                value={this.state.noteLabel}
+                                value={this.state.label}
                                 onChange={(event) => {
                                     this.setState({
-                                        noteLabel: event.target.value
+                                        label: event.target.value
                                     })
                                 }}
                             />
                             <MenuItem onClick={this.handleAddLabel}>
-                                create : {this.state.noteLabel}
+                                create : {this.state.label}
                             </MenuItem>
                         </Menu>
                     </MuiThemeProvider>

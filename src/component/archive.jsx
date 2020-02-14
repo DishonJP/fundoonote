@@ -92,7 +92,8 @@ class Archive extends React.Component {
             pin: this.props.archiveNotes.data().pin,
             width: this.props.layout,
             cardWidth: "",
-            displayIcon:false
+            displayIcon: false,
+            border:"none"
         }
     }
     componentDidMount() {
@@ -120,9 +121,7 @@ class Archive extends React.Component {
             .catch((err) => {
                 console.log(err);
             })
-            if (data.label!=="") {
-                userServices.updateLabel(data)
-            }
+            
     }
     handleMenuClick = async () => {
         await this.setState({
@@ -145,9 +144,7 @@ class Archive extends React.Component {
         console.log(data.id, "doc id");
 
         userServices.binNotes(data)
-        if (data.label!=="") {
-            userServices.updateLabel(data)
-        }
+        
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -185,25 +182,27 @@ class Archive extends React.Component {
                 <Card 
                 onMouseEnter={() => {
                     this.setState({
-                        displayIcon:true
+                        displayIcon: true,
+                        border:"0px 0px 3px 1px"
                     })
                 }}
                 onMouseLeave={() => {
                     this.setState({
-                        displayIcon:false
+                        displayIcon: false,
+                        border:"none"
                     })
                 }}
                     style={{
                         width: this.state.cardWidth,
-                        minHeight:"20vh",
-                        height: "auto%",
+                        height: "fit-content",
+                        minHeight:"22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
                         margin: "2%",
                         flexWrap: "nowrap",
                         backgroundColor: this.state.backcolor,
                         padding: "10px",
-                        boxShadow: "0px 0px 0px 0px"
+                        boxShadow: this.state.border
                     }}>
                     <div>
                         <div

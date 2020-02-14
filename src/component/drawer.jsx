@@ -39,7 +39,7 @@ class Drawers extends Component {
         this.labelNote();
     }
     labelNote = () => {
-        let result = userServices.getLabel();
+        let result = userServices.getNote();
         result.then( (res) => {
              this.setState({
                 labelNotes: res

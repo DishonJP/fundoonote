@@ -103,7 +103,8 @@ class UserNotes extends Component {
             remOpen: false,
             width: this.props.layout,
             cardWidth: '',
-            displayIcon: false
+            displayIcon: false,
+            border: "none"
         }
     }
     handleArchive = () => {
@@ -123,9 +124,6 @@ class UserNotes extends Component {
             console.log("done");
 
         })
-        if (this.state.noteLabel !== "") {
-            userServices.updateLabel(data)
-        }
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -160,9 +158,6 @@ class UserNotes extends Component {
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
-                        if (this.state.noteLabel !== "") {
-                            userServices.updateLabel(data)
-                        }
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -189,9 +184,6 @@ class UserNotes extends Component {
                 if (i == 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
-                        if (this.state.noteLabel !== "") {
-                            userServices.updateLabel(data)
-                        }
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -219,9 +211,7 @@ class UserNotes extends Component {
                 if (i == 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-                        if (this.state.noteLabel !== "") {
-                            userServices.updateLabel(data)
-                        }
+
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -249,9 +239,7 @@ class UserNotes extends Component {
                 if (i == 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-                        if (this.state.noteLabel !== "") {
-                            userServices.updateLabel(data)
-                        }
+
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -279,9 +267,7 @@ class UserNotes extends Component {
                 if (i == (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-                        if (this.state.noteLabel !== "") {
-                            userServices.updateLabel(data)
-                        }
+
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -322,9 +308,7 @@ class UserNotes extends Component {
             inputbcolor: this.state.inputbcolor
         }
         console.log(data.id, "doc id");
-        if (this.state.noteLabel !== "") {
-            userServices.updateLabel(data)
-        }
+
         userServices.binNotes(data)
         this.props.get();
         this.props.bin();
@@ -360,9 +344,7 @@ class UserNotes extends Component {
             .catch((err) => {
                 console.log(err);
             })
-        if (this.state.noteLabel !== "") {
-            userServices.updateLabel(data)
-        }
+
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -415,13 +397,10 @@ class UserNotes extends Component {
             inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data);
-        userServices.addLabel(data).then((res) => {
-            console.log(res, "done update");
-            this.props.get();
-            this.props.bin();
-            this.props.pin();
-            this.props.label();
-        })
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
     }
     handleClickLabel = (event) => {
         this.setState({
@@ -466,24 +445,27 @@ class UserNotes extends Component {
                     <Card
                         onMouseEnter={() => {
                             this.setState({
-                                displayIcon: true
+                                displayIcon: true,
+                                border: "0px 0px 3px 1px"
                             })
                         }}
                         onMouseLeave={() => {
                             this.setState({
-                                displayIcon: false
+                                displayIcon: false,
+                                border: "none"
                             })
                         }}
                         style={{
                             width: this.state.cardWidth,
-                            minHeight: "20vh",
-                            height: "auto%",
+                            height: "fit-content",
+                            minHeight:"22vh",
                             borderRadius: "10px",
                             border: "1px solid lightgray",
                             backgroundColor: this.state.inputbcolor,
                             margin: "2%",
                             flexWrap: "nowrap",
-                            padding: "10px"
+                            padding: "10px",
+                            boxShadow: this.state.border
                         }}>
                         <div>
                             <div onClick={() => {

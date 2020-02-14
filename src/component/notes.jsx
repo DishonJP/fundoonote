@@ -120,7 +120,6 @@ class Notes extends Component {
             .catch((err) => {
                 console.log(err);
             })
-        userServices.addLabel(data);
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -172,7 +171,6 @@ class Notes extends Component {
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.addNote(data);
-                        userServices.addLabel(data);
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -214,7 +212,6 @@ class Notes extends Component {
                 if (i == 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.addNote(data);
-                        userServices.addLabel(data);
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -257,7 +254,6 @@ class Notes extends Component {
                 if (i == 9) {
                     if (da.getDay() < daata) {
                         userServices.addNote(data);
-                        userServices.addLabel(data);
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -300,7 +296,6 @@ class Notes extends Component {
                 if (i == 12) {
                     if (da.getHours() < daata) {
                         userServices.addNote(data);
-                        userServices.addLabel(data);
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -343,7 +338,6 @@ class Notes extends Component {
                 if (i == (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.addNote(data);
-                        userServices.addLabel(data);
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -393,8 +387,8 @@ class Notes extends Component {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
-        userServices.addNote(data);
-        userServices.addLabel(data).then((res) => {
+        
+        userServices.addNote(data).then((res) => {
             console.log(res, "done update");
             this.props.get();
             this.props.bin();
@@ -467,7 +461,6 @@ class Notes extends Component {
                 .catch((err) => {
                     console.log(err);
                 })
-            userServices.addLabel(data)
             this.props.get();
             this.props.bin();
             this.props.pin();
@@ -517,7 +510,6 @@ class Notes extends Component {
             this.props.archive();
             this.props.getRem();
         })
-        userServices.addLabel(data)
         this.setState({
             change: true,
             title: "",
@@ -540,7 +532,6 @@ class Notes extends Component {
         })
     }
     render() {
-
         let colorArr = colorArray.map(color => {
             return (
                 <IconButton
@@ -667,7 +658,7 @@ class Notes extends Component {
                                         }}
                                     />
                                 </div>
-                                <div className="arrange">
+                                <div className="arrang">
                                     <div className="icon_arrange">
                                         <Tooltip title="Add remainder">
                                             <IconButton onClick={(event) => {

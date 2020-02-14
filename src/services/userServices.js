@@ -121,7 +121,7 @@ async function binNotes(data) {
         backcolor: data.backcolor,
         inputbcolor:data.inputbcolor
     }
-    console.log(data.id,"id");
+    console.log(data.label,"label/...............................");
     await db.collection("Notes").doc(data.id).update(datas).then((res) => {
        console.log(res,"how lol");
     }).catch((err) => {
@@ -143,7 +143,7 @@ async function addLabel(data) {
                 remainder: data.remainder,
                 notelabel: data.label
         }
-        const response = await db.collection("label").doc().set(datas);
+        const response = await db.collection("label").doc(data.id).set(datas);
         return response;
     } catch (error) {
         return error;

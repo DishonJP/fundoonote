@@ -91,9 +91,10 @@ class Label extends Component {
             inputbcolor: this.props.labelNotes.data().inputbcolor,
             docId: this.props.labelNotes.id,
             pin: this.props.labelNotes.data().pin,
-            label: this.props.labelNotes.data().notelabel,
+            label: this.props.labelNotes.data().label,
             width: this.props.layout,
-            cardWidth:""
+            cardWidth: "",
+            border:"none"
         }
     }
     componentDidMount() {
@@ -127,6 +128,162 @@ class Label extends Component {
         this.props.label();
         this.props.getRem();
     }
+    handleRemainder = () => {
+        let date = Date.now();
+        let da = new Date(date);
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        let daata = "";
+        for (let i = 0; i < this.state.remainder.length; i++) {
+            if (i < 4) {
+                daata = daata + this.state.remainder[i];
+                if (i == 3) {
+                    console.log(daata);
+                    console.log(da.getFullYear());
+                    if (da.getFullYear() < daata) {
+                        userServices.binNotes(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else if (da.getFullYear() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad year");
+                    }
+                }
+            }
+            if (i > 4 && i < 7) {
+                daata += this.state.remainder[i];
+                if (i == 6) {
+                    if (da.getMonth() + 1 < daata) {
+                        userServices.binNotes(data);
+                        
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getMonth() + 1 == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad mon");
+                    }
+                }
+            }
+            if (i > 7 && i < 10) {
+                daata += this.state.remainder[i];
+                if (i == 9) {
+                    if (da.getDay() < daata) {
+                        userServices.binNotes(data);
+                        
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getDay() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad Day");
+                    }
+                }
+            }
+            if (i > 10 && i < 13) {
+                daata += this.state.remainder[i];
+                if (i == 12) {
+                    if (da.getHours() < daata) {
+                        userServices.binNotes(data);
+                        
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getHours() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad hour");
+                    }
+                }
+            }
+            if (i > 13 && i < this.state.remainder.length) {
+                daata += this.state.remainder[i];
+                if (i == (this.state.remainder.length - 1)) {
+                    if (da.getMinutes() < daata) {
+                        userServices.binNotes(data);
+                        
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else {
+                        console.log("bad min");
+                    }
+                }
+            }
+        }
+
+        alert(this.state.remainder);
+    }
     handleMenuClick = async () => {
         await this.setState({
             trash: true,
@@ -139,7 +296,7 @@ class Label extends Component {
             notes: this.state.content,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.noteLabel,
+            label: this.state.label,
             archive: this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
@@ -147,7 +304,6 @@ class Label extends Component {
         }
         console.log(data.id, "doc id");
         userServices.binNotes(data)
-        userServices.updateLabel(data)
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -176,7 +332,6 @@ class Label extends Component {
         }
         console.log(this.state.docId);
         userServices.binNotes(data);
-        userServices.deletelabel(data)
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -205,25 +360,27 @@ class Label extends Component {
                 <Card 
                 onMouseEnter={() => {
                     this.setState({
-                        displayIcon:true
+                        displayIcon: true,
+                        border:"0px 0px 3px 1px"
                     })
                 }}
                 onMouseLeave={() => {
                     this.setState({
-                        displayIcon:false
+                        displayIcon: false,
+                        border:"none"
                     })
                 }}
                     style={{
                         width: this.state.cardWidth,
-                        minHeight:"20vh",
-                        height: "auto%",
+                        height: "fit-content",
+                        minHeight:"22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
                         margin: "2%",
                         flexWrap: "nowrap",
                         backgroundColor: this.state.inputbcolor,
                         padding: "10px",
-                        boxShadow: "0px 0px 0px 0px"
+                        boxShadow: this.state.border
                     }}>
                     <div>
                         <div
@@ -436,15 +593,15 @@ class Label extends Component {
                         height: "8vh"
                     }}
                     variant="filled"
-                    value={this.state.noteLabel}
+                    value={this.state.label}
                     onChange={(event) => {
                         this.setState({
-                            noteLabel: event.target.value
+                            label: event.target.value
                         })
                     }}
                 />
                 <MenuItem onClick={this.handleAddLabel}>
-                    create : {this.state.noteLabel}
+                    create : {this.state.label}
                 </MenuItem>
                 </Menu>
                 </Card>

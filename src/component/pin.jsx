@@ -95,6 +95,7 @@ class Pin extends Component {
             width: this.props.layout,
             cardWidth: "",
             pin: this.props.pinNotes.data().pin,
+            border:"none"
         }
     }
     handleMenuClick = async () => {
@@ -116,7 +117,6 @@ class Pin extends Component {
             inputbcolor: this.state.inputbcolor
         }
         console.log(data.id, "doc id");
-        userServices.updateLabel(data)
         userServices.binNotes(data)
         this.props.get();
         this.props.bin();
@@ -170,9 +170,7 @@ class Pin extends Component {
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
-            if (data.label !== "") {
-                userServices.updateLabel(data)
-            }
+           
             this.props.pin();
             this.props.bin();
             this.props.get();
@@ -211,25 +209,27 @@ class Pin extends Component {
                 <Card
                     onMouseEnter={() => {
                         this.setState({
-                            displayIcon: true
+                            displayIcon: true,
+                            border:"0px 0px 3px 1px"
                         })
                     }}
                     onMouseLeave={() => {
                         this.setState({
-                            displayIcon: false
+                            displayIcon: false,
+                            border:"none"
                         })
                     }}
                     style={{
                         width: this.state.cardWidth,
-                        minHeight:"20vh",
-                        height: "auto%",
+                        height: "fit-content",
+                        minHeight:"22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
                         margin: "2%",
                         flexWrap: "nowrap",
                         backgroundColor: this.state.inputbcolor,
                         padding: "10px",
-                        boxShadow: "0px 0px 0px 0px"
+                        boxShadow: this.state.border
                     }}>
                     <div>
                         <div onClick={() => {

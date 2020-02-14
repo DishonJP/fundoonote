@@ -384,7 +384,11 @@ margin-top: 40px;
 }
 .arrange{
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
+}
+.arrang{
+  display: flex;
+  justify-content: space-between;
 }
 .more_menu{
   display: flex;
@@ -419,6 +423,7 @@ margin-top: 40px;
 .notesComponent{
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .usernotes_decor{
   padding: 20px;

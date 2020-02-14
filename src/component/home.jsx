@@ -146,7 +146,7 @@ class Home extends Component {
         })
     }
     getLabel = () => {
-        let result = userServices.getLabel();
+        let result = userServices.getNote();
         result.then((res) => {
             this.setState({
                 labelNotes: res
@@ -180,9 +180,9 @@ class Home extends Component {
             } else if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel!=='' && arrNotes.data().remainder==="") {
                 otherCount++;
                 return (
-                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} layout={this.state.close}/>
+                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} layout={this.state.close} archive={this.getArchive}/>
                 )
-            }else if (arrNotes.data().remainder!=="") {
+            }else if (arrNotes.data().remainder!=="" && arrNotes.data().trash === false) {
                 console.log(this.state.panalChange, "name panel");
                 otherCount++;
                 return (
@@ -221,7 +221,7 @@ class Home extends Component {
         let labelObj = this.state.labelNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
 
-            if (arrNotes.data().notelabel!=="" && this.state.panalChange === arrNotes.data().notelabel) {
+            if (arrNotes.data().notelabel!=="" && this.state.panalChange === arrNotes.data().notelabel && arrNotes.data().trash === false) {
                
                 console.log(this.state.panalChange, "name panel");
 
@@ -232,7 +232,7 @@ class Home extends Component {
         })
         let remObj = this.state.remNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
-            if (arrNotes.data().remainder!=="") {
+            if (arrNotes.data().remainder!=="" && arrNotes.data().trash === false) {
                 console.log(this.state.panalChange, "name panel");
                 return (
                     <Remainder remNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close}/>
@@ -332,7 +332,6 @@ class Home extends Component {
                                                     src={bunny}
                                                     alt="u"
                                                 />
-                                               
                                             </div>
                                             <div className="uName_style">
                                                 <Typography>{this.state.userFName}{this.state.userLName}</Typography>
