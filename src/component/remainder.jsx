@@ -101,7 +101,8 @@ class Remainder extends Component {
             labelAnchorEl: null,
             width: this.props.layout,
             cardWidth: "",
-            border:"none"
+            border: "none",
+            
         }
     }
     componentDidMount() {
@@ -436,7 +437,7 @@ class Remainder extends Component {
         })
         if (this.state.change) {
             return (
-                <Card 
+                <Card id="card"
                 onMouseEnter={() => {
                     this.setState({
                         displayIcon: true,

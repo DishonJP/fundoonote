@@ -489,17 +489,20 @@ class Notes extends Component {
             trash:false
         })
     }
-    handleArchive = () => {
+    handleArchive = async () => {
+        await this.setState({
+            archive:true
+        })
         let data = {
             title: this.state.title,
             notes: this.state.content,
-            trash: false,
+            trash: this.state.trash,
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor,
-            archive: true,
+            archive: this.state.archive,
             pin: this.state.pin,
             remainder: this.state.remainder,
-            notelabel: this.state.notelabel
+            label: this.state.notelabel
         }
         userServices.addNote(data).then((res) => {
             console.log("done");

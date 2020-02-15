@@ -6,9 +6,7 @@ import service from '../services/constant'
 const db = firebase.firestore();
 async function userRegistration(data) {
     try {
-        
         console.log(data);
-        
         const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password);
         const datas = {
             curUser:response.user.uid,

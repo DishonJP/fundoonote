@@ -91,10 +91,12 @@ class Label extends Component {
             inputbcolor: this.props.labelNotes.data().inputbcolor,
             docId: this.props.labelNotes.id,
             pin: this.props.labelNotes.data().pin,
-            label: this.props.labelNotes.data().label,
+            label: this.props.labelNotes.data().notelabel,
             width: this.props.layout,
             cardWidth: "",
-            border:"none"
+            border: "none",
+            archive: this.props.labelNotes.data().archive,
+            remainder:this.props.labelNotes.data().remainder
         }
     }
     componentDidMount() {
@@ -127,6 +129,32 @@ class Label extends Component {
         this.props.pin();
         this.props.label();
         this.props.getRem();
+    }
+    handlePin = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data).then((res) => {
+            console.log(res, "done update");
+
+        })
+            .catch((err) => {
+                console.log(err);
+            })
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
     }
     handleRemainder = () => {
         let date = Date.now();

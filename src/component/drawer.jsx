@@ -8,7 +8,6 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import userServices from "../services/userServices"
-import Home from './home';
 const theme = createMuiTheme({
     overrides: {
         MuiDrawer: {
@@ -52,7 +51,9 @@ class Drawers extends Component {
     render() {
         let arrData = [];
         this.state.labelNotes.forEach(element => {
-            arrData.push(element.data().notelabel)
+            if (element.data().notelabel !== "") {
+                arrData.push(element.data().notelabel)
+            }
         });
         let filterArr = arrData.filter((index, data) => {
             return arrData.indexOf(index) == data

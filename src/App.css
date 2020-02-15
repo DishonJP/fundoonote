@@ -349,6 +349,9 @@
   margin-bottom: 10px;
 }
 /* ============================================Notes page======================================== */
+#card{
+  height: calc(100%-80px);
+}
 .ncard_decor{
 display: flex;
 justify-content: center;
