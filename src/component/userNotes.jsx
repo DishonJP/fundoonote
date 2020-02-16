@@ -433,12 +433,12 @@ class UserNotes extends Component {
                 <IconButton
                     onClick={() => {
                         this.setState({
-                            backcolor: color.colors,
+                            backcolor: color.bcolor,
                             inputbcolor: color.bcolor
                         })
                     }}
                     style={{
-                        backgroundColor: color.colors,
+                        backgroundColor: color.bcolor,
                     }}
                 >
                 </IconButton>

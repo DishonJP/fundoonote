@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AppBar, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Card, Button, MuiThemeProvider, createMuiTheme, Avatar, Divider } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Button, MuiThemeProvider, createMuiTheme, Avatar, Divider } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
@@ -49,11 +49,13 @@ class Home extends Component {
             labelNotes: [],
             userData: [],
             remNotes: [],
+            searchNotes:[],
             grid: "usernotes_decor",
             list: "usersNote_decor",
             userFName: localStorage.getItem("firstName"),
             userLName: localStorage.getItem("lastName"),
             userEmail: localStorage.getItem("email"),
+            search:""
         };
     }
     changeDrawerName = async (data) => {
@@ -137,6 +139,14 @@ class Home extends Component {
             })
         })
     }
+    searchNote=()=>{
+        let result=userServices.getNote();
+        result.then((res)=>{
+            this.setState({
+                searchNotes:res
+            })
+        })
+    }
     pinNote = () => {
         let result = userServices.getNote();
         result.then((res) => {
@@ -144,6 +154,12 @@ class Home extends Component {
                 pinNotes: res
             })
         })
+    }
+    handleSearch= async (event)=>{
+        this.setState({
+            search:event.target.value
+        })
+        this.searchNote();
     }
     getLabel = () => {
         let result = userServices.getNote();
@@ -161,6 +177,7 @@ class Home extends Component {
         this.getLabel();
         this.getRemainder();
         this.changeDrawerName();
+        this.searchNote()
     }
     render() {
         console.log(this.state.userFName,this.state.userLName,this.state.userEmail,"why u bulli me");
@@ -169,6 +186,15 @@ class Home extends Component {
         let count = 0;
         let pinCount = 0;
         let otherCount = 0;
+        let searchCount=0;
+        let searchObj=this.state.searchNotes.map(arrNotes=>{
+            if((arrNotes.data().title).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notes).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase()))){
+                searchCount++;
+       return(
+                <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close}/>
+             )
+            }
+        })
         let notesObj = this.state.allNotes.map(arrNotes => {
             console.log(arrNotes.data().trash, arrNotes.data().archive, "all notes");
 
@@ -221,10 +247,8 @@ class Home extends Component {
         let labelObj = this.state.labelNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
 
-            if (arrNotes.data().notelabel!=="" && this.state.panalChange === arrNotes.data().notelabel && arrNotes.data().trash === false) {
-               
+            if (arrNotes.data().notelabel!=="" && this.state.panalChange === arrNotes.data().notelabel && arrNotes.data().trash === false) {               
                 console.log(this.state.panalChange, "name panel");
-
                 return (
                     <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close}/>
                 )
@@ -276,6 +300,8 @@ class Home extends Component {
                                 <InputBase
                                     fullWidth
                                     placeholder="Search"
+                                    value={this.state.search}
+                                    onChange={this.handleSearch}
                                 />
                             </div>
                             <div className="acc_decor">
@@ -387,14 +413,19 @@ class Home extends Component {
                                 <div className="notesComponent">
                                     <Notes pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} archive={this.getArchive} layout={this.state.close} />
                                 </div>
-                                {count > 0 ?
+                                {searchCount>0?
+                                <div className="notesComponent">
+                                {searchObj}
+                            </div>:<div></div>
+                            }
+                                {count > 0 &&searchCount===0?
                                     <span className="pinText">pinned:{pinCount}</span> : <div></div>
                                 }
                                 <div className={this.state.close?this.state.grid:this.state.list}>
                                     {pinObj}
                                 </div>
                                 {
-                                    count > 0 ?
+                                    count > 0 && searchCount===0?
                                         <div>
                                             <Divider />
                                             <span className="pinText">others:{otherCount}</span></div> : <div></div>
