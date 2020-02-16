@@ -25,6 +25,11 @@ const theme = createMuiTheme({
                 width: "100px",
                 height: "auto",
             }
+        },
+        MuiDialog:{
+            paper:{
+                borderRadius:"10px"
+            }
         }
     }
 })
@@ -152,8 +157,8 @@ class UserNotes extends Component {
         let daata = "";
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
-                daata = daata + this.state.remainder[i];
-                if (i == 3) {
+                daata += this.state.remainder[i];
+                if (i === 3) {
                     console.log(daata);
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
@@ -181,7 +186,7 @@ class UserNotes extends Component {
             }
             if (i > 4 && i < 7) {
                 daata += this.state.remainder[i];
-                if (i == 6) {
+                if (i === 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
                         this.props.get();
@@ -208,7 +213,7 @@ class UserNotes extends Component {
             }
             if (i > 7 && i < 10) {
                 daata += this.state.remainder[i];
-                if (i == 9) {
+                if (i === 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
 
@@ -225,7 +230,7 @@ class UserNotes extends Component {
                         })
                         break;
                     }
-                    else if (da.getDay() == daata) {
+                    else if (da.getDay() === daata) {
                         daata = '';
                         continue;
                     }
@@ -681,7 +686,7 @@ class UserNotes extends Component {
                 <div className="ncard_decor">
                     <MuiThemeProvider theme={theme}>
                         <Dialog
-                            open={this.state.dialogOpen}
+                            open={this.state.dialogOpen}  
                         >
                             <div>
                                 <DialogContent

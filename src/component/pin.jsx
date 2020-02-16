@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
+import CloseIcon from '@material-ui/icons/Close';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import { Card, InputBase, IconButton, Button, TextField, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
@@ -19,6 +21,11 @@ const theme = createMuiTheme({
             padding: {
                 paddingTop: "0px",
                 paddingBottom: "0px"
+            }
+        },
+        MuiDialog:{
+            paper:{
+                borderRadius:"10px"
             }
         }
     }
@@ -95,7 +102,9 @@ class Pin extends Component {
             width: this.props.layout,
             cardWidth: "",
             pin: this.props.pinNotes.data().pin,
-            border:"none"
+            border:"none",
+            remOpen:false,
+            remAnchorEl:null
         }
     }
     handleMenuClick = async () => {
@@ -135,6 +144,161 @@ class Pin extends Component {
                 cardWidth: "60%"
             })
         }
+    }
+    handleRemainder = () => {
+        let date = Date.now();
+        let da = new Date(date);
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        let daata = "";
+        for (let i = 0; i < this.state.remainder.length; i++) {
+            if (i < 4) {
+                daata += this.state.remainder[i];
+                if (i === 3) {
+                    console.log(daata);
+                    console.log(da.getFullYear());
+                    if (da.getFullYear() < daata) {
+                        userServices.binNotes(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else if (da.getFullYear() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad year");
+                    }
+                }
+            }
+            if (i > 4 && i < 7) {
+                daata += this.state.remainder[i];
+                if (i === 6) {
+                    if (da.getMonth() + 1 < daata) {
+                        userServices.binNotes(data);
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getMonth() + 1 == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad mon");
+                    }
+                }
+            }
+            if (i > 7 && i < 10) {
+                daata += this.state.remainder[i];
+                if (i === 9) {
+                    if (da.getDay() < daata) {
+                        userServices.binNotes(data);
+
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getDay() === daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad Day");
+                    }
+                }
+            }
+            if (i > 10 && i < 13) {
+                daata += this.state.remainder[i];
+                if (i == 12) {
+                    if (da.getHours() < daata) {
+                        userServices.binNotes(data);
+
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    }
+                    else if (da.getHours() == daata) {
+                        daata = '';
+                        continue;
+                    }
+                    else {
+                        console.log("bad hour");
+                    }
+                }
+            }
+            if (i > 13 && i < this.state.remainder.length) {
+                daata += this.state.remainder[i];
+                if (i == (this.state.remainder.length - 1)) {
+                    if (da.getMinutes() < daata) {
+                        userServices.binNotes(data);
+
+                        this.props.get();
+                        this.props.bin();
+                        this.props.pin();
+                        this.props.label();
+                        this.props.archive();
+                        this.props.getRem();
+                        this.setState({
+                            remAnchorEl: null,
+                            dialogOpen: false,
+                            remOpen: false,
+                        })
+                        break;
+                    } else {
+                        console.log("bad min");
+                    }
+                }
+            }
+        }
+
+        alert(this.state.remainder);
     }
     validation = () => {
         const data = {
@@ -267,6 +431,37 @@ class Pin extends Component {
                                     value={this.state.content}
                                 ></InputBase>
                         </div>
+                        {this.state.notelabel !== "" ? <div className="label_close" style={{
+                        backgroundColor: this.state.inputbcolor
+                    }}>
+                        <Typography>{this.state.notelabel}</Typography>
+                        <Tooltip title="remove label">
+                            <IconButton
+                                style={{
+                                    padding:"3px"
+                                }}
+                                onClick={this.removeLabel}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+                    </div> : <div></div>}
+                    {this.state.remainder!==""? 
+                    <div className="label_close" style={{
+                        backgroundColor: this.state.inputbcolor
+                    }}>
+                        <AccessAlarmIcon />
+                        <Typography>{this.state.remainder}</Typography>
+                        <Tooltip title="remove remainder">
+                            <IconButton
+                                style={{
+                                    padding:"3px"
+                                }}
+                                onClick={this.removeRemainder}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+
+                    </div>:<div></div>}
                         {this.state.displayIcon ? <div className="arrange">
                             <div className="icon_arrange">
                                 <Tooltip title="Add remainder">

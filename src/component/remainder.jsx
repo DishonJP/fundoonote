@@ -22,6 +22,11 @@ const theme = createMuiTheme({
                 paddingTop: "0px",
                 paddingBottom: "0px"
             }
+        },
+        MuiDialog:{
+            paper:{
+                borderRadius:"10px"
+            }
         }
     }
 })
@@ -188,7 +193,7 @@ class Remainder extends Component {
         let daata = "";
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
-                daata = daata + this.state.remainder[i];
+                daata += this.state.remainder[i];
                 if (i == 3) {
                     console.log(daata);
                     console.log(da.getFullYear());

@@ -20,6 +20,11 @@ const theme = createMuiTheme({
                 paddingTop: "0px",
                 paddingBottom: "0px"
             }
+        },
+        MuiDialog:{
+            paper:{
+                borderRadius:"10px"
+            }
         }
     }
 })
