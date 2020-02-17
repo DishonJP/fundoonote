@@ -131,17 +131,9 @@ async function addLabel(data) {
         console.log(data,"adfasdf");
         const datas={
             curUser: fire.auth().currentUser.uid,
-            title: data.title,
-                notes: data.notes,
-                trash: data.trash,
-                backcolor: data.backcolor,
-                inputbcolor: data.inputbcolor,
-                archive: data.archive,
-                pin: data.pin,
-                remainder: data.remainder,
                 notelabel: data.label
         }
-        const response = await db.collection("label").doc(data.id).set(datas);
+        const response = await db.collection("label").doc().set(datas);
         return response;
     } catch (error) {
         return error;
@@ -150,14 +142,14 @@ async function addLabel(data) {
 async function getLabel() {
     try {
         let getLabel = [];
+        
         let getToken = localStorage.getItem("usertoken");
         let data = jwt_decode(getToken)
         await db.collection('label').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
-            querySnapShot.forEach(function(doc){
-                getLabel.push(doc);
+            querySnapShot.forEach(function (doc) {
+                getLabel.push(doc.data().notelabel);
             })
         })
-        
         return getLabel;
     } catch (error) {
         return error

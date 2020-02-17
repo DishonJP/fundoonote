@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, InputBase, IconButton, Button, Tooltip,TextField,Typography, Menu, MenuItem, MuiThemeProvider, createMuiTheme, Divider } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, Tooltip, TextField, Typography, Menu, MenuItem, MuiThemeProvider, createMuiTheme, Divider } from '@material-ui/core'
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import BrushIcon from '@material-ui/icons/Brush';
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
@@ -97,7 +97,7 @@ class Notes extends Component {
             labelAnchorEl: null,
             remOpen: false,
             remAnchorEl: null,
-            trash:false
+            trash: false
         }
     }
     handlePin = () => {
@@ -108,7 +108,7 @@ class Notes extends Component {
             trash: this.state.trash,
             pin: this.state.pin,
             label: this.state.notelabel,
-            archive:this.state.archive,
+            archive: this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
@@ -144,7 +144,7 @@ class Notes extends Component {
             labelAnchorEl: null,
             remOpen: false,
             remAnchorEl: null,
-            trash:false
+            trash: false
         })
     }
     handleRemainder = () => {
@@ -195,7 +195,7 @@ class Notes extends Component {
                             labelAnchorEl: null,
                             remOpen: false,
                             remAnchorEl: null,
-                            trash:false
+                            trash: false
                         })
                         break;
                     } else if (da.getFullYear() == daata) {
@@ -236,7 +236,7 @@ class Notes extends Component {
                             labelAnchorEl: null,
                             remOpen: false,
                             remAnchorEl: null,
-                            trash:false
+                            trash: false
                         })
                         break;
                     }
@@ -278,7 +278,7 @@ class Notes extends Component {
                             labelAnchorEl: null,
                             remOpen: false,
                             remAnchorEl: null,
-                            trash:false
+                            trash: false
                         })
                         break;
                     }
@@ -320,7 +320,7 @@ class Notes extends Component {
                             labelAnchorEl: null,
                             remOpen: false,
                             remAnchorEl: null,
-                            trash:false
+                            trash: false
                         })
                         break;
                     }
@@ -362,7 +362,7 @@ class Notes extends Component {
                             labelAnchorEl: null,
                             remOpen: false,
                             remAnchorEl: null,
-                            trash:false
+                            trash: false
                         })
                         break;
                     } else {
@@ -387,16 +387,20 @@ class Notes extends Component {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
-        
-        userServices.addNote(data).then((res) => {
-            console.log(res, "done update");
-            this.props.get();
-            this.props.bin();
-            this.props.pin();
-            this.props.label();
-            this.props.archive();
-            this.props.getRem();
-        })
+        if (data.title !== '' || data.notes !== '' || data.remainder) {
+            userServices.addNote(data).then((res) => {
+                console.log(res, "done update");
+                userServices.addLabel(data);
+
+            })
+        }
+        userServices.addLabel(data);
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
         this.setState({
             change: true,
             title: "",
@@ -415,7 +419,7 @@ class Notes extends Component {
             labelAnchorEl: null,
             remOpen: false,
             remAnchorEl: null,
-            trash:false
+            trash: false
         })
     }
     handleClickLabel = (event) => {
@@ -443,16 +447,16 @@ class Notes extends Component {
     validation = async () => {
         if (this.state.title !== '') {
             const data = {
-                    title: this.state.title,
-                    notes: this.state.content,
-                    id: this.state.docId,
-                    trash: this.state.trash,
-                    pin: this.state.pin,
-                    label: this.state.notelabel,
-                    archive:this.state.archive,
-                    remainder: this.state.remainder,
-                    backcolor: this.state.backcolor,
-                    inputbcolor: this.state.inputbcolor
+                title: this.state.title,
+                notes: this.state.content,
+                id: this.state.docId,
+                trash: this.state.trash,
+                pin: this.state.pin,
+                label: this.state.notelabel,
+                archive: this.state.archive,
+                remainder: this.state.remainder,
+                backcolor: this.state.backcolor,
+                inputbcolor: this.state.inputbcolor
             }
             userServices.addNote(data).then((res) => {
                 console.log(res, "ajhskdjhaksdh211342455");
@@ -486,12 +490,12 @@ class Notes extends Component {
             labelAnchorEl: null,
             remOpen: false,
             remAnchorEl: null,
-            trash:false
+            trash: false
         })
     }
     handleArchive = async () => {
         await this.setState({
-            archive:true
+            archive: true
         })
         let data = {
             title: this.state.title,
@@ -531,7 +535,7 @@ class Notes extends Component {
             labelAnchorEl: null,
             remOpen: false,
             remAnchorEl: null,
-            trash:false
+            trash: false
         })
     }
     render() {
@@ -631,11 +635,11 @@ class Notes extends Component {
                                     />
                                     <Tooltip title="Pin it">
                                         <IconButton onClick={async () => {
-                                                await this.setState({
-                                                    pin: true
-                                                });
-                                                this.handlePin()
-                                            }}>
+                                            await this.setState({
+                                                pin: true
+                                            });
+                                            this.handlePin()
+                                        }}>
                                             <PinDropOutlinedIcon
                                                 fontSize="small" />
                                         </IconButton>
@@ -665,11 +669,11 @@ class Notes extends Component {
                                     <div className="icon_arrange">
                                         <Tooltip title="Add remainder">
                                             <IconButton onClick={(event) => {
-                                                    this.setState({
-                                                        remOpen: true,
-                                                        remAnchorEl: event.currentTarget
-                                                    })
-                                                }}>
+                                                this.setState({
+                                                    remOpen: true,
+                                                    remAnchorEl: event.currentTarget
+                                                })
+                                            }}>
                                                 <AddAlertOutlinedIcon fontSize="small" />
                                             </IconButton>
                                         </Tooltip>

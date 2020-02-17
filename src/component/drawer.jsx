@@ -50,9 +50,9 @@ class Drawers extends Component {
    
     render() {
         let arrData = [];
-        this.state.labelNotes.forEach(element => {
-            if (element.data().notelabel !== "") {
-                arrData.push(element.data().notelabel)
+        this.props.label.forEach(element => {
+            if (element !== "") {
+                arrData.push(element)
             }
         });
         let filterArr = arrData.filter((index, data) => {

@@ -17,6 +17,7 @@ import Pin from './pin'
 import Search from './search'
 import Label from './label';
 import Remainder from './remainder';
+import EmptyLabel from './emptyLabel';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -56,7 +57,8 @@ class Home extends Component {
             userFName: localStorage.getItem("firstName"),
             userLName: localStorage.getItem("lastName"),
             userEmail: localStorage.getItem("email"),
-            search:""
+            search: "",
+            labelCount:0
         };
     }
     changeDrawerName = async (data) => {
@@ -163,7 +165,7 @@ class Home extends Component {
         this.searchNote();
     }
     getLabel = () => {
-        let result = userServices.getNote();
+        let result = userServices.getLabel();
         result.then((res) => {
             this.setState({
                 labelNotes: res
@@ -183,11 +185,11 @@ class Home extends Component {
     render() {
         console.log(this.state.userFName,this.state.userLName,this.state.userEmail,"why u bulli me");
         console.log(this.state.panalChange, "name panel");
-        console.log(this.state.allNotes, "datas");
         let count = 0;
         let pinCount = 0;
         let otherCount = 0;
-        let searchCount=0;
+        let searchCount = 0;
+        let labelCount = 0;
         let searchObj=this.state.searchNotes.map(arrNotes=>{
             if(((arrNotes.data().title).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notes).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notelabel).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase()))) && this.state.search!==""){
                 searchCount++;
@@ -198,7 +200,6 @@ class Home extends Component {
         })
         let notesObj = this.state.allNotes.map(arrNotes => {
             console.log(arrNotes.data().trash, arrNotes.data().archive, "all notes");
-
             if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '' && arrNotes.data().remainder==="") {
                 otherCount++;
                 return (
@@ -227,7 +228,6 @@ class Home extends Component {
         })
         let binObj = this.state.binNotes.map(arrNotes => {
             console.log(arrNotes.id, "bin notes");
-
             if (arrNotes.data().trash) {
                 return (
                     <Bin binNotes={arrNotes} layout={this.state.close}/>
@@ -245,16 +245,29 @@ class Home extends Component {
                 )
             }
         })
-        let labelObj = this.state.labelNotes.map(arrNotes => {
+        let labelObj = this.state.allNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
-
-            if (arrNotes.data().notelabel!=="" && this.state.panalChange === arrNotes.data().notelabel && arrNotes.data().trash === false) {               
-                console.log(this.state.panalChange, "name panel");
-                return (
-                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close}/>
-                )
-            }
-        })
+            let count = 0;
+            for (let i = 0; i < this.state.labelNotes.length; i++) {
+                
+                if (arrNotes.data().notelabel === this.state.labelNotes[i] && this.state.panalChange === this.state.labelNotes[i]) {
+          
+                    return (
+                        <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close} />
+                    )
+                }
+                if (this.state.panalChange === this.state.labelNotes[i] && arrNotes.data().notelabel === "") {
+                    count++;
+                    alert(this.state.labelNotes.length)
+                    alert(count === this.state.labelNotes.length)
+                    if (count === this.state.labelNotes.length) {
+                        return (
+                            <EmptyLabel />
+                        )
+                    }
+                }
+            }    
+            });
         let remObj = this.state.remNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
             if (arrNotes.data().remainder!=="" && arrNotes.data().trash === false) {
@@ -281,7 +294,6 @@ class Home extends Component {
                                     >
                                         <MenuIcon fontSize="large" />
                                     </IconButton>
-
                                 </Toolbar>
                                 <Typography
                                     noWrap
@@ -401,7 +413,7 @@ class Home extends Component {
                         </AppBar>
                     </div>
                     <Drawers
-                        label={this.state.allNotes}
+                        label={this.state.labelNotes}
                         panel={this.changePanalName}
                         change={this.state.open}
                         value={this.handleClose}

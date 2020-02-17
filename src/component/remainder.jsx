@@ -346,6 +346,7 @@ class Remainder extends Component {
             inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data);
+        userServices.addLabel(data);
             this.props.get();
             this.props.bin();
             this.props.pin();
