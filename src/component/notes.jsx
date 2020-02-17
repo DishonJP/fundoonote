@@ -440,7 +440,7 @@ class Notes extends Component {
             cardanchorEl: event.currentTarget
         })
     }
-    validation = () => {
+    validation = async () => {
         if (this.state.title !== '') {
             const data = {
                     title: this.state.title,
@@ -468,7 +468,7 @@ class Notes extends Component {
             this.props.archive();
             this.props.getRem();
         }
-        this.setState({
+        await this.setState({
             change: true,
             title: "",
             content: "",

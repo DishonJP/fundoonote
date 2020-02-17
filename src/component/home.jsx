@@ -14,6 +14,7 @@ import UserNotes from './userNotes';
 import Archive from './archive';
 import Bin from './bin';
 import Pin from './pin'
+import Search from './search'
 import Label from './label';
 import Remainder from './remainder';
 const theme = createMuiTheme({
@@ -188,11 +189,11 @@ class Home extends Component {
         let otherCount = 0;
         let searchCount=0;
         let searchObj=this.state.searchNotes.map(arrNotes=>{
-            if((arrNotes.data().title).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notes).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase()))){
+            if(((arrNotes.data().title).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notes).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notelabel).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase()))) && this.state.search!==""){
                 searchCount++;
-       return(
-                <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close}/>
-             )
+            return(
+                <Search searchNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close}/>
+                )
             }
         })
         let notesObj = this.state.allNotes.map(arrNotes => {
@@ -408,24 +409,25 @@ class Home extends Component {
 
                     />
                     <div>
-                        {this.state.panalChange === "Notes" ?
-                            <div>
-                                <div className="notesComponent">
-                                    <Notes pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} archive={this.getArchive} layout={this.state.close} />
-                                </div>
-                                {searchCount>0?
+                    {searchCount>0?
                                 <div className="notesComponent">
                                 {searchObj}
                             </div>:<div></div>
                             }
-                                {count > 0 &&searchCount===0?
+                        {this.state.panalChange === "Notes" && searchCount<=0?
+                            <div>
+                                <div className="notesComponent">
+                                    <Notes pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} archive={this.getArchive} layout={this.state.close} />
+                                </div>
+                                
+                                {count > 0?
                                     <span className="pinText">pinned:{pinCount}</span> : <div></div>
                                 }
                                 <div className={this.state.close?this.state.grid:this.state.list}>
                                     {pinObj}
                                 </div>
                                 {
-                                    count > 0 && searchCount===0?
+                                    count > 0?
                                         <div>
                                             <Divider />
                                             <span className="pinText">others:{otherCount}</span></div> : <div></div>
