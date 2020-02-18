@@ -356,12 +356,16 @@ class Label extends Component {
             label: ""
         })
         let data = {
+            id: this.state.docId,
             title: this.state.title,
             notes: this.state.content,
-            id: this.state.docId,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.label
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         console.log(this.state.docId);
         userServices.binNotes(data);

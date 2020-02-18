@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, InputBase, IconButton, Button, Tooltip, Grid, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, Tooltip, Grid, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField, ClickAwayListener } from '@material-ui/core'
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
@@ -111,6 +111,14 @@ class UserNotes extends Component {
             displayIcon: false,
             border: "none"
         }
+    }
+    handleClickAway = () => {
+        this.setState({
+            remOpen: false,
+            labelMenu: false,
+            cardOpen: false,
+            dialogOpen:false
+        })
     }
     handleArchive = () => {
         let data = {
@@ -377,7 +385,6 @@ class UserNotes extends Component {
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
-
         })
             .catch((err) => {
                 console.log(err);
@@ -407,6 +414,9 @@ class UserNotes extends Component {
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.setState({
+            labelMenu: false
+        })
     }
     handleClickLabel = (event) => {
         this.setState({
@@ -447,7 +457,9 @@ class UserNotes extends Component {
         })
         if (this.state.change) {
             return (
+                <ClickAwayListener onClickAway={this.handleClickAway}>
                 <MuiThemeProvider>
+                    
                     <Card
                         onMouseEnter={() => {
                             this.setState({
@@ -612,6 +624,7 @@ class UserNotes extends Component {
                                 <Menu
                                     open={this.state.remOpen}
                                     anchorEl={this.state.remAnchorEl}
+                                    keepMounted
                                     style={{
                                         marginTop: "93px"
                                     }}
@@ -647,7 +660,7 @@ class UserNotes extends Component {
                             </div>
                             <Menu
                                 open={this.state.labelMenu}
-                                autoFocusItem={this.state.labelMenu}
+                                keepMounted
                                 anchorEl={this.state.labelAnchorEl}
                                 anchorOrigin={{
                                     position: "bottom",
@@ -677,9 +690,9 @@ class UserNotes extends Component {
                                 </MenuItem>
                             </Menu>
                         </div>
-                    </Card>
+                        </Card>
                 </MuiThemeProvider>
-
+                </ClickAwayListener>
             )
         }
         else {

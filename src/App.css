@@ -270,12 +270,12 @@
 }
 .search_icon{
   display: flex;
-  width: 650px;
+  width: 700px;
   height: 7vh;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: gainsboro;
+  background-color: cornsilk;
   border: 2px solid gray;
   margin-left: 10px;
   border-radius: 5px;

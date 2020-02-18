@@ -58,7 +58,6 @@ class Home extends Component {
             userLName: localStorage.getItem("lastName"),
             userEmail: localStorage.getItem("email"),
             search: "",
-            labelCount:0
         };
     }
     changeDrawerName = async (data) => {
@@ -210,7 +209,7 @@ class Home extends Component {
                 return (
                     <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} layout={this.state.close} archive={this.getArchive}/>
                 )
-            }else if (arrNotes.data().remainder!=="" && arrNotes.data().trash === false) {
+            }else if (arrNotes.data().remainder!=="" && arrNotes.data().trash === false && arrNotes.data().pin === false) {
                 console.log(this.state.panalChange, "name panel");
                 otherCount++;
                 return (
@@ -245,28 +244,28 @@ class Home extends Component {
                 )
             }
         })
+        let count1 = 0;
         let labelObj = this.state.allNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
-            let count = 0;
+            count1++
             for (let i = 0; i < this.state.labelNotes.length; i++) {
-                
                 if (arrNotes.data().notelabel === this.state.labelNotes[i] && this.state.panalChange === this.state.labelNotes[i]) {
-          
+                    count1 = 0;
                     return (
                         <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close} />
                     )
                 }
-                if (this.state.panalChange === this.state.labelNotes[i] && arrNotes.data().notelabel === "") {
-                    count++;
-                    alert(this.state.labelNotes.length)
-                    alert(count === this.state.labelNotes.length)
-                    if (count === this.state.labelNotes.length) {
+                else if (arrNotes.data().notelabel !== this.state.labelNotes[i])
+                { 
+                    if (count1===this.state.allNotes.length-1) {
+                        count1 = 0;
                         return (
-                            <EmptyLabel />
+                            <EmptyLabel/>
                         )
                     }
                 }
-            }    
+            }
+            
             });
         let remObj = this.state.remNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
@@ -284,7 +283,7 @@ class Home extends Component {
                         className="header_decor">
                         <AppBar
                             class="appbar_decor"
-                            position="relative">
+                            position="fixed">
                             <div className="menu_name">
                                 <Toolbar
                                     color="inherit"

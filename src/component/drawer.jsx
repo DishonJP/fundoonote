@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Drawer, Divider, IconButton, MuiThemeProvider, createMuiTheme, List, ListItemIcon, ListItemText, ListItem } from '@material-ui/core'
+import { Drawer, Divider, IconButton, MuiThemeProvider,CssBaseline, createMuiTheme, List, ListItemIcon, ListItemText, ListItem } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import NotesIcon from '@material-ui/icons/Notes';
 import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
@@ -12,14 +12,12 @@ const theme = createMuiTheme({
     overrides: {
         MuiDrawer: {
             paper: {
-                marginTop: "67px",
-                width: "240px"
+                width: "240px",
             }
         }
     }
 }
 )
-
 class Drawers extends Component {
     constructor(props) {
         super(props);
@@ -62,6 +60,9 @@ class Drawers extends Component {
             return (
                 <div className="noteIcon_decor">
                     <ListItem
+                        style={{
+                            flexGrow:"1"
+                        }}
                         button
                         onClick={async () => {
                             await this.setState({
@@ -90,11 +91,13 @@ class Drawers extends Component {
         })
         return (
             <MuiThemeProvider theme={theme}>
+                <CssBaseline/>
                 <Drawer
                     class="drawer_decor"
                     variant="persistent"
                     anchor="left"
                     open={this.props.change}
+
                 >
                     <div className="drawer_head">
                         <div className="name_decor">

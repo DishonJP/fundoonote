@@ -107,6 +107,14 @@ class Pin extends Component {
             remAnchorEl:null
         }
     }
+    handleClickLabel = (event) => {
+        this.setState({
+            menuOpen: false,
+            menuanchorEl: false,
+            labelMenu: true,
+            labelAnchorEl: event.currentTarget
+        })
+    }
     handleMenuClick = async () => {
         await this.setState({
             trash: true,
@@ -133,6 +141,31 @@ class Pin extends Component {
         this.props.label();
         this.props.archive();
         this.props.getRem();
+
+    }
+    removeLabel = async () => {
+        await this.setState({
+            notelabel: "",
+        })
+        let data = {
+            id: this.state.docId,
+            title: this.state.title,
+            notes: this.state.content,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        console.log(this.state.docId);
+        userServices.binNotes(data);
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.getRem();
     }
     componentDidMount() {
         if (this.state.width) {
@@ -154,7 +187,7 @@ class Pin extends Component {
             id: this.state.docId,
             trash: this.state.trash,
             pin: this.state.pin,
-            label: this.state.noteLabel,
+            label: this.state.notelabel,
             archive: this.state.archive,
             remainder: this.state.remainder,
             backcolor: this.state.backcolor,
@@ -335,14 +368,66 @@ class Pin extends Component {
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
            
-            this.props.pin();
-            this.props.bin();
             this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
+            this.props.archive();
             this.props.getRem();
         })
             .catch((err) => {
                 console.log(err);
             })
+    }
+    handleAddLabel = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data)
+        userServices.addLabel(data);
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
+        this.setState({
+            labelMenu:false
+        })
+    }
+    removeRemainder = async () => {
+        await this.setState({
+            remainder: ""
+        })
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        console.log(this.state.docId);
+        userServices.binNotes(data);
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+        this.props.getRem();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -592,7 +677,7 @@ class Pin extends Component {
                                             })
                                         }}
                                         InputLabelProps={{
-                                            shrink: true,
+                                            shrink: false,
                                         }}
                                     />
                                     <Button onClick={this.handleRemainder}>submit</Button>
@@ -619,15 +704,15 @@ class Pin extends Component {
                                     height: "8vh"
                                 }}
                                 variant="filled"
-                                value={this.state.noteLabel}
+                                value={this.state.notelabel}
                                 onChange={(event) => {
                                     this.setState({
-                                        noteLabel: event.target.value
+                                        notelabel: event.target.value
                                     })
                                 }}
                             />
                             <MenuItem onClick={this.handleAddLabel}>
-                                create : {this.state.noteLabel}
+                                create : {this.state.notelabel}
                             </MenuItem>
                         </Menu>
                     </div>
@@ -808,6 +893,8 @@ class Pin extends Component {
                                     horizontal: 'bottom',
                                 }}
                             >
+                                <MenuItem onClick={this.handleClickLabel}>Add Label</MenuItem>
+                                <Divider />
                                 <MenuItem onClick={this.handleMenuClick}
                                 >Delete Note</MenuItem>
                                 <Divider />
@@ -816,6 +903,74 @@ class Pin extends Component {
                                 <MenuItem>Show tick boxes</MenuItem>
                             </Menu>
                         </div>
+                        <div className="more_menu">
+                            <Menu
+                                open={this.state.remOpen}
+                                anchorEl={this.state.remAnchorEl}
+                                style={{
+                                    marginTop: "93px"
+                                }}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <MenuItem
+                                    style={{
+                                        backgroundColor: 'white'
+                                    }}
+                                >
+                                    <TextField
+                                        type="datetime-local"
+                                        value={this.state.remainder}
+                                        onChange={(event) => {
+                                            this.setState({
+                                                remainder: event.target.value
+                                            })
+                                        }}
+                                        InputLabelProps={{
+                                            shrink: false,
+                                        }}
+                                    />
+                                    <Button onClick={this.handleRemainder}>submit</Button>
+                                </MenuItem>
+                            </Menu>
+                        </div>
+                        <Menu
+                            open={this.state.labelMenu}
+                            autoFocusItem={this.state.labelMenu}
+                            anchorEl={this.state.labelAnchorEl}
+                            anchorOrigin={{
+                                position: "bottom",
+                                vertical: 'bottom',
+                                horizontal: 'top',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'bottom',
+                            }}
+                        >
+                            <Typography>Label name</Typography>
+                            <TextField
+                                style={{
+                                    height: "8vh"
+                                }}
+                                variant="filled"
+                                value={this.state.notelabel}
+                                onChange={(event) => {
+                                    this.setState({
+                                        notelabel: event.target.value
+                                    })
+                                }}
+                            />
+                            <MenuItem onClick={this.handleAddLabel}>
+                                create : {this.state.notelabel}
+                            </MenuItem>
+                        </Menu>
                     </MuiThemeProvider>
                 </div>
             )

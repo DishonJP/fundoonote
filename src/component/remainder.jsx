@@ -332,6 +332,32 @@ class Remainder extends Component {
 
         alert(this.state.remainder);
     }
+    handlePin = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data).then((res) => {
+            console.log(res, "done update");
+
+        })
+            .catch((err) => {
+                console.log(err);
+            })
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.label();
+        this.props.archive();
+    }
     handleAddLabel = () => {
         const data = {
             title: this.state.title,
@@ -875,6 +901,7 @@ class Remainder extends Component {
                         <Menu
                             open={this.state.cardOpen}
                             anchorEl={this.state.cardanchorEl}
+                            keepMounted
                             style={{
                                 padding: "0px 0px 0px 0px"
                             }}
