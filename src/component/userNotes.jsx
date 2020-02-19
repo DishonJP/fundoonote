@@ -90,23 +90,23 @@ class UserNotes extends Component {
         this.state = {
             change: true,
             dialogOpen: false,
-            title: this.props.allNotes.data().title,
-            content: this.props.allNotes.data().notes,
-            backcolor: this.props.allNotes.data().backcolor,
-            inputbcolor: this.props.allNotes.data().inputbcolor,
+            title: "",
+            content: "",
+            backcolor: "",
+            inputbcolor: "",
             cardOpen: false,
             cardanchorEl: null,
-            trash: this.props.allNotes.data().trash,
-            docId: this.props.allNotes.id,
-            pin: this.props.allNotes.data().pin,
-            noteLabel: this.props.allNotes.data().notelabel,
+            trash: "",
+            docId: "",
+            pin: "",
+            noteLabel: "",
             labelMenu: false,
             labelAnchorEl: null,
-            remainder: this.props.allNotes.data().remainder,
-            archive: this.props.allNotes.data().archive,
+            remainder: "",
+            archive: "",
             remAnchorEl: null,
             remOpen: false,
-            width: this.props.layout,
+            width: "",
             cardWidth: '',
             displayIcon: false,
             border: "none"
@@ -143,6 +143,7 @@ class UserNotes extends Component {
         this.props.label();
         this.props.archive();
         this.props.getRem();
+        this.props.la();
         this.setState({
             dialogOpen: false
         })
@@ -177,6 +178,7 @@ class UserNotes extends Component {
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
+                        this.props.la();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -203,6 +205,7 @@ class UserNotes extends Component {
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
+                        this.props.la();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -231,6 +234,7 @@ class UserNotes extends Component {
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
+                        this.props.la();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -259,6 +263,7 @@ class UserNotes extends Component {
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
+                        this.props.la();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -287,6 +292,7 @@ class UserNotes extends Component {
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
+                        this.props.la();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -329,6 +335,7 @@ class UserNotes extends Component {
         this.props.label();
         this.props.archive();
         this.props.getRem();
+        this.props.la();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -363,6 +370,7 @@ class UserNotes extends Component {
         this.props.pin();
         this.props.label();
         this.props.archive();
+        this.props.la();
         this.setState({
             labelMenu: false,
             labelAnchorEl: null,
@@ -394,6 +402,7 @@ class UserNotes extends Component {
         this.props.pin();
         this.props.label();
         this.props.archive();
+        this.props.la();
     }
     handleAddLabel = () => {
         const data = {
@@ -413,6 +422,7 @@ class UserNotes extends Component {
         this.props.get();
         this.props.bin();
         this.props.pin();
+        this.props.la();
         this.props.label();
         this.setState({
             labelMenu: false
@@ -426,8 +436,21 @@ class UserNotes extends Component {
             labelAnchorEl: event.currentTarget
         })
     }
-    componentDidMount() {
-        if (this.state.width) {
+     componentWillReceiveProps(props) {
+         this.setState({
+            width: props.layout,
+            title: props.allNotes.data().title,
+            content: props.allNotes.data().notes,
+            backcolor: props.allNotes.data().backcolor,
+            inputbcolor: props.allNotes.data().inputbcolor,
+            trash: props.allNotes.data().trash,
+            docId: props.allNotes.id,
+            pin: props.allNotes.data().pin,
+            noteLabel: props.allNotes.data().notelabel,
+            remainder: props.allNotes.data().remainder,
+            archive: props.allNotes.data().archive,
+        })
+        if (props.layout===true) {
             this.setState({
                 cardWidth: "40%"
             })
@@ -592,7 +615,7 @@ class UserNotes extends Component {
                                     {colorArr}
                                 </div>
                             </Menu>
-                            <div className="more_menu">
+                                <div className="more_menu">
                                 <Menu
                                     open={this.state.menuOpen}
                                     autoFocusItem={this.state.menuOpen}

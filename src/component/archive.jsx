@@ -95,33 +95,81 @@ class Archive extends React.Component {
             inputbcolor: this.props.archiveNotes.data().inputbcolor,
             docId: this.props.archiveNotes.id,
             pin: this.props.archiveNotes.data().pin,
-            width: this.props.layout,
+            notelabel: this.props.archiveNotes.data().notelabel,
+            width: "",
             cardWidth: "",
             displayIcon: false,
             border:"none"
         }
     }
-    componentDidMount() {
-        if (this.state.width) {
+    async componentWillReceiveProps(props) {
+        await this.setState({
+            width:props.layout
+        })
+        if (this.state.width===true) {
             this.setState({
-                cardWidth:"40%"
+                cardWidth: "40%"
             })
         } else {
             this.setState({
-                cardWidth:"60%"
+                cardWidth: "60%"
             })
         }
     }
-    validation =() => {
+    handleClickLabel = (event) => {
+        this.setState({
+            menuOpen: false,
+            menuanchorEl: false,
+            labelMenu: true,
+            labelAnchorEl: event.currentTarget
+        })
+    }
+    handleAddLabel = () => {
         const data = {
             title: this.state.title,
             notes: this.state.content,
             id: this.state.docId,
-            trash:this.state.trash
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data);
+        userServices.addLabel(data);
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.la();
+        this.props.label();
+        this.setState({
+            labelMenu: false
+        })
+    }
+    validation =() => {
+        const data = {
+            id: this.state.docId,
+            title: this.state.title,
+            notes: this.state.content,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
-            this.props.change();
+            this.props.get();
+            this.props.bin();
+            this.props.pin();
+            this.props.label();
+            this.props.archive();
+            this.props.getRem();
+            this.props.la();
         })
             .catch((err) => {
                 console.log(err);
@@ -156,6 +204,7 @@ class Archive extends React.Component {
         this.props.label();
         this.props.archive();
         this.props.getRem();
+        this.props.la();
     }
     handleOnClick = (event) => {
         event.preventDefault();

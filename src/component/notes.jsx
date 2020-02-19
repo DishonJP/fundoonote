@@ -374,7 +374,7 @@ class Notes extends Component {
 
         alert(this.state.remainder);
     }
-    handleAddLabel = () => {
+    handleAddLabel = async () => {
         const data = {
             title: this.state.title,
             notes: this.state.content,
@@ -390,11 +390,18 @@ class Notes extends Component {
         if (data.title !== '' || data.notes !== '' || data.remainder) {
             userServices.addNote(data).then((res) => {
                 console.log(res, "done update");
-                userServices.addLabel(data);
-
             })
         }
-        userServices.addLabel(data);
+        let label = await userServices.getLabel();
+        let count = 0;
+        for (let i = 0; i < label.length; i++) {
+            if (data.label !== label[i]) {
+                count++;
+            }
+        }
+        if (count === label.length) {
+            userServices.addLabel(data);
+        }
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -465,13 +472,14 @@ class Notes extends Component {
                 .catch((err) => {
                     console.log(err);
                 })
-            this.props.get();
+            
+        }
+        this.props.get();
             this.props.bin();
             this.props.pin();
             this.props.label();
             this.props.archive();
             this.props.getRem();
-        }
         await this.setState({
             change: true,
             title: "",
@@ -557,11 +565,11 @@ class Notes extends Component {
         })
         if (this.state.change) {
             return (
-                <div className="ncard_decor">
                     <MuiThemeProvider theme={theme}>
                         <Card
                             style={{
-                                width: "15cm",
+                                width: "60%",
+                                marginTop: "5%",
                                 height: "auto",
                                 border: "1px solid lightgray",
                                 boxShadow: "0px 0px 5px 1px",
@@ -598,16 +606,15 @@ class Notes extends Component {
                             </div>
                         </Card>
                     </MuiThemeProvider>
-                </div>
             )
         }
         else {
             return (
-                <div className="ncard_decor">
                     <MuiThemeProvider theme={theme}>
                         <Card
                             style={{
-                                width: "15cm",
+                                width: "60%",
+                                marginTop: "5%",
                                 height: "auto",
                                 boxShadow: "0px 0px 5px 1px",
                                 borderRadius: "10px",
@@ -856,8 +863,6 @@ class Notes extends Component {
                             </MenuItem>
                         </Menu>
                     </MuiThemeProvider>
-
-                </div>
             )
         }
     }

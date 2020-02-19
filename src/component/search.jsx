@@ -149,7 +149,7 @@ class Search extends Component {
             .catch((err) => {
                 console.log(err);
             })
-
+            this.props.la();
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -177,6 +177,7 @@ class Search extends Component {
 
         userServices.binNotes(data)
         this.props.get();
+        this.props.la();
         this.props.bin();
         this.props.pin();
         this.props.label();
@@ -215,7 +216,7 @@ class Search extends Component {
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
-
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -242,7 +243,7 @@ class Search extends Component {
                 if (i == 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
-
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -270,7 +271,7 @@ class Search extends Component {
                 if (i == 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -298,7 +299,7 @@ class Search extends Component {
                 if (i == 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -326,7 +327,7 @@ class Search extends Component {
                 if (i == (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -364,6 +365,7 @@ class Search extends Component {
         userServices.binNotes(data);
         this.props.get();
         this.props.bin();
+        this.props.la();
         this.props.pin();
         this.props.label();
         this.props.archive();
@@ -401,6 +403,7 @@ class Search extends Component {
         this.props.get();
         this.props.bin();
         this.props.pin();
+        this.props.la();
         this.props.label();
         this.props.archive();
         this.props.getRem();
@@ -423,7 +426,7 @@ class Search extends Component {
         }
         console.log(this.state.docId);
         userServices.binNotes(data);
-
+        this.props.la();
         this.props.get();
         this.props.bin();
         this.props.pin();

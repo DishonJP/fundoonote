@@ -97,30 +97,71 @@ class Label extends Component {
             docId: this.props.labelNotes.id,
             pin: this.props.labelNotes.data().pin,
             label: this.props.labelNotes.data().notelabel,
-            width: this.props.layout,
+            width: "",
             cardWidth: "",
             border: "none",
             archive: this.props.labelNotes.data().archive,
             remainder:this.props.labelNotes.data().remainder
         }
     }
-    componentDidMount() {
-        if (this.state.width) {
+    async componentWillReceiveProps(props) {
+        await this.setState({
+            width:props.layout
+        })
+        if (this.state.width===true) {
             this.setState({
-                cardWidth:"40%"
+                cardWidth: "40%"
             })
         } else {
             this.setState({
-                cardWidth:"60%"
+                cardWidth: "60%"
             })
         }
+    }
+    handleAddLabel = () => {
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data);
+        userServices.addLabel(data);
+        this.props.get();
+        this.props.bin();
+        this.props.pin();
+        this.props.la();
+        this.props.label();
+        this.setState({
+            labelMenu: false
+        })
+    }
+    handleClickLabel = (event) => {
+        this.setState({
+            menuOpen: false,
+            menuanchorEl: false,
+            labelMenu: true,
+            labelAnchorEl: event.currentTarget
+        })
     }
     validation = () => {
         const data = {
             title: this.state.title,
             notes: this.state.content,
             id: this.state.docId,
-            trash: this.state.trash
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.label,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
@@ -129,6 +170,7 @@ class Label extends Component {
             .catch((err) => {
                 console.log(err);
             })
+            this.props.la();
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -158,6 +200,7 @@ class Label extends Component {
         this.props.get();
         this.props.bin();
         this.props.pin();
+        this.props.la();
         this.props.label();
         this.props.archive();
     }
@@ -189,6 +232,7 @@ class Label extends Component {
                         this.props.bin();
                         this.props.pin();
                         this.props.label();
+                        this.props.la();
                         this.props.archive();
                         this.props.getRem();
                         this.setState({
@@ -211,7 +255,7 @@ class Label extends Component {
                 if (i == 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
-                        
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -239,7 +283,7 @@ class Label extends Component {
                 if (i == 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-                        
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -267,7 +311,7 @@ class Label extends Component {
                 if (i == 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-                        
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -295,7 +339,7 @@ class Label extends Component {
                 if (i == (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-                        
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -340,6 +384,7 @@ class Label extends Component {
         this.props.get();
         this.props.bin();
         this.props.pin();
+        this.props.la();
         this.props.label();
         this.props.archive();
         this.props.getRem();
@@ -374,6 +419,7 @@ class Label extends Component {
         this.props.pin();
         this.props.label();
         this.props.getRem();
+        this.props.la();
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -398,7 +444,7 @@ class Label extends Component {
                 onMouseEnter={() => {
                     this.setState({
                         displayIcon: true,
-                        border:"0px 0px 3px 1px"
+                        border:"0px 0px 3px 1px",
                     })
                 }}
                 onMouseLeave={() => {
@@ -563,7 +609,7 @@ class Label extends Component {
                         horizontal: 'bottom',
                     }}
                 >
-                    <MenuItem onClick={this.handleClickLabel}>Add Label</MenuItem>
+                    <MenuItem onClick={this.handleClickLabel}>Edit Label</MenuItem>
                     <Divider />
                     <MenuItem onClick={this.handleMenuClick}
                     >Delete Note</MenuItem>
@@ -835,6 +881,34 @@ class Label extends Component {
                                 <Divider />
                                 <MenuItem>Show tick boxes</MenuItem>
                             </Menu>
+                            <div className="more_menu">
+                <Menu
+                    open={this.state.menuOpen}
+                    autoFocusItem={this.state.menuOpen}
+                    anchorEl={this.state.menuanchorEl}
+                    style={{
+                        padding: "15px"
+                    }}
+                    anchorOrigin={{
+                        position: "bottom",
+                        vertical: 'bottom',
+                        horizontal: 'top',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'bottom',
+                    }}
+                >
+                    <MenuItem onClick={this.handleClickLabel}>Edit Label</MenuItem>
+                    <Divider />
+                    <MenuItem onClick={this.handleMenuClick}
+                    >Delete Note</MenuItem>
+                    <Divider />
+                    <MenuItem>Add Drawing</MenuItem>
+                    <Divider />
+                    <MenuItem>Show tick boxes</MenuItem>
+                </Menu>
+            </div>
                         </div>
                     </MuiThemeProvider>
                 </div>

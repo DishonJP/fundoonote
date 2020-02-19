@@ -99,7 +99,7 @@ class Pin extends Component {
             notelabel: this.props.pinNotes.data().notelabel,
             archive: this.props.pinNotes.data().archive,
             remainder: this.props.pinNotes.data().remainder,
-            width: this.props.layout,
+            width: "",
             cardWidth: "",
             pin: this.props.pinNotes.data().pin,
             border:"none",
@@ -139,6 +139,7 @@ class Pin extends Component {
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.props.la();
         this.props.archive();
         this.props.getRem();
 
@@ -166,9 +167,13 @@ class Pin extends Component {
         this.props.pin();
         this.props.label();
         this.props.getRem();
+        this.props.la();
     }
-    componentDidMount() {
-        if (this.state.width) {
+    async componentWillReceiveProps(props) {
+        await this.setState({
+            width:props.layout
+        })
+        if (this.state.width===true) {
             this.setState({
                 cardWidth: "40%"
             })
@@ -205,6 +210,7 @@ class Pin extends Component {
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
+                        this.props.la();
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
@@ -231,6 +237,7 @@ class Pin extends Component {
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
+                        this.props.la();
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
@@ -260,6 +267,7 @@ class Pin extends Component {
                         this.props.bin();
                         this.props.pin();
                         this.props.label();
+                        this.props.la();
                         this.props.archive();
                         this.props.getRem();
                         this.setState({
@@ -290,6 +298,7 @@ class Pin extends Component {
                         this.props.label();
                         this.props.archive();
                         this.props.getRem();
+                        this.props.la();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -311,7 +320,7 @@ class Pin extends Component {
                 if (i == (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-
+                        this.props.la();
                         this.props.get();
                         this.props.bin();
                         this.props.pin();
@@ -371,6 +380,7 @@ class Pin extends Component {
             this.props.get();
             this.props.bin();
             this.props.pin();
+            this.props.la();
             this.props.label();
             this.props.archive();
             this.props.getRem();
@@ -396,6 +406,7 @@ class Pin extends Component {
         userServices.addLabel(data);
         this.props.get();
         this.props.bin();
+        this.props.la();
         this.props.pin();
         this.props.label();
         this.props.archive();
@@ -426,6 +437,7 @@ class Pin extends Component {
         this.props.bin();
         this.props.pin();
         this.props.label();
+        this.props.la();
         this.props.archive();
         this.props.getRem();
     }
@@ -784,7 +796,12 @@ class Pin extends Component {
                                     <div className="arrange">
                                         <div className="icon_arrange">
                                             <Tooltip title="Add remainder">
-                                                <IconButton>
+                                                <IconButton onClick={(event) => {
+                                        this.setState({
+                                            remOpen: true,
+                                            remAnchorEl: event.currentTarget
+                                        })
+                                    }}>
                                                     <AddAlertOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>

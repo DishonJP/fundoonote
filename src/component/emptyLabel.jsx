@@ -8,7 +8,8 @@ class EmptyLabel extends Component{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                flexDirection:"column"
+                flexDirection: "column",
+                opacity:"0.8"
             }}>
                 <img style={{   
                     height:"455px"

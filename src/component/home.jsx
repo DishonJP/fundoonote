@@ -29,7 +29,17 @@ const theme = createMuiTheme({
             paper: {
                 maxWidth: "600px",
             }
-        }
+        },
+        MuiToolbar: {
+            regular: {
+                minHeight:"0px"
+            },
+            gutters: {
+                paddingLeft: "0px",
+                paddingRight:"0px"
+            }
+        },
+
     }
 }
 )
@@ -51,7 +61,8 @@ class Home extends Component {
             labelNotes: [],
             userData: [],
             remNotes: [],
-            searchNotes:[],
+            searchNotes: [],
+            labelNote:[],
             grid: "usernotes_decor",
             list: "usersNote_decor",
             userFName: localStorage.getItem("firstName"),
@@ -171,6 +182,14 @@ class Home extends Component {
             })
         })
     }
+    getLabels = () => {
+        let result = userServices.getNote();
+        result.then((res) => {
+            this.setState({
+                labelNote: res
+            })
+        })
+    }
     componentDidMount() {
         this.getNote();
         this.getArchive();
@@ -180,6 +199,7 @@ class Home extends Component {
         this.getRemainder();
         this.changeDrawerName();
         this.searchNote()
+        this.getLabels()
     }
     render() {
         console.log(this.state.userFName,this.state.userLName,this.state.userEmail,"why u bulli me");
@@ -193,7 +213,7 @@ class Home extends Component {
             if(((arrNotes.data().title).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notes).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notelabel).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase()))) && this.state.search!==""){
                 searchCount++;
             return(
-                <Search searchNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close}/>
+                <Search searchNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close} la={this.getLabels}/>
                 )
             }
         })
@@ -202,18 +222,18 @@ class Home extends Component {
             if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '' && arrNotes.data().remainder==="") {
                 otherCount++;
                 return (
-                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close}/>
+                    <UserNotes allNotes={arrNotes} bin={this.binNote} pin={this.pinNote} get={this.getNote} label={this.getLabel} archive={this.getArchive} gridList={this.state.gridList} getRem={this.getRemainder} la={this.getLabels} layout={this.state.close}/>
                 )
             } else if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel!=='' && arrNotes.data().remainder==="") {
                 otherCount++;
                 return (
-                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} layout={this.state.close} archive={this.getArchive}/>
+                    <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} label={this.getLabel} getRem={this.getRemainder} layout={this.state.close} la={this.getLabels} archive={this.getArchive}/>
                 )
             }else if (arrNotes.data().remainder!=="" && arrNotes.data().trash === false && arrNotes.data().pin === false) {
                 console.log(this.state.panalChange, "name panel");
                 otherCount++;
                 return (
-                    <Remainder remNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close}/>
+                    <Remainder remNotes={arrNotes} la={this.getLabels} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close}/>
                 )
             }
         })
@@ -221,7 +241,7 @@ class Home extends Component {
             console.log(arrNotes, "title");
             if (arrNotes.data().trash === false && arrNotes.data().archive === true && arrNotes.data().pin === false) {
                 return (
-                    <Archive archiveNotes={arrNotes} change={this.getArchive} bin={this.binNote} getRem={this.getRemainder} layout={this.state.close}/>
+                    <Archive archiveNotes={arrNotes} la={this.getLabels} change={this.getArchive} bin={this.binNote} getRem={this.getRemainder} layout={this.state.close}/>
                 )
             }
         })
@@ -240,19 +260,19 @@ class Home extends Component {
                 count++;
                 pinCount++;
                 return (
-                    <Pin pinNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close}/>
+                    <Pin pinNotes={arrNotes} la={this.getLabels} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close}/>
                 )
             }
         })
         let count1 = 0;
-        let labelObj = this.state.allNotes.map(arrNotes => {
+        let labelObj = this.state.labelNote.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
             count1++
             for (let i = 0; i < this.state.labelNotes.length; i++) {
                 if (arrNotes.data().notelabel === this.state.labelNotes[i] && this.state.panalChange === this.state.labelNotes[i]) {
                     count1 = 0;
                     return (
-                        <Label labelNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close} />
+                        <Label labelNotes={arrNotes} la={this.getLabels} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close} />
                     )
                 }
                 else if (arrNotes.data().notelabel !== this.state.labelNotes[i])
@@ -295,6 +315,9 @@ class Home extends Component {
                                     </IconButton>
                                 </Toolbar>
                                 <Typography
+                                    style={{
+                                        margin:"0px"
+                                    }}
                                     noWrap
                                     class="appname_decor"
                                 >
@@ -317,11 +340,7 @@ class Home extends Component {
                                 />
                             </div>
                             <div className="acc_decor">
-                                <Toolbar
-                                    style={{
-                                        padding: "4px",
-
-                                    }}
+                                <Toolbar id="toolbar"
                                     color="inherit"
                                 >
                                     <div className="menu_name">
@@ -350,7 +369,12 @@ class Home extends Component {
                                         src={bunny}
                                         alt="u"
                                     />
-                                    <div>
+                                    
+                                </Toolbar>
+                            </div>
+                        </AppBar>
+                    </div>
+                    <div>
                                         <Menu
                                             keepMounted
                                             style={{
@@ -407,10 +431,6 @@ class Home extends Component {
                                             </div>
                                         </Menu>
                                     </div>
-                                </Toolbar>
-                            </div>
-                        </AppBar>
-                    </div>
                     <Drawers
                         label={this.state.labelNotes}
                         panel={this.changePanalName}
