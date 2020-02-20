@@ -108,7 +108,7 @@ class UserNotes extends Component {
             remOpen: false,
             width: "",
             cardWidth: '',
-            displayIcon: false,
+            displayIcon: "hidden",
             border: "none"
         }
     }
@@ -326,8 +326,6 @@ class UserNotes extends Component {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
-        console.log(data.id, "doc id");
-
         userServices.binNotes(data)
         this.props.get();
         this.props.bin();
@@ -441,7 +439,7 @@ class UserNotes extends Component {
             width: props.layout,
             title: props.allNotes.data().title,
             content: props.allNotes.data().notes,
-            backcolor: props.allNotes.data().backcolor,
+            backcolor: props.allNotes.data().inputbcolor,
             inputbcolor: props.allNotes.data().inputbcolor,
             trash: props.allNotes.data().trash,
             docId: props.allNotes.id,
@@ -480,30 +478,27 @@ class UserNotes extends Component {
         })
         if (this.state.change) {
             return (
-                <ClickAwayListener onClickAway={this.handleClickAway}>
                 <MuiThemeProvider>
-                    
-                    <Card
+                    <Card id="card"
                         onMouseEnter={() => {
                             this.setState({
-                                displayIcon: true,
+                                displayIcon: "",
                                 border: "0px 0px 3px 1px"
                             })
                         }}
                         onMouseLeave={() => {
                             this.setState({
-                                displayIcon: false,
+                                displayIcon: "hidden",
                                 border: "none"
                             })
                         }}
                         style={{
                             width: this.state.cardWidth,
                             height: "fit-content",
-                            minHeight:"22vh",
                             borderRadius: "10px",
                             border: "1px solid lightgray",
                             backgroundColor: this.state.inputbcolor,
-                            margin: "2%",
+                            margin:"3px",
                             flexWrap: "nowrap",
                             padding: "10px",
                             boxShadow: this.state.border
@@ -517,7 +512,10 @@ class UserNotes extends Component {
                             }}
                                 className="title_pin1">
                                 <Typography variant="h5">{this.state.title}</Typography>
-                                {this.state.displayIcon ? <Tooltip title="Pin it">
+                                <div style={{
+                                    visibility:this.state.displayIcon
+                                }}>
+                                <Tooltip title="Pin it">
                                     <IconButton onClick={async () => {
                                         await this.setState({
                                             pin: true
@@ -527,7 +525,8 @@ class UserNotes extends Component {
                                         <PinDropOutlinedIcon
                                             fontSize="small" />
                                     </IconButton>
-                                </Tooltip> : <div></div>}
+                                    </Tooltip>
+                                    </div>
                             </div>
                             <div onClick={() => {
                                 this.setState({
@@ -543,7 +542,11 @@ class UserNotes extends Component {
                                     value={this.state.content}
                                 ></InputBase>
                             </div>
-                            {this.state.displayIcon ? <div className="arrange">
+                            <div
+                                style={{
+                                    visibility:this.state.displayIcon
+                                }}
+                                className="arrange">
                                 <div className="icon_arrange">
                                     <Tooltip title="Add remainder">
                                         <IconButton onClick={(event) => {
@@ -589,7 +592,7 @@ class UserNotes extends Component {
                                     </Tooltip>
 
                                 </div>
-                            </div> : <div></div>}
+                            </div>
                             <Menu
                                 open={this.state.cardOpen}
                                 anchorEl={this.state.cardanchorEl}
@@ -715,7 +718,6 @@ class UserNotes extends Component {
                         </div>
                         </Card>
                 </MuiThemeProvider>
-                </ClickAwayListener>
             )
         }
         else {

@@ -93,7 +93,7 @@ class Remainder extends Component {
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            backcolor: this.props.remNotes.data().backcolor,
+            backcolor: this.props.remNotes.data().inputbcolor,
             inputbcolor: this.props.remNotes.data().inputbcolor,
             docId: this.props.remNotes.id,
             pin: this.props.remNotes.data().pin,
@@ -107,13 +107,14 @@ class Remainder extends Component {
             width: "",
             cardWidth: "",
             border: "none",
+            displayIcon:"hidden"
         }
     }
     async componentWillReceiveProps(props) {
         await this.setState({
-            width:props.layout
+            width: props.layout
         })
-        if (this.state.width===true) {
+        if (this.state.width === true) {
             this.setState({
                 cardWidth: "40%"
             })
@@ -151,7 +152,7 @@ class Remainder extends Component {
             .catch((err) => {
                 console.log(err);
             })
-            this.props.la();
+        this.props.la();
         this.props.get();
         this.props.bin();
         this.props.pin();
@@ -492,13 +493,13 @@ class Remainder extends Component {
                 <Card id="card"
                     onMouseEnter={() => {
                         this.setState({
-                            displayIcon: true,
+                            displayIcon: "",
                             border: "0px 0px 3px 1px"
                         })
                     }}
                     onMouseLeave={() => {
                         this.setState({
-                            displayIcon: false,
+                            displayIcon: "hidden",
                             border: "none"
                         })
                     }}
@@ -508,7 +509,7 @@ class Remainder extends Component {
                         minHeight: "22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
-                        margin: "2%",
+                        margin: "3px",
                         flexWrap: "nowrap",
                         backgroundColor: this.state.inputbcolor,
                         padding: "10px",
@@ -524,7 +525,10 @@ class Remainder extends Component {
                             }}
                             className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
-                            {this.state.displayIcon ? <Tooltip title="Pin it">
+                            <div style={{
+                                visibility:this.state.displayIcon
+                            }}>
+                            <Tooltip title="Pin it">
                                 <IconButton onClick={async () => {
                                     await this.setState({
                                         pin: true
@@ -534,7 +538,8 @@ class Remainder extends Component {
                                     <PinDropOutlinedIcon
                                         fontSize="small" />
                                 </IconButton>
-                            </Tooltip> : <div></div>}
+                                </Tooltip>
+                                </div>
                         </div>
                         <div
                             onClick={() => {
@@ -582,7 +587,11 @@ class Remainder extends Component {
                         </Tooltip>
 
                     </div>
-                    {this.state.displayIcon ? <div className="arrange">
+                    <div
+                        style={{
+                            visibility:this.state.displayIcon
+                        }}
+                        className="arrange">
                         <div className="icon_arrange">
                             <Tooltip title="Add remainder">
                                 <IconButton onClick={(event) => {
@@ -628,7 +637,7 @@ class Remainder extends Component {
                             </Tooltip>
 
                         </div>
-                    </div> : <div></div>}
+                    </div>
                     <Menu
                         open={this.state.cardOpen}
                         anchorEl={this.state.cardanchorEl}

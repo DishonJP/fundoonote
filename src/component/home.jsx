@@ -208,7 +208,6 @@ class Home extends Component {
         let pinCount = 0;
         let otherCount = 0;
         let searchCount = 0;
-        let labelCount = 0;
         let searchObj=this.state.searchNotes.map(arrNotes=>{
             if(((arrNotes.data().title).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notes).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notelabel).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase()))) && this.state.search!==""){
                 searchCount++;
@@ -218,7 +217,7 @@ class Home extends Component {
             }
         })
         let notesObj = this.state.allNotes.map(arrNotes => {
-            console.log(arrNotes.data().trash, arrNotes.data().archive, "all notes");
+            console.log(arrNotes.data().trash, arrNotes.data().archive, "all notes...........................................");
             if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '' && arrNotes.data().remainder==="") {
                 otherCount++;
                 return (
@@ -272,12 +271,12 @@ class Home extends Component {
                 if (arrNotes.data().notelabel === this.state.labelNotes[i] && this.state.panalChange === this.state.labelNotes[i]) {
                     count1 = 0;
                     return (
-                        <Label labelNotes={arrNotes} la={this.getLabels} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close} />
+                        <Label labelNotes={arrNotes} la={this.getLabels} pin={this.pinNote} bin={this.binNote} archive={this.getArchive} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} layout={this.state.close} />
                     )
                 }
                 else if (arrNotes.data().notelabel !== this.state.labelNotes[i])
                 { 
-                    if (count1===this.state.allNotes.length-1) {
+                    if (count1===this.state.allNotes.length-1 && arrNotes!=="") {
                         count1 = 0;
                         return (
                             <EmptyLabel/>
@@ -285,7 +284,6 @@ class Home extends Component {
                     }
                 }
             }
-            
             });
         let remObj = this.state.remNotes.map(arrNotes => {
             console.log(arrNotes.data().notelabel, "label notes");
@@ -306,6 +304,10 @@ class Home extends Component {
                             position="fixed">
                             <div className="menu_name">
                                 <Toolbar
+                                    style={{
+                                        paddingLeft: "0px",
+                                        paddingRight:"0px"
+                                }}
                                     color="inherit"
                                 >
                                     <IconButton
@@ -452,15 +454,22 @@ class Home extends Component {
                                 </div>
                                 
                                 {count > 0?
-                                    <span className="pinText">pinned:{pinCount}</span> : <div></div>
+                                    <div style={{
+                                        marginTop: "10px",
+                                        marginLeft:"10%"
+                                    }} className="pinText">pinned:{pinCount}</div> : <div></div>
                                 }
                                 <div className={this.state.close?this.state.grid:this.state.list}>
                                     {pinObj}
                                 </div>
                                 {
                                     count > 0?
-                                        <div>
-                                            <Divider />
+                                        <div style={{
+                                            marginBottom:"20px"
+                                        }}>
+                                            <Divider style={{
+                                                marginTop:"20px"
+                                            }} />
                                             <span className="pinText">others:{otherCount}</span></div> : <div></div>
                                 }
                                 <div className={this.state.close?this.state.grid:this.state.list}>

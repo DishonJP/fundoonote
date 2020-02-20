@@ -14,6 +14,12 @@ const theme = createMuiTheme({
             paper: {
                 width: "240px",
             }
+        },
+        MuiListItem: {
+            root: {
+                borderTopRightRadius: "70px",
+                borderBottomRightRadius:"70px"
+            }
         }
     }
 }
@@ -22,14 +28,15 @@ class Drawers extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            bgcolorN: '#FFFFE0',
+            bgcolorN: '#FFA500',
             bgcolorR: '',
             bgcolorL: '',
             bgcolorE: '',
             bgcolorA: '',
             bgcolorB: '',
             nameChange: "Notes",
-            labelNotes: []
+            labelNotes: [],
+            noteId:""
         }
     }
     componentDidMount() {
@@ -56,30 +63,31 @@ class Drawers extends Component {
         let filterArr = arrData.filter((index, data) => {
             return arrData.indexOf(index) == data
         })
-        let labelObj = filterArr.map(arrNotes => {
+        let labelObj = filterArr.map((arrNotes,index) => {
+            
             return (
-                <div className="noteIcon_decor">
+                <div
+                    className="noteIcon_decor">
                     <ListItem
-                        style={{
-                            flexGrow:"1"
-                        }}
                         button
                         onClick={async () => {
-                            await this.setState({
-                                bgcolorN: '',
-                                bgcolorR: '',
-                                bgcolorL: '#FFFFE0',
-                                bgcolorE: '',
-                                bgcolorA: '',
-                                bgcolorB: '',
-                                nameChange: arrNotes
-                            })
-                            this.props.panel(this.state.nameChange)
-                        }}
+                                await this.setState({
+                                    bgcolorN: '',
+                                    bgcolorR: '',
+                                    bgcolorL: '#FFA500',
+                                    bgcolorE: '',
+                                    bgcolorA: '',
+                                    bgcolorB: '',
+                                    nameChange: arrNotes,
+                                    noteId: index
+                                })
+                                this.props.panel(this.state.nameChange)
+                            }
+                        }
                         style={{
+                            flexGrow: "1",
                             backgroundColor: this.state.bgcolorL
-                        }}
-                    >
+                        }}>
                         <ListItemIcon>
                             <LabelOutlinedIcon />
                         </ListItemIcon>
@@ -118,7 +126,7 @@ class Drawers extends Component {
                                 button
                                 onClick={async () => {
                                     await this.setState({
-                                        bgcolorN: '#FFFFE0',
+                                        bgcolorN: '#FFA500',
                                         bgcolorR: '',
                                         bgcolorL: '',
                                         bgcolorE: '',
@@ -146,7 +154,7 @@ class Drawers extends Component {
                                 onClick={async () => {
                                     await this.setState({
                                         bgcolorN: '',
-                                        bgcolorR: '#FFFFE0',
+                                        bgcolorR: '#FFA500',
                                         bgcolorL: '',
                                         bgcolorE: '',
                                         bgcolorA: '',
@@ -179,7 +187,7 @@ class Drawers extends Component {
                                             bgcolorN: '',
                                             bgcolorR: '',
                                             bgcolorL: '',
-                                            bgcolorE: '#FFFFE0',
+                                            bgcolorE: '#FFA500',
                                             bgcolorA: '',
                                             bgcolorB: '',
                                             nameChange: "Edit Label"
@@ -210,7 +218,7 @@ class Drawers extends Component {
                                         bgcolorR: '',
                                         bgcolorL: '',
                                         bgcolorE: '',
-                                        bgcolorA: '#FFFFE0',
+                                        bgcolorA: '#FFA500',
                                         bgcolorB: '',
                                         nameChange: "Archive"
                                     })
@@ -238,7 +246,7 @@ class Drawers extends Component {
                                         bgcolorL: '',
                                         bgcolorE: '',
                                         bgcolorA: '',
-                                        bgcolorB: 'lightgray',
+                                        bgcolorB: '#FFA500',
                                         nameChange: "Bin"
                                     })
                                     this.props.panel(this.state.nameChange)

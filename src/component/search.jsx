@@ -93,7 +93,7 @@ class Search extends Component {
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            backcolor: this.props.searchNotes.data().backcolor,
+            backcolor: this.props.searchNotes.data().inputbcolor,
             inputbcolor: this.props.searchNotes.data().inputbcolor,
             docId: this.props.searchNotes.id,
             pin: this.props.searchNotes.data().pin,
@@ -107,7 +107,7 @@ class Search extends Component {
             width: this.props.layout,
             cardWidth: "",
             border: "none",
-
+            displayIcon:"hidden"
         }
     }
     handleClickAway=()=>{
@@ -461,24 +461,22 @@ class Search extends Component {
         })
         if (this.state.change) {
             return (
-                <ClickAwayListener onClickAway={this.handleClickAway}>
                 <Card id="card"
                     onMouseEnter={() => {
                         this.setState({
-                            displayIcon: true,
+                            displayIcon: "",
                             border: "0px 0px 3px 1px"
                         })
                     }}
                     onMouseLeave={() => {
                         this.setState({
-                            displayIcon: false,
+                            displayIcon: "hidden",
                             border: "none"
                         })
                     }}
                     style={{
                         width: this.state.cardWidth,
                         height: "fit-content",
-                        minHeight: "22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
                         margin: "2%",
@@ -497,7 +495,10 @@ class Search extends Component {
                             }}
                             className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
-                            {this.state.displayIcon ? <Tooltip title="Pin it">
+                            <div style={{
+                                visibility:this.state.displayIcon
+                            }}>
+                            <Tooltip title="Pin it">
                                 <IconButton onClick={async () => {
                                     await this.setState({
                                         pin: true
@@ -507,7 +508,8 @@ class Search extends Component {
                                     <PinDropOutlinedIcon
                                         fontSize="small" />
                                 </IconButton>
-                            </Tooltip> : <div></div>}
+                                </Tooltip>
+                                </div>
                         </div>
                         <div
                             onClick={() => {
@@ -555,7 +557,11 @@ class Search extends Component {
                         </Tooltip>
 
                     </div> : <div></div>}
-                    {this.state.displayIcon ? <div className="arrange">
+                    <div
+                        style={{
+                            visibility:this.state.displayIcon
+                        }}
+                        className="arrange">
                         <div className="icon_arrange">
                             <Tooltip title="Add remainder">
                                 <IconButton onClick={(event) => {
@@ -601,7 +607,7 @@ class Search extends Component {
                             </Tooltip>
 
                         </div>
-                    </div> : <div></div>}
+                    </div>
                     <Menu
                         open={this.state.cardOpen}
                         anchorEl={this.state.cardanchorEl}
@@ -728,7 +734,6 @@ class Search extends Component {
                             </MenuItem>
                     </Menu>
                 </Card>
-                </ClickAwayListener>
             )
         }
         else {

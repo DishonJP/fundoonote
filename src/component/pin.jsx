@@ -104,7 +104,8 @@ class Pin extends Component {
             pin: this.props.pinNotes.data().pin,
             border:"none",
             remOpen:false,
-            remAnchorEl:null
+            remAnchorEl: null,
+            displayIcon:"hidden"
         }
     }
     handleClickLabel = (event) => {
@@ -470,13 +471,13 @@ class Pin extends Component {
                 <Card
                     onMouseEnter={() => {
                         this.setState({
-                            displayIcon: true,
+                            displayIcon: "",
                             border:"0px 0px 3px 1px"
                         })
                     }}
                     onMouseLeave={() => {
                         this.setState({
-                            displayIcon: false,
+                            displayIcon: "hidden",
                             border:"none"
                         })
                     }}
@@ -486,7 +487,7 @@ class Pin extends Component {
                         minHeight:"22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
-                        margin: "2%",
+                        margin: "3px",
                         flexWrap: "nowrap",
                         backgroundColor: this.state.inputbcolor,
                         padding: "10px",
@@ -501,7 +502,10 @@ class Pin extends Component {
                         }}
                             className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
-                            {this.state.displayIcon ? <Tooltip title="Pin it">
+                            <div style={{
+                                visibility:this.state.displayIcon
+                            }}>
+                            <Tooltip title="Pin it">
                                 <IconButton onClick={async () => {
                                     await this.setState({
                                         pin: true
@@ -511,7 +515,8 @@ class Pin extends Component {
                                     <PinDropOutlinedIcon
                                         fontSize="small" />
                                 </IconButton>
-                            </Tooltip> : <div></div>}
+                                </Tooltip>
+                                </div>
                         </div>
                         <div
                             onClick={() => {
@@ -559,7 +564,11 @@ class Pin extends Component {
                         </Tooltip>
 
                     </div>:<div></div>}
-                        {this.state.displayIcon ? <div className="arrange">
+                        <div
+                            style={{
+                                visibility:this.state.displayIcon
+                            }}
+                            className="arrange">
                             <div className="icon_arrange">
                                 <Tooltip title="Add remainder">
                                     <IconButton onClick={(event) => {
@@ -598,14 +607,12 @@ class Pin extends Component {
                                                 menuanchorEl: event.currentTarget,
                                                 menuOpen: true
                                             })
-                                        }}
-                                    >
+                                        }}>
                                         <MoreVertOutlinedIcon fontSize="small" />
                                     </IconButton>
                                 </Tooltip>
-
                             </div>
-                        </div> : <div></div>}
+                        </div>
                         <Menu
                             open={this.state.cardOpen}
                             anchorEl={this.state.cardanchorEl}
