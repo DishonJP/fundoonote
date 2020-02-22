@@ -90,23 +90,24 @@ class Archive extends React.Component {
             content: this.props.archiveNotes.data().notes,
             cardOpen: false,
             cardanchorEl: null,
-            trash: false,
+            trash: this.props.archiveNotes.data().trash,
             backcolor: this.props.archiveNotes.data().inputbcolor,
             inputbcolor: this.props.archiveNotes.data().inputbcolor,
             docId: this.props.archiveNotes.id,
             pin: this.props.archiveNotes.data().pin,
             notelabel: this.props.archiveNotes.data().notelabel,
+            remainder:this.props.archiveNotes.data().remainder,
             width: "",
             cardWidth: "",
             displayIcon: "hidden",
             border: "none"
         }
     }
-    async componentWillReceiveProps(props) {
-        await this.setState({
+    componentWillReceiveProps(props) {
+       this.setState({
             width: props.layout
         })
-        if (this.state.width === true) {
+        if (props.layout === true) {
             this.setState({
                 cardWidth: "40%"
             })
@@ -124,6 +125,26 @@ class Archive extends React.Component {
             labelAnchorEl: event.currentTarget
         })
     }
+    handleArchive = async () => {
+        await this.setState({
+            archive:false
+        })
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data);
+        this.props.get();
+        this.props.la();
+    }
     handleAddLabel = () => {
         const data = {
             title: this.state.title,
@@ -140,10 +161,7 @@ class Archive extends React.Component {
         userServices.binNotes(data);
         userServices.addLabel(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
         this.props.la();
-        this.props.label();
         this.setState({
             labelMenu: false
         })
@@ -164,11 +182,6 @@ class Archive extends React.Component {
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
             this.props.get();
-            this.props.bin();
-            this.props.pin();
-            this.props.label();
-            this.props.archive();
-            this.props.getRem();
             this.props.la();
         })
             .catch((err) => {
@@ -194,16 +207,8 @@ class Archive extends React.Component {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
-        console.log(data.id, "doc id");
-
         userServices.binNotes(data)
-
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
         this.props.la();
     }
     handleOnClick = (event) => {
@@ -328,7 +333,7 @@ class Archive extends React.Component {
                                         <InsertPhotoOutlinedIcon fontSize="small" />
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Archive">
+                                <Tooltip title="UnArchive">
                                     <IconButton onClick={this.handleArchive}>
                                         <ArchiveOutlinedIcon fontSize="small" />
                                     </IconButton>
@@ -557,8 +562,8 @@ class Archive extends React.Component {
                                                     <InsertPhotoOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip title="Archive">
-                                                <IconButton>
+                                            <Tooltip title="UnArchive">
+                                                <IconButton onClick={this.handleArchive}>
                                                     <ArchiveOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>

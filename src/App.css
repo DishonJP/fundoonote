@@ -428,9 +428,10 @@ margin-top: 40px;
   flex-wrap: wrap;
 }
 .usernotes_decor{
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  margin-left: 10%;
+  justify-content: center;
 }
 .usersNote_decor{
   display: flex;
@@ -446,7 +447,7 @@ margin-top: 40px;
 }
 .remain_decor{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 .label_close{

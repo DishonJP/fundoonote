@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, InputBase, IconButton, Button, Tooltip, Grid, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField, ClickAwayListener } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField} from '@material-ui/core'
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
@@ -33,7 +33,7 @@ const theme = createMuiTheme({
         }
     }
 })
-var colorArray = [
+const colorArray = [
     {
         colors: "#7FDBFF",
         bcolor: "lightblue"
@@ -138,11 +138,6 @@ class UserNotes extends Component {
 
         })
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
         this.props.la();
         this.setState({
             dialogOpen: false
@@ -173,11 +168,6 @@ class UserNotes extends Component {
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -185,7 +175,7 @@ class UserNotes extends Component {
                             remOpen: false,
                         })
                         break;
-                    } else if (da.getFullYear() == daata) {
+                    } else if (da.getFullYear() === daata) {
                         daata = '';
                         continue;
                     }
@@ -200,11 +190,6 @@ class UserNotes extends Component {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -213,7 +198,7 @@ class UserNotes extends Component {
                         })
                         break;
                     }
-                    else if (da.getMonth() + 1 == daata) {
+                    else if (da.getMonth() + 1 === daata) {
                         daata = '';
                         continue;
                     }
@@ -227,13 +212,7 @@ class UserNotes extends Component {
                 if (i === 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -253,16 +232,10 @@ class UserNotes extends Component {
             }
             if (i > 10 && i < 13) {
                 daata += this.state.remainder[i];
-                if (i == 12) {
+                if (i === 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -271,7 +244,7 @@ class UserNotes extends Component {
                         })
                         break;
                     }
-                    else if (da.getHours() == daata) {
+                    else if (da.getHours() === daata) {
                         daata = '';
                         continue;
                     }
@@ -282,16 +255,10 @@ class UserNotes extends Component {
             }
             if (i > 13 && i < this.state.remainder.length) {
                 daata += this.state.remainder[i];
-                if (i == (this.state.remainder.length - 1)) {
+                if (i === (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -328,11 +295,6 @@ class UserNotes extends Component {
         }
         userServices.binNotes(data)
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
         this.props.la();
     }
     handleOnClick = (event) => {
@@ -357,17 +319,11 @@ class UserNotes extends Component {
         }
         userServices.binNotes(data).then((res) => {
             console.log(res, "done update");
-
         })
             .catch((err) => {
                 console.log(err);
             })
-
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
         this.props.la();
         this.setState({
             labelMenu: false,
@@ -396,10 +352,6 @@ class UserNotes extends Component {
                 console.log(err);
             })
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
         this.props.la();
     }
     handleAddLabel = () => {
@@ -418,10 +370,7 @@ class UserNotes extends Component {
         userServices.binNotes(data);
         userServices.addLabel(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
         this.props.la();
-        this.props.label();
         this.setState({
             labelMenu: false
         })
@@ -434,7 +383,7 @@ class UserNotes extends Component {
             labelAnchorEl: event.currentTarget
         })
     }
-     componentWillReceiveProps(props) {
+     UNSAFE_componentWillReceiveProps(props) {
          this.setState({
             width: props.layout,
             title: props.allNotes.data().title,

@@ -121,11 +121,6 @@ class Notes extends Component {
                 console.log(err);
             })
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
         this.setState({
             change: true,
             title: "",
@@ -166,17 +161,12 @@ class Notes extends Component {
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
                 daata = daata + this.state.remainder[i];
-                if (i == 3) {
+                if (i === 3) {
                     console.log(daata);
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.addNote(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             change: true,
                             title: "",
@@ -198,7 +188,7 @@ class Notes extends Component {
                             trash: false
                         })
                         break;
-                    } else if (da.getFullYear() == daata) {
+                    } else if (da.getFullYear() === daata) {
                         daata = '';
                         continue;
                     }
@@ -209,15 +199,10 @@ class Notes extends Component {
             }
             if (i > 4 && i < 7) {
                 daata += this.state.remainder[i];
-                if (i == 6) {
+                if (i === 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.addNote(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             change: true,
                             title: "",
@@ -240,7 +225,7 @@ class Notes extends Component {
                         })
                         break;
                     }
-                    else if (da.getMonth() + 1 == daata) {
+                    else if (da.getMonth() + 1 === daata) {
                         daata = '';
                         continue;
                     }
@@ -251,15 +236,10 @@ class Notes extends Component {
             }
             if (i > 7 && i < 10) {
                 daata += this.state.remainder[i];
-                if (i == 9) {
+                if (i === 9) {
                     if (da.getDay() < daata) {
                         userServices.addNote(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             change: true,
                             title: "",
@@ -282,7 +262,7 @@ class Notes extends Component {
                         })
                         break;
                     }
-                    else if (da.getDay() == daata) {
+                    else if (da.getDay() === daata) {
                         daata = '';
                         continue;
                     }
@@ -293,15 +273,10 @@ class Notes extends Component {
             }
             if (i > 10 && i < 13) {
                 daata += this.state.remainder[i];
-                if (i == 12) {
+                if (i === 12) {
                     if (da.getHours() < daata) {
                         userServices.addNote(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             change: true,
                             title: "",
@@ -324,7 +299,7 @@ class Notes extends Component {
                         })
                         break;
                     }
-                    else if (da.getHours() == daata) {
+                    else if (da.getHours() === daata) {
                         daata = '';
                         continue;
                     }
@@ -335,15 +310,10 @@ class Notes extends Component {
             }
             if (i > 13 && i < this.state.remainder.length) {
                 daata += this.state.remainder[i];
-                if (i == (this.state.remainder.length - 1)) {
+                if (i === (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.addNote(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             change: true,
                             title: "",
@@ -403,11 +373,6 @@ class Notes extends Component {
             userServices.addLabel(data);
         }
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
         this.setState({
             change: true,
             title: "",
@@ -467,19 +432,12 @@ class Notes extends Component {
             }
             userServices.addNote(data).then((res) => {
                 console.log(res, "ajhskdjhaksdh211342455");
-
             })
                 .catch((err) => {
                     console.log(err);
                 })
-
         }
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
         await this.setState({
             change: true,
             title: "",
@@ -519,11 +477,6 @@ class Notes extends Component {
         userServices.addNote(data).then((res) => {
             console.log("done");
             this.props.get();
-            this.props.bin();
-            this.props.pin();
-            this.props.label();
-            this.props.archive();
-            this.props.getRem();
         })
         this.setState({
             change: true,
@@ -552,12 +505,12 @@ class Notes extends Component {
                 <IconButton
                     onClick={() => {
                         this.setState({
-                            backcolor: color.colors,
+                            backcolor: color.bcolor,
                             inputbcolor: color.bcolor
                         })
                     }}
                     style={{
-                        backgroundColor: color.colors
+                        backgroundColor: color.bcolor
                     }}
                 >
                 </IconButton>
@@ -617,6 +570,7 @@ class Notes extends Component {
                         <div>
                             <div className="title_pin">
                                 <InputBase
+                                    onFocus
                                     style={{
                                         backgroundColor: this.state.inputbcolor,
                                         borderRadius: "5px",

@@ -11,9 +11,9 @@ class EmptyLabel extends Component{
                 flexDirection: "column",
                 opacity:"0.8"
             }}>
-                <img style={{   
-                    height:"455px"
-                }} src={label} />
+                <img style={{
+                    height: "455px"
+                }} src={label} alt="lol"/>
                 <Typography variant="h4">No Notes are available in current label</Typography>
         </div>
     )

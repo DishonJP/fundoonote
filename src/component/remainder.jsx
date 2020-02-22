@@ -88,18 +88,18 @@ class Remainder extends Component {
             dialogopen: false,
             menuanchorEl: null,
             menuOpen: false,
-            title: this.props.remNotes.data().title,
-            content: this.props.remNotes.data().notes,
+            title: "",
+            content: "",
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            backcolor: this.props.remNotes.data().inputbcolor,
-            inputbcolor: this.props.remNotes.data().inputbcolor,
-            docId: this.props.remNotes.id,
-            pin: this.props.remNotes.data().pin,
-            label: this.props.remNotes.data().notelabel,
-            remainder: this.props.remNotes.data().remainder,
-            archive: this.props.remNotes.data().archive,
+            backcolor:"",
+            inputbcolor: "",
+            docId: "",
+            pin: "",
+            label: "",
+            remainder: "",
+            archive: "",
             remOpen: false,
             remAnchorEl: null,
             labelMenu: false,
@@ -107,8 +107,21 @@ class Remainder extends Component {
             width: "",
             cardWidth: "",
             border: "none",
-            displayIcon:"hidden"
+            displayIcon: "hidden"
         }
+    }
+    UNSAFE_componentWillReceiveProps(props) {
+        this.setState({
+            pin: props.remNotes.data().pin,
+            label: props.remNotes.data().notelabel,
+            remainder: props.remNotes.data().remainder,
+            archive: props.remNotes.data().archive,
+            backcolor: props.remNotes.data().inputbcolor,
+            inputbcolor: props.remNotes.data().inputbcolor,
+            docId: props.remNotes.id,
+            title: props.remNotes.data().title,
+            content: props.remNotes.data().notes,
+        })
     }
     async componentWillReceiveProps(props) {
         await this.setState({
@@ -154,9 +167,6 @@ class Remainder extends Component {
             })
         this.props.la();
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
     }
     handleMenuClick = async () => {
         await this.setState({
@@ -176,16 +186,9 @@ class Remainder extends Component {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
-        console.log(data.id, "doc id");
-
         userServices.binNotes(data)
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
         this.props.la();
-        this.props.getRem();
     }
     handleRemainder = () => {
         let date = Date.now();
@@ -206,18 +209,12 @@ class Remainder extends Component {
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
                 daata += this.state.remainder[i];
-                if (i == 3) {
+                if (i === 3) {
                     console.log(daata);
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -225,7 +222,7 @@ class Remainder extends Component {
                             remOpen: false,
                         })
                         break;
-                    } else if (da.getFullYear() == daata) {
+                    } else if (da.getFullYear() === daata) {
                         daata = '';
                         continue;
                     }
@@ -236,16 +233,10 @@ class Remainder extends Component {
             }
             if (i > 4 && i < 7) {
                 daata += this.state.remainder[i];
-                if (i == 6) {
+                if (i === 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -254,7 +245,7 @@ class Remainder extends Component {
                         })
                         break;
                     }
-                    else if (da.getMonth() + 1 == daata) {
+                    else if (da.getMonth() + 1 === daata) {
                         daata = '';
                         continue;
                     }
@@ -265,16 +256,10 @@ class Remainder extends Component {
             }
             if (i > 7 && i < 10) {
                 daata += this.state.remainder[i];
-                if (i == 9) {
+                if (i === 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -283,7 +268,7 @@ class Remainder extends Component {
                         })
                         break;
                     }
-                    else if (da.getDay() == daata) {
+                    else if (da.getDay() === daata) {
                         daata = '';
                         continue;
                     }
@@ -294,16 +279,10 @@ class Remainder extends Component {
             }
             if (i > 10 && i < 13) {
                 daata += this.state.remainder[i];
-                if (i == 12) {
+                if (i === 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -312,7 +291,7 @@ class Remainder extends Component {
                         })
                         break;
                     }
-                    else if (da.getHours() == daata) {
+                    else if (da.getHours() === daata) {
                         daata = '';
                         continue;
                     }
@@ -323,16 +302,10 @@ class Remainder extends Component {
             }
             if (i > 13 && i < this.state.remainder.length) {
                 daata += this.state.remainder[i];
-                if (i == (this.state.remainder.length - 1)) {
+                if (i === (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -370,11 +343,7 @@ class Remainder extends Component {
                 console.log(err);
             })
         this.props.get();
-        this.props.bin();
         this.props.la();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
     }
     handleAddLabel = () => {
         const data = {
@@ -392,12 +361,7 @@ class Remainder extends Component {
         userServices.binNotes(data);
         userServices.addLabel(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
         this.props.la();
-        this.props.getRem();
         this.setState({
             dialogOpen: false,
             labelMenu: false
@@ -429,12 +393,7 @@ class Remainder extends Component {
         console.log(data.pin);
         userServices.binNotes(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
         this.props.la();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
     }
     removeRemainder = async () => {
         await this.setState({
@@ -456,12 +415,7 @@ class Remainder extends Component {
         userServices.binNotes(data);
 
         this.props.get();
-        this.props.bin();
-        this.props.pin();
         this.props.la();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
     }
     addMenuLabel = (event) => {
         this.setState({
@@ -526,20 +480,20 @@ class Remainder extends Component {
                             className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
                             <div style={{
-                                visibility:this.state.displayIcon
+                                visibility: this.state.displayIcon
                             }}>
-                            <Tooltip title="Pin it">
-                                <IconButton onClick={async () => {
-                                    await this.setState({
-                                        pin: true
-                                    });
-                                    this.handlePin()
-                                }}>
-                                    <PinDropOutlinedIcon
-                                        fontSize="small" />
-                                </IconButton>
+                                <Tooltip title="Pin it">
+                                    <IconButton onClick={async () => {
+                                        await this.setState({
+                                            pin: true
+                                        });
+                                        this.handlePin()
+                                    }}>
+                                        <PinDropOutlinedIcon
+                                            fontSize="small" />
+                                    </IconButton>
                                 </Tooltip>
-                                </div>
+                            </div>
                         </div>
                         <div
                             onClick={() => {
@@ -589,7 +543,7 @@ class Remainder extends Component {
                     </div>
                     <div
                         style={{
-                            visibility:this.state.displayIcon
+                            visibility: this.state.displayIcon
                         }}
                         className="arrange">
                         <div className="icon_arrange">
@@ -830,7 +784,11 @@ class Remainder extends Component {
                                         }}>
                                             <Typography>{this.state.label}</Typography>
                                             <Tooltip title="remove label">
-                                                <IconButton onClick={this.removeLabel}>
+                                                <IconButton
+                                                    style={{
+                                                        padding: "3px"
+                                                    }}
+                                                    onClick={this.removeLabel}>
                                                     <CloseIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
@@ -838,28 +796,18 @@ class Remainder extends Component {
                                         <div className="label_close" style={{
                                             backgroundColor: this.state.inputbcolor
                                         }}>
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "center",
-                                                    flexWrap: "wrap"
-                                                }}
-                                                onClick={(event) => {
-                                                    this.setState({
-                                                        remOpen: true,
-                                                        remAnchorEl: event.currentTarget
-                                                    })
-                                                }}>
-                                                <AccessAlarmIcon />
-                                                <Typography>{this.state.remainder}</Typography>
+                                            <AccessAlarmIcon />
+                                            <Typography>{this.state.remainder}</Typography>
+                                            <Tooltip title="remove remainder">
+                                                <IconButton
+                                                    style={{
+                                                        padding: "3px"
+                                                    }}
+                                                    onClick={this.removeRemainder}>
+                                                    <CloseIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
 
-
-                                                <Tooltip title="remove remainder">
-                                                    <IconButton onClick={this.removeLabel}>
-                                                        <CloseIcon fontSize="small" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </div>
                                         </div>
                                     </div>
                                     <div className="arrange">

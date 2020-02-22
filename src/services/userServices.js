@@ -6,7 +6,6 @@ import service from '../services/constant'
 const db = firebase.firestore();
 async function userRegistration(data) {
     try {
-        console.log(data);
         const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password);
         const datas = {
             curUser:response.user.uid,
@@ -24,13 +23,12 @@ async function userRegistration(data) {
 
 async function userLogin(data) {
     try {
-        console.log("data", data);
         const datas = {
             email: data.email,
             password: data.password,
         }
         const response = await fire.auth().signInWithEmailAndPassword(datas.email, datas.password)
-        const userDetails = await service.firestore.collection("users").doc(response.user.uid).get().then(async function (doc) {
+        await service.firestore.collection("users").doc(response.user.uid).get().then(async function (doc) {
             const userData = {
                 email: service.firebaseAuthorization.currentUser.email,
                 fname: doc.data().firstName,
@@ -40,7 +38,7 @@ async function userLogin(data) {
             let token =await jwt.sign(userData, service.firebaseAuthorization.currentUser.uid, {
                 expiresIn:1440
             })
-            let tokenSet = localStorage.setItem('usertoken', token);
+            localStorage.setItem('usertoken', token);
             localStorage.setItem("firstName", userData.fname);
             localStorage.setItem("lastName", userData.lname);
             localStorage.setItem("email",userData.email)
@@ -53,6 +51,7 @@ async function userLogin(data) {
 async function userLogout(){
     try {
         const response = await fire.auth().currentUser.signOut();
+        localStorage.clear();
     return response;
     } catch (error) {
         return error;
@@ -105,8 +104,6 @@ async function getNote() {
     }
 }
 async function binNotes(data) {
-    console.log(data.label,data.title,data.notes,data.pin,data.trash,"label");
-    
     let datas = {
         curUser: fire.auth().currentUser.uid,
         trash: data.trash,
@@ -119,7 +116,6 @@ async function binNotes(data) {
         backcolor: data.backcolor,
         inputbcolor:data.inputbcolor
     }
-    console.log(data.label,"label/...............................");
     await db.collection("Notes").doc(data.id).update(datas).then((res) => {
        console.log(res,"how lol");
     }).catch((err) => {
@@ -128,7 +124,6 @@ async function binNotes(data) {
 }
 async function addLabel(data) {
     try {
-        console.log(data,"adfasdf");
         const datas={
             curUser: fire.auth().currentUser.uid,
                 notelabel: data.label
@@ -162,8 +157,6 @@ async function deletelabel(data) {
     await db.collection("label").doc(data.id).delete().then((res)=>console.log("done deleting"))
 }
 async function updateLabel(data) {
-    console.log(data.label,data.title,data.notes,data.pin,data.trash,"label");
-    
     let datas = {
         curUser: fire.auth().currentUser.uid,
         trash: data.trash,
@@ -176,7 +169,6 @@ async function updateLabel(data) {
         backcolor: data.backcolor,
         inputbcolor:data.inputbcolor
     }
-    console.log(data.id,"id");
     await db.collection("label").doc(data.id).update(datas).then((res) => {
        console.log(res,"how lol");
     }).catch((err) => {

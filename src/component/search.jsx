@@ -8,7 +8,7 @@ import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-import { Card, InputBase, ClickAwayListener, IconButton, Button, TextField, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase,IconButton, Button, TextField, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -211,7 +211,7 @@ class Search extends Component {
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
                 daata += this.state.remainder[i];
-                if (i == 3) {
+                if (i === 3) {
                     console.log(daata);
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
@@ -229,7 +229,7 @@ class Search extends Component {
                             remOpen: false,
                         })
                         break;
-                    } else if (da.getFullYear() == daata) {
+                    } else if (da.getFullYear() === daata) {
                         daata = '';
                         continue;
                     }
@@ -240,7 +240,7 @@ class Search extends Component {
             }
             if (i > 4 && i < 7) {
                 daata += this.state.remainder[i];
-                if (i == 6) {
+                if (i === 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
                         this.props.la();
@@ -257,7 +257,7 @@ class Search extends Component {
                         })
                         break;
                     }
-                    else if (da.getMonth() + 1 == daata) {
+                    else if (da.getMonth() + 1 === daata) {
                         daata = '';
                         continue;
                     }
@@ -268,7 +268,7 @@ class Search extends Component {
             }
             if (i > 7 && i < 10) {
                 daata += this.state.remainder[i];
-                if (i == 9) {
+                if (i === 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
                         this.props.la();
@@ -285,7 +285,7 @@ class Search extends Component {
                         })
                         break;
                     }
-                    else if (da.getDay() == daata) {
+                    else if (da.getDay() === daata) {
                         daata = '';
                         continue;
                     }
@@ -296,7 +296,7 @@ class Search extends Component {
             }
             if (i > 10 && i < 13) {
                 daata += this.state.remainder[i];
-                if (i == 12) {
+                if (i === 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
                         this.props.la();
@@ -313,7 +313,7 @@ class Search extends Component {
                         })
                         break;
                     }
-                    else if (da.getHours() == daata) {
+                    else if (da.getHours() === daata) {
                         daata = '';
                         continue;
                     }
@@ -324,7 +324,7 @@ class Search extends Component {
             }
             if (i > 13 && i < this.state.remainder.length) {
                 daata += this.state.remainder[i];
-                if (i == (this.state.remainder.length - 1)) {
+                if (i === (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
                         this.props.la();

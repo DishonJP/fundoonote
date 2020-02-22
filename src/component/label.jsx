@@ -93,7 +93,7 @@ class Label extends Component {
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            backcolor: this.props.labelNotes.data().backcolor,
+            backcolor: this.props.labelNotes.data().inputbcolor,
             inputbcolor: this.props.labelNotes.data().inputbcolor,
             docId: this.props.labelNotes.id,
             pin: this.props.labelNotes.data().pin,
@@ -103,7 +103,7 @@ class Label extends Component {
             border: "none",
             archive: this.props.labelNotes.data().archive,
             remainder: this.props.labelNotes.data().remainder,
-            displayIcon:"hidden"
+            displayIcon: "hidden"
         }
     }
     async componentWillReceiveProps(props) {
@@ -136,10 +136,7 @@ class Label extends Component {
         userServices.binNotes(data);
         userServices.addLabel(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
         this.props.la();
-        this.props.label();
         this.setState({
             labelMenu: false
         })
@@ -174,10 +171,6 @@ class Label extends Component {
             })
         this.props.la();
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.getRem();
     }
     handlePin = () => {
         const data = {
@@ -200,11 +193,7 @@ class Label extends Component {
                 console.log(err);
             })
         this.props.get();
-        this.props.bin();
-        this.props.pin();
         this.props.la();
-        this.props.label();
-        this.props.archive();
     }
     handleRemainder = () => {
         let date = Date.now();
@@ -225,25 +214,20 @@ class Label extends Component {
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
                 daata = daata + this.state.remainder[i];
-                if (i == 3) {
+                if (i === 3) {
                     console.log(daata);
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
                         this.props.la();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
                             remOpen: false,
                         })
                         break;
-                    } else if (da.getFullYear() == daata) {
+                    } else if (da.getFullYear() === daata) {
                         daata = '';
                         continue;
                     }
@@ -254,16 +238,11 @@ class Label extends Component {
             }
             if (i > 4 && i < 7) {
                 daata += this.state.remainder[i];
-                if (i == 6) {
+                if (i === 6) {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
                         this.props.la();
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -271,7 +250,7 @@ class Label extends Component {
                         })
                         break;
                     }
-                    else if (da.getMonth() + 1 == daata) {
+                    else if (da.getMonth() + 1 === daata) {
                         daata = '';
                         continue;
                     }
@@ -282,16 +261,11 @@ class Label extends Component {
             }
             if (i > 7 && i < 10) {
                 daata += this.state.remainder[i];
-                if (i == 9) {
+                if (i === 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
                         this.props.la();
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -299,7 +273,7 @@ class Label extends Component {
                         })
                         break;
                     }
-                    else if (da.getDay() == daata) {
+                    else if (da.getDay() === daata) {
                         daata = '';
                         continue;
                     }
@@ -310,16 +284,11 @@ class Label extends Component {
             }
             if (i > 10 && i < 13) {
                 daata += this.state.remainder[i];
-                if (i == 12) {
+                if (i === 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
                         this.props.la();
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -327,7 +296,7 @@ class Label extends Component {
                         })
                         break;
                     }
-                    else if (da.getHours() == daata) {
+                    else if (da.getHours() === daata) {
                         daata = '';
                         continue;
                     }
@@ -338,16 +307,11 @@ class Label extends Component {
             }
             if (i > 13 && i < this.state.remainder.length) {
                 daata += this.state.remainder[i];
-                if (i == (this.state.remainder.length - 1)) {
+                if (i === (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
                         this.props.la();
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -384,12 +348,7 @@ class Label extends Component {
         console.log(data.id, "doc id");
         userServices.binNotes(data)
         this.props.get();
-        this.props.bin();
-        this.props.pin();
         this.props.la();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
     }
     handleOnClick = (event) => {
         event.preventDefault();
@@ -417,10 +376,6 @@ class Label extends Component {
         console.log(this.state.docId);
         userServices.binNotes(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.getRem();
         this.props.la();
     }
     render() {
@@ -461,7 +416,7 @@ class Label extends Component {
                         minHeight: "22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
-                        margin:"3px",
+                        margin: "3px",
                         flexWrap: "nowrap",
                         backgroundColor: this.state.inputbcolor,
                         padding: "10px",
@@ -478,21 +433,21 @@ class Label extends Component {
                             className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
                             <div style={{
-                                visibility:this.state.displayIcon
+                                visibility: this.state.displayIcon
                             }}>
-                            <Tooltip title="Pin it">
-                                <IconButton
-                                    onClick={async () => {
-                                        await this.setState({
-                                            pin: true
-                                        });
-                                        this.handlePin()
-                                    }}>
-                                    <PinDropOutlinedIcon
-                                        fontSize="small" />
-                                </IconButton>
+                                <Tooltip title="Pin it">
+                                    <IconButton
+                                        onClick={async () => {
+                                            await this.setState({
+                                                pin: true
+                                            });
+                                            this.handlePin()
+                                        }}>
+                                        <PinDropOutlinedIcon
+                                            fontSize="small" />
+                                    </IconButton>
                                 </Tooltip>
-                                </div>
+                            </div>
                         </div>
                         <div
                             onClick={() => {
@@ -525,25 +480,25 @@ class Label extends Component {
                         </Tooltip>
                     </div>
                     {this.state.remainder !== "" ?
-                       <div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <AccessAlarmIcon />
-                        <Typography>{this.state.remainder}</Typography>
-                        <Tooltip title="remove remainder">
-                            <IconButton
-                                style={{
-                                    padding: "3px"
-                                }}
-                                onClick={this.removeRemainder}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
+                        <div className="label_close" style={{
+                            backgroundColor: this.state.inputbcolor
+                        }}>
+                            <AccessAlarmIcon />
+                            <Typography>{this.state.remainder}</Typography>
+                            <Tooltip title="remove remainder">
+                                <IconButton
+                                    style={{
+                                        padding: "3px"
+                                    }}
+                                    onClick={this.removeRemainder}>
+                                    <CloseIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
 
-                    </div> : <div></div>}
-                     <div className="arrange">
+                        </div> : <div></div>}
+                    <div className="arrange">
                         <div style={{
-                            visibility:this.state.displayIcon
+                            visibility: this.state.displayIcon
                         }} className="icon_arrange">
                             <Tooltip title="Add remainder">
                                 <IconButton onClick={(event) => {
@@ -777,15 +732,37 @@ class Label extends Component {
                                         />
                                     </div>
                                     <div className="label_close" style={{
+                                        marginLeft:"3px",
                                         backgroundColor: this.state.inputbcolor
                                     }}>
                                         <Typography>{this.state.label}</Typography>
                                         <Tooltip title="remove label">
-                                            <IconButton onClick={this.removeLabel}>
+                                            <IconButton
+                                                style={{
+                                                    padding: "3px"
+                                                }}
+                                                onClick={this.removeLabel}>
                                                 <CloseIcon fontSize="small" />
                                             </IconButton>
                                         </Tooltip>
                                     </div>
+                                    {this.state.remainder !== "" ?
+                                        <div className="label_close" style={{
+                                            backgroundColor: this.state.inputbcolor
+                                        }}>
+                                            <AccessAlarmIcon />
+                                            <Typography>{this.state.remainder}</Typography>
+                                            <Tooltip title="remove remainder">
+                                                <IconButton
+                                                    style={{
+                                                        padding: "3px"
+                                                    }}
+                                                    onClick={this.removeRemainder}>
+                                                    <CloseIcon fontSize="small" />
+                                                </IconButton>
+                                            </Tooltip>
+
+                                        </div> : <div></div>}
                                     <div className="arrange">
                                         <div className="icon_arrange">
                                             <Tooltip title="Add remainder">

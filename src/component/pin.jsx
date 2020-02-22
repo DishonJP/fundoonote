@@ -93,7 +93,7 @@ class Pin extends Component {
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            backcolor: this.props.pinNotes.data().backcolor,
+            backcolor: this.props.pinNotes.data().inputbcolor,
             inputbcolor: this.props.pinNotes.data().inputbcolor,
             docId: this.props.pinNotes.id,
             notelabel: this.props.pinNotes.data().notelabel,
@@ -137,12 +137,7 @@ class Pin extends Component {
         console.log(data.id, "doc id");
         userServices.binNotes(data)
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
         this.props.la();
-        this.props.archive();
-        this.props.getRem();
 
     }
     removeLabel = async () => {
@@ -164,10 +159,6 @@ class Pin extends Component {
         console.log(this.state.docId);
         userServices.binNotes(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
-        this.props.getRem();
         this.props.la();
     }
     async componentWillReceiveProps(props) {
@@ -209,19 +200,14 @@ class Pin extends Component {
                     if (da.getFullYear() < daata) {
                         userServices.binNotes(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
                         this.props.la();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
                             remOpen: false,
                         })
                         break;
-                    } else if (da.getFullYear() == daata) {
+                    } else if (da.getFullYear() === daata) {
                         daata = '';
                         continue;
                     }
@@ -236,12 +222,7 @@ class Pin extends Component {
                     if (da.getMonth() + 1 < daata) {
                         userServices.binNotes(data);
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
                         this.props.la();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -249,7 +230,7 @@ class Pin extends Component {
                         })
                         break;
                     }
-                    else if (da.getMonth() + 1 == daata) {
+                    else if (da.getMonth() + 1 === daata) {
                         daata = '';
                         continue;
                     }
@@ -263,14 +244,8 @@ class Pin extends Component {
                 if (i === 9) {
                     if (da.getDay() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
                         this.props.la();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -289,16 +264,10 @@ class Pin extends Component {
             }
             if (i > 10 && i < 13) {
                 daata += this.state.remainder[i];
-                if (i == 12) {
+                if (i === 12) {
                     if (da.getHours() < daata) {
                         userServices.binNotes(data);
-
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.props.la();
                         this.setState({
                             remAnchorEl: null,
@@ -307,7 +276,7 @@ class Pin extends Component {
                         })
                         break;
                     }
-                    else if (da.getHours() == daata) {
+                    else if (da.getHours() === daata) {
                         daata = '';
                         continue;
                     }
@@ -318,16 +287,11 @@ class Pin extends Component {
             }
             if (i > 13 && i < this.state.remainder.length) {
                 daata += this.state.remainder[i];
-                if (i == (this.state.remainder.length - 1)) {
+                if (i === (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
                         userServices.binNotes(data);
                         this.props.la();
                         this.props.get();
-                        this.props.bin();
-                        this.props.pin();
-                        this.props.label();
-                        this.props.archive();
-                        this.props.getRem();
                         this.setState({
                             remAnchorEl: null,
                             dialogOpen: false,
@@ -348,11 +312,17 @@ class Pin extends Component {
             title: this.state.title,
             notes: this.state.content,
             id: this.state.docId,
-            trash: this.state.trash
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data).then((res) => {
-            console.log(res, "done update");
-            this.props.pin()
+            this.props.la();
+            this.props.get();
         })
             .catch((err) => {
                 console.log(err);
@@ -376,15 +346,8 @@ class Pin extends Component {
             inputbcolor: this.state.inputbcolor
         }
         userServices.binNotes(data).then((res) => {
-            console.log(res, "done update");
-           
             this.props.get();
-            this.props.bin();
-            this.props.pin();
             this.props.la();
-            this.props.label();
-            this.props.archive();
-            this.props.getRem();
         })
             .catch((err) => {
                 console.log(err);
@@ -406,12 +369,7 @@ class Pin extends Component {
         userServices.binNotes(data)
         userServices.addLabel(data);
         this.props.get();
-        this.props.bin();
         this.props.la();
-        this.props.pin();
-        this.props.label();
-        this.props.archive();
-        this.props.getRem();
         this.setState({
             labelMenu:false
         })
@@ -435,12 +393,7 @@ class Pin extends Component {
         console.log(this.state.docId);
         userServices.binNotes(data);
         this.props.get();
-        this.props.bin();
-        this.props.pin();
-        this.props.label();
         this.props.la();
-        this.props.archive();
-        this.props.getRem();
     }
     handleOnClick = (event) => {
         event.preventDefault();

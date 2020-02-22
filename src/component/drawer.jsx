@@ -48,8 +48,6 @@ class Drawers extends Component {
              this.setState({
                 labelNotes: res
             })
-            console.log(this.state.labelNotes,"label names");  
-            this.props.drawerName(this.state.labelNotes);
         })
     }
    
@@ -61,7 +59,7 @@ class Drawers extends Component {
             }
         });
         let filterArr = arrData.filter((index, data) => {
-            return arrData.indexOf(index) == data
+            return arrData.indexOf(index) === data
         })
         let labelObj = filterArr.map((arrNotes,index) => {
             
