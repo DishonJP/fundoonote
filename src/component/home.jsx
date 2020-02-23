@@ -146,20 +146,10 @@ class Home extends Component {
             return null;
         })
         let notesObj = this.state.allNotes.map(arrNotes => {
-            if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel === '' && arrNotes.data().remainder==="") {
+            if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false ) {
                 otherCount++;
                 return (
                     <UserNotes allNotes={arrNotes} get={this.getNote} gridList={this.state.gridList} la={this.getLabels} layout={this.state.close}/>
-                )
-            } else if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false && arrNotes.data().notelabel!=='' && arrNotes.data().remainder==="") {
-                otherCount++;
-                return (
-                    <Label labelNotes={arrNotes} get={this.getNote} layout={this.state.close} la={this.getLabels} />
-                )
-            }else if (arrNotes.data().remainder!=="" && arrNotes.data().trash === false && arrNotes.data().pin === false) {
-                otherCount++;
-                return (
-                    <Remainder remNotes={arrNotes} la={this.getLabels} get={this.getNote} layout={this.state.close}/>
                 )
             }
             return null;

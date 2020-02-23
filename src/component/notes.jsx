@@ -104,7 +104,6 @@ class Notes extends Component {
         const data = {
             title: this.state.title,
             notes: this.state.content,
-            id: this.state.docId,
             trash: this.state.trash,
             pin: this.state.pin,
             label: this.state.notelabel,
@@ -148,7 +147,7 @@ class Notes extends Component {
         let data = {
             title: this.state.title,
             notes: this.state.content,
-            id: this.state.docId,
+            
             trash: this.state.trash,
             pin: this.state.pin,
             label: this.state.notelabel,
@@ -160,7 +159,7 @@ class Notes extends Component {
         let daata = "";
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
-                daata = daata + this.state.remainder[i];
+                daata += this.state.remainder[i];
                 if (i === 3) {
                     console.log(daata);
                     console.log(da.getFullYear());
@@ -185,7 +184,7 @@ class Notes extends Component {
                             labelAnchorEl: null,
                             remOpen: false,
                             remAnchorEl: null,
-                            trash: false
+                            trash: false,
                         })
                         break;
                     } else if (da.getFullYear() === daata) {
@@ -348,7 +347,7 @@ class Notes extends Component {
         const data = {
             title: this.state.title,
             notes: this.state.content,
-            id: this.state.docId,
+            
             trash: this.state.trash,
             pin: this.state.pin,
             label: this.state.notelabel,
@@ -421,7 +420,7 @@ class Notes extends Component {
             const data = {
                 title: this.state.title,
                 notes: this.state.content,
-                id: this.state.docId,
+                
                 trash: this.state.trash,
                 pin: this.state.pin,
                 label: this.state.notelabel,

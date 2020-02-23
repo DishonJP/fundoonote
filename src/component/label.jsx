@@ -88,29 +88,26 @@ class Label extends Component {
             dialogopen: false,
             menuanchorEl: null,
             menuOpen: false,
-            title: this.props.labelNotes.data().title,
-            content: this.props.labelNotes.data().notes,
+            title: "",
+            content: "",
             cardOpen: false,
             cardanchorEl: null,
             trash: false,
-            backcolor: this.props.labelNotes.data().inputbcolor,
-            inputbcolor: this.props.labelNotes.data().inputbcolor,
-            docId: this.props.labelNotes.id,
-            pin: this.props.labelNotes.data().pin,
-            label: this.props.labelNotes.data().notelabel,
+            backcolor: "",
+            inputbcolor: "",
+            docId: "",
+            pin: "",
+            label: "",
             width: "",
             cardWidth: "",
             border: "none",
-            archive: this.props.labelNotes.data().archive,
-            remainder: this.props.labelNotes.data().remainder,
+            archive: "",
+            remainder: "",
             displayIcon: "hidden"
         }
     }
-    async componentWillReceiveProps(props) {
-        await this.setState({
-            width: props.layout
-        })
-        if (this.state.width === true) {
+     UNSAFE_componentWillReceiveProps(props) {
+        if (props.layout === true) {
             this.setState({
                 cardWidth: "40%"
             })
@@ -119,6 +116,18 @@ class Label extends Component {
                 cardWidth: "60%"
             })
         }
+        this.setState({
+            trash: props.labelNotes.data().trash,
+            backcolor: props.labelNotes.data().inputbcolor,
+            inputbcolor: props.labelNotes.data().inputbcolor,
+            docId: props.labelNotes.id,
+            pin: props.labelNotes.data().pin,
+            label: props.labelNotes.data().notelabel,
+            archive: props.labelNotes.data().archive,
+            remainder: props.labelNotes.data().remainder,
+            title: props.labelNotes.data().title,
+            content: props.labelNotes.data().notes,
+        })
     }
     handleAddLabel = () => {
         const data = {

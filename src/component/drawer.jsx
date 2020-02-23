@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Drawer, Divider, IconButton, MuiThemeProvider,CssBaseline, createMuiTheme, List, ListItemIcon, ListItemText, ListItem } from '@material-ui/core'
+import { Drawer, Divider, IconButton, MuiThemeProvider, CssBaseline, createMuiTheme, List, ListItemIcon, ListItemText, ListItem } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import NotesIcon from '@material-ui/icons/Notes';
 import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
@@ -18,7 +18,7 @@ const theme = createMuiTheme({
         MuiListItem: {
             root: {
                 borderTopRightRadius: "70px",
-                borderBottomRightRadius:"70px"
+                borderBottomRightRadius: "70px"
             }
         }
     }
@@ -36,7 +36,7 @@ class Drawers extends Component {
             bgcolorB: '',
             nameChange: "Notes",
             labelNotes: [],
-            noteId:""
+            noteId: ""
         }
     }
     componentDidMount() {
@@ -44,13 +44,13 @@ class Drawers extends Component {
     }
     labelNote = () => {
         let result = userServices.getNote();
-        result.then( (res) => {
-             this.setState({
+        result.then((res) => {
+            this.setState({
                 labelNotes: res
             })
         })
     }
-   
+
     render() {
         let arrData = [];
         this.props.label.forEach(element => {
@@ -61,14 +61,16 @@ class Drawers extends Component {
         let filterArr = arrData.filter((index, data) => {
             return arrData.indexOf(index) === data
         })
-        let labelObj = filterArr.map((arrNotes,index) => {
-            
+        let labelObj = filterArr.map((arrNotes, index) => {
             return (
                 <div
                     className="noteIcon_decor">
                     <ListItem
+                        id={index}
                         button
-                        onClick={async () => {
+                        onClick={async (event) => {
+                            console.log(event.currentTarget.id);
+                            if (event.currentTarget.id === 1) {
                                 await this.setState({
                                     bgcolorN: '',
                                     bgcolorR: '',
@@ -81,6 +83,7 @@ class Drawers extends Component {
                                 })
                                 this.props.panel(this.state.nameChange)
                             }
+                        }
                         }
                         style={{
                             flexGrow: "1",
@@ -97,7 +100,7 @@ class Drawers extends Component {
         })
         return (
             <MuiThemeProvider theme={theme}>
-                <CssBaseline/>
+                <CssBaseline />
                 <Drawer
                     class="drawer_decor"
                     variant="persistent"

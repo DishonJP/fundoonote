@@ -6,6 +6,8 @@ import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
+import CloseIcon from '@material-ui/icons/Close';
+import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
@@ -119,6 +121,49 @@ class UserNotes extends Component {
             cardOpen: false,
             dialogOpen:false
         })
+    }
+    removeLabel = async () => {
+        await this.setState({
+            label: ""
+        })
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        console.log(data.pin);
+        userServices.binNotes(data);
+        this.props.get();
+        this.props.la();
+    }
+    removeRemainder = async () => {
+        await this.setState({
+            remainder: ""
+        })
+        let data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        console.log(this.state.docId);
+        userServices.binNotes(data);
+
+        this.props.get();
+        this.props.la();
     }
     handleArchive = () => {
         let data = {
@@ -408,7 +453,6 @@ class UserNotes extends Component {
         }
     }
     render() {
-
         let colorArr = colorArray.map(color => {
             return (
                 <IconButton
@@ -491,6 +535,36 @@ class UserNotes extends Component {
                                     value={this.state.content}
                                 ></InputBase>
                             </div>
+                            {this.state.noteLabel !== "" ? <div className="label_close" style={{
+                        backgroundColor: this.state.inputbcolor
+                    }}>
+                        <Typography>{this.state.noteLabel}</Typography>
+                        <Tooltip title="remove label">
+                            <IconButton
+                                style={{
+                                    padding: "3px"
+                                }}
+                                onClick={this.removeLabel}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+                    </div> : <div></div>}
+                    {this.state.remainder!==""?<div className="label_close" style={{
+                        backgroundColor: this.state.inputbcolor
+                    }}>
+                        <AccessAlarmIcon />
+                        <Typography>{this.state.remainder}</Typography>
+                        <Tooltip title="remove remainder">
+                            <IconButton
+                                style={{
+                                    padding: "3px"
+                                }}
+                                onClick={this.removeRemainder}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+
+                    </div>:null}
                             <div
                                 style={{
                                     visibility:this.state.displayIcon
@@ -736,6 +810,36 @@ class UserNotes extends Component {
                                             }}
                                         />
                                     </div>
+                                    {this.state.noteLabel !== "" ? <div className="label_close" style={{
+                        backgroundColor: this.state.inputbcolor
+                    }}>
+                        <Typography>{this.state.noteLabel}</Typography>
+                        <Tooltip title="remove label">
+                            <IconButton
+                                style={{
+                                    padding: "3px"
+                                }}
+                                onClick={this.removeLabel}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+                    </div> : <div></div>}
+                    {this.state.remainder!==""?<div className="label_close" style={{
+                        backgroundColor: this.state.inputbcolor
+                    }}>
+                        <AccessAlarmIcon />
+                        <Typography>{this.state.remainder}</Typography>
+                        <Tooltip title="remove remainder">
+                            <IconButton
+                                style={{
+                                    padding: "3px"
+                                }}
+                                onClick={this.removeRemainder}>
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+
+                    </div>:null}
                                     <div className="arrange">
                                         <div className="icon_arrange">
                                             <Tooltip title="Add remainder">
