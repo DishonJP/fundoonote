@@ -70,7 +70,6 @@ class Drawers extends Component {
                         button
                         onClick={async (event) => {
                             console.log(event.currentTarget.id);
-                            if (event.currentTarget.id === 1) {
                                 await this.setState({
                                     bgcolorN: '',
                                     bgcolorR: '',
@@ -83,7 +82,6 @@ class Drawers extends Component {
                                 })
                                 this.props.panel(this.state.nameChange)
                             }
-                        }
                         }
                         style={{
                             flexGrow: "1",
