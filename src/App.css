@@ -245,7 +245,7 @@
   align-items: center;
 }
 .appbar_decor{
-  background-color: #FFFFE0;
+  background-color:white;
   height: 10vh;
   min-width: fit-content;
   width: auto;
@@ -275,9 +275,9 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: cornsilk;
-  border: 2px solid gray;
+  background-color: lightgray;
   margin-left: 10px;
+  padding-left: 10px;
   border-radius: 5px;
 }
 .img_decor{
@@ -366,15 +366,12 @@ margin-top: 40px;
 .title_pin{
   display: flex;
   flex-direction: row;
-  margin-left: 5px;
-  margin-top: 10px;
 }
 .title_pin1{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-left: 5px;
 }
 .button_place{
   display: flex;
@@ -382,10 +379,13 @@ margin-top: 40px;
 }
 .icon_arrange{
   margin-top: 4px;
+  display: flex;
+  flex-wrap: nowrap;
 }
 .arrange{
   display: flex;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 .arrang{
   display: flex;
@@ -431,7 +431,8 @@ margin-top: 40px;
   margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 .usersNote_decor{
   display: flex;
@@ -502,4 +503,9 @@ border-color: lightgray;
 }
 .color_change{
   background-color: #FFA500;
+}
+/* ============================================userNotes============================================ */
+.usernote_laRe{
+  display: flex;
+  flex-direction: row;
 }

@@ -8,7 +8,7 @@ import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
-import { Card, InputBase, IconButton, Button, TextField, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase,Chip, IconButton, Button, TextField, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -23,9 +23,9 @@ const theme = createMuiTheme({
                 paddingBottom: "0px"
             }
         },
-        MuiDialog:{
-            paper:{
-                borderRadius:"10px"
+        MuiDialog: {
+            paper: {
+                borderRadius: "10px"
             }
         }
     }
@@ -102,10 +102,10 @@ class Pin extends Component {
             width: "",
             cardWidth: "",
             pin: this.props.pinNotes.data().pin,
-            border:"none",
-            remOpen:false,
+            border: "none",
+            remOpen: false,
             remAnchorEl: null,
-            displayIcon:"hidden"
+            displayIcon: "hidden"
         }
     }
     handleClickLabel = (event) => {
@@ -161,13 +161,21 @@ class Pin extends Component {
         this.props.get();
         this.props.la();
     }
-    async componentWillReceiveProps(props) {
-        await this.setState({
-            width:props.layout
-        })
-        if (this.state.width===true) {
+    componentWillReceiveProps(props) {
+        if (props.layout === true) {
             this.setState({
-                cardWidth: "40%"
+                cardWidth: "22%"
+            })
+        } else {
+            this.setState({
+                cardWidth: "60%"
+            })
+        }
+    }
+    componentDidMount() {
+        if (this.props.layout === true) {
+            this.setState({
+                cardWidth: "22%"
             })
         } else {
             this.setState({
@@ -371,7 +379,7 @@ class Pin extends Component {
         this.props.get();
         this.props.la();
         this.setState({
-            labelMenu:false
+            labelMenu: false
         })
     }
     removeRemainder = async () => {
@@ -425,19 +433,20 @@ class Pin extends Component {
                     onMouseEnter={() => {
                         this.setState({
                             displayIcon: "",
-                            border:"0px 0px 3px 1px"
+                            border: "0px 0px 3px 1px"
                         })
                     }}
                     onMouseLeave={() => {
                         this.setState({
                             displayIcon: "hidden",
-                            border:"none"
+                            border: "none"
                         })
                     }}
                     style={{
                         width: this.state.cardWidth,
+                        minWidth: "280px",
                         height: "fit-content",
-                        minHeight:"22vh",
+                        minHeight: "22vh",
                         borderRadius: "10px",
                         border: "1px solid lightgray",
                         margin: "3px",
@@ -456,20 +465,20 @@ class Pin extends Component {
                             className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
                             <div style={{
-                                visibility:this.state.displayIcon
+                                visibility: this.state.displayIcon
                             }}>
-                            <Tooltip title="Pin it">
-                                <IconButton onClick={async () => {
-                                    await this.setState({
-                                        pin: true
-                                    });
-                                    this.handlePin()
-                                }}>
-                                    <PinDropOutlinedIcon
-                                        fontSize="small" />
-                                </IconButton>
+                                <Tooltip title="Pin it">
+                                    <IconButton onClick={async () => {
+                                        await this.setState({
+                                            pin: true
+                                        });
+                                        this.handlePin()
+                                    }}>
+                                        <PinDropOutlinedIcon
+                                            fontSize="small" />
+                                    </IconButton>
                                 </Tooltip>
-                                </div>
+                            </div>
                         </div>
                         <div
                             onClick={() => {
@@ -482,44 +491,30 @@ class Pin extends Component {
                             <InputBase
                                 multiline
                                 fullWidth
-                                    readOnly={true}
-                                    value={this.state.content}
-                                ></InputBase>
+                                readOnly={true}
+                                value={this.state.content}
+                            ></InputBase>
                         </div>
-                        {this.state.notelabel !== "" ? <div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <Typography>{this.state.notelabel}</Typography>
-                        <Tooltip title="remove label">
-                            <IconButton
-                                style={{
-                                    padding:"3px"
-                                }}
-                                onClick={this.removeLabel}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                    </div> : <div></div>}
-                    {this.state.remainder!==""? 
-                    <div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <AccessAlarmIcon />
-                        <Typography>{this.state.remainder}</Typography>
-                        <Tooltip title="remove remainder">
-                            <IconButton
-                                style={{
-                                    padding:"3px"
-                                }}
-                                onClick={this.removeRemainder}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-
-                    </div>:<div></div>}
+                        <div classname="usernote_laRe">
+                            {this.state.notelabel !== "" ?
+                                <Chip
+                                    style={{
+                                        backgroundColor: "rgba(0,0,0,.2)",
+                                    }}
+                                    label={this.state.notelabel}
+                                    onDelete={this.removeLabel} /> : null}
+                            {this.state.remainder !== "" ?
+                                <Chip
+                                    style={{
+                                        backgroundColor: "rgba(0,0,0,.2)",
+                                        marginLeft: "3px"
+                                    }}
+                                    label={this.state.remainder}
+                                    onDelete={this.removeRemainder} /> : null}
+                        </div>
                         <div
                             style={{
-                                visibility:this.state.displayIcon
+                                visibility: this.state.displayIcon
                             }}
                             className="arrange">
                             <div className="icon_arrange">
@@ -753,15 +748,32 @@ class Pin extends Component {
                                             }}
                                         />
                                     </div>
+                                    <div classname="usernote_laRe">
+                                        {this.state.notelabel !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                }}
+                                                label={this.state.notelabel}
+                                                onDelete={this.removeLabel} /> : null}
+                                        {this.state.remainder !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                    marginLeft: "3px"
+                                                }}
+                                                label={this.state.remainder}
+                                                onDelete={this.removeRemainder} /> : null}
+                                    </div>
                                     <div className="arrange">
                                         <div className="icon_arrange">
                                             <Tooltip title="Add remainder">
                                                 <IconButton onClick={(event) => {
-                                        this.setState({
-                                            remOpen: true,
-                                            remAnchorEl: event.currentTarget
-                                        })
-                                    }}>
+                                                    this.setState({
+                                                        remOpen: true,
+                                                        remAnchorEl: event.currentTarget
+                                                    })
+                                                }}>
                                                     <AddAlertOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>

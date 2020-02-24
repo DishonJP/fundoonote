@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField} from '@material-ui/core'
+import React, { PureComponent } from 'react'
+import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog, TextField, Chip } from '@material-ui/core'
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
@@ -28,9 +28,9 @@ const theme = createMuiTheme({
                 height: "auto",
             }
         },
-        MuiDialog:{
-            paper:{
-                borderRadius:"10px"
+        MuiDialog: {
+            paper: {
+                borderRadius: "10px"
             }
         }
     }
@@ -86,32 +86,32 @@ const colorArray = [
     }
 ];
 
-class UserNotes extends Component {
+class UserNotes extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             change: true,
             dialogOpen: false,
-            title: "",
-            content: "",
-            backcolor: "",
-            inputbcolor: "",
             cardOpen: false,
             cardanchorEl: null,
-            trash: "",
-            docId: "",
-            pin: "",
-            noteLabel: "",
             labelMenu: false,
             labelAnchorEl: null,
-            remainder: "",
-            archive: "",
             remAnchorEl: null,
             remOpen: false,
-            width: "",
             cardWidth: '',
             displayIcon: "hidden",
-            border: "none"
+            border: "none",
+            width: this.props.layout,
+            title: this.props.allNotes.data().title,
+            content: this.props.allNotes.data().notes,
+            backcolor: this.props.allNotes.data().inputbcolor,
+            inputbcolor: this.props.allNotes.data().inputbcolor,
+            trash: this.props.allNotes.data().trash,
+            docId: this.props.allNotes.id,
+            pin: this.props.allNotes.data().pin,
+            noteLabel: this.props.allNotes.data().notelabel,
+            remainder: this.props.allNotes.data().remainder,
+            archive: this.props.allNotes.data().archive,
         }
     }
     handleClickAway = () => {
@@ -119,7 +119,7 @@ class UserNotes extends Component {
             remOpen: false,
             labelMenu: false,
             cardOpen: false,
-            dialogOpen:false
+            dialogOpen: false
         })
     }
     removeLabel = async () => {
@@ -428,8 +428,28 @@ class UserNotes extends Component {
             labelAnchorEl: event.currentTarget
         })
     }
-     UNSAFE_componentWillReceiveProps(props) {
-         this.setState({
+    componentDidMount() {
+        if (this.props.layout === true) {
+            this.setState({
+                cardWidth: "23%"
+            })
+        } else {
+            this.setState({
+                cardWidth: "60%"
+            })
+        }
+    }
+    componentWillReceiveProps(props) {
+        if (props.layout === true) {
+            this.setState({
+                cardWidth: "23%"
+            })
+        } else {
+            this.setState({
+                cardWidth: "60%"
+            })
+        }
+        this.setState({
             width: props.layout,
             title: props.allNotes.data().title,
             content: props.allNotes.data().notes,
@@ -442,15 +462,6 @@ class UserNotes extends Component {
             remainder: props.allNotes.data().remainder,
             archive: props.allNotes.data().archive,
         })
-        if (props.layout===true) {
-            this.setState({
-                cardWidth: "40%"
-            })
-        } else {
-            this.setState({
-                cardWidth: "60%"
-            })
-        }
     }
     render() {
         let colorArr = colorArray.map(color => {
@@ -487,11 +498,12 @@ class UserNotes extends Component {
                         }}
                         style={{
                             width: this.state.cardWidth,
+                            minWidth: "280px",
                             height: "fit-content",
                             borderRadius: "10px",
                             border: "1px solid lightgray",
                             backgroundColor: this.state.inputbcolor,
-                            margin:"3px",
+                            margin: "3px",
                             flexWrap: "nowrap",
                             padding: "10px",
                             boxShadow: this.state.border
@@ -506,20 +518,20 @@ class UserNotes extends Component {
                                 className="title_pin1">
                                 <Typography variant="h5">{this.state.title}</Typography>
                                 <div style={{
-                                    visibility:this.state.displayIcon
+                                    visibility: this.state.displayIcon
                                 }}>
-                                <Tooltip title="Pin it">
-                                    <IconButton onClick={async () => {
-                                        await this.setState({
-                                            pin: true
-                                        });
-                                        this.handlePin()
-                                    }}>
-                                        <PinDropOutlinedIcon
-                                            fontSize="small" />
-                                    </IconButton>
+                                    <Tooltip title="Pin it">
+                                        <IconButton onClick={async () => {
+                                            await this.setState({
+                                                pin: true
+                                            });
+                                            this.handlePin()
+                                        }}>
+                                            <PinDropOutlinedIcon
+                                                fontSize="small" />
+                                        </IconButton>
                                     </Tooltip>
-                                    </div>
+                                </div>
                             </div>
                             <div onClick={() => {
                                 this.setState({
@@ -535,39 +547,26 @@ class UserNotes extends Component {
                                     value={this.state.content}
                                 ></InputBase>
                             </div>
-                            {this.state.noteLabel !== "" ? <div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <Typography>{this.state.noteLabel}</Typography>
-                        <Tooltip title="remove label">
-                            <IconButton
-                                style={{
-                                    padding: "3px"
-                                }}
-                                onClick={this.removeLabel}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                    </div> : <div></div>}
-                    {this.state.remainder!==""?<div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <AccessAlarmIcon />
-                        <Typography>{this.state.remainder}</Typography>
-                        <Tooltip title="remove remainder">
-                            <IconButton
-                                style={{
-                                    padding: "3px"
-                                }}
-                                onClick={this.removeRemainder}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-
-                    </div>:null}
+                            <div classname="usernote_laRe">
+                            {this.state.noteLabel !== "" ?
+                                <Chip
+                                    style={{
+                                        backgroundColor: "rgba(0,0,0,.2)",
+                                    }}
+                                    label={this.state.noteLabel}
+                                    onDelete={this.removeLabel} /> : null}
+                            {this.state.remainder !== "" ?
+                                <Chip
+                                    style={{
+                                            backgroundColor: "rgba(0,0,0,.2)",
+                                        marginLeft:"3px"
+                                    }}
+                                    label={this.state.remainder}
+                                    onDelete={this.removeRemainder} />: null}
+                                </div>
                             <div
                                 style={{
-                                    visibility:this.state.displayIcon
+                                    visibility: this.state.displayIcon
                                 }}
                                 className="arrange">
                                 <div className="icon_arrange">
@@ -641,7 +640,7 @@ class UserNotes extends Component {
                                     {colorArr}
                                 </div>
                             </Menu>
-                                <div className="more_menu">
+                            <div className="more_menu">
                                 <Menu
                                     open={this.state.menuOpen}
                                     autoFocusItem={this.state.menuOpen}
@@ -739,7 +738,7 @@ class UserNotes extends Component {
                                 </MenuItem>
                             </Menu>
                         </div>
-                        </Card>
+                    </Card>
                 </MuiThemeProvider>
             )
         }
@@ -748,8 +747,7 @@ class UserNotes extends Component {
                 <div className="ncard_decor">
                     <MuiThemeProvider theme={theme}>
                         <Dialog
-                            open={this.state.dialogOpen}  
-                        >
+                            open={this.state.dialogOpen}>
                             <div>
                                 <DialogContent
                                     style={{
@@ -758,8 +756,7 @@ class UserNotes extends Component {
                                         borderColor: "lightgray",
                                         backgroundColor: this.state.backcolor,
                                         padding: "5px"
-                                    }}
-                                >
+                                    }}>
                                     <div className="title_pin">
                                         <InputBase
                                             style={{
@@ -810,36 +807,23 @@ class UserNotes extends Component {
                                             }}
                                         />
                                     </div>
-                                    {this.state.noteLabel !== "" ? <div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <Typography>{this.state.noteLabel}</Typography>
-                        <Tooltip title="remove label">
-                            <IconButton
-                                style={{
-                                    padding: "3px"
-                                }}
-                                onClick={this.removeLabel}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                    </div> : <div></div>}
-                    {this.state.remainder!==""?<div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <AccessAlarmIcon />
-                        <Typography>{this.state.remainder}</Typography>
-                        <Tooltip title="remove remainder">
-                            <IconButton
-                                style={{
-                                    padding: "3px"
-                                }}
-                                onClick={this.removeRemainder}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-
-                    </div>:null}
+                                    <div classname="usernote_laRe">
+                            {this.state.noteLabel !== "" ?
+                                <Chip
+                                    style={{
+                                        backgroundColor: "rgba(0,0,0,.2)",
+                                    }}
+                                    label={this.state.noteLabel}
+                                    onDelete={this.removeLabel} /> : null}
+                            {this.state.remainder !== "" ?
+                                <Chip
+                                    style={{
+                                            backgroundColor: "rgba(0,0,0,.2)",
+                                        marginLeft:"3px"
+                                    }}
+                                    label={this.state.remainder}
+                                    onDelete={this.removeRemainder} />: null}
+                                </div>
                                     <div className="arrange">
                                         <div className="icon_arrange">
                                             <Tooltip title="Add remainder">

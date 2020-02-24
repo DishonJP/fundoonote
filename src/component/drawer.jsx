@@ -36,7 +36,7 @@ class Drawers extends Component {
             bgcolorB: '',
             nameChange: "Notes",
             labelNotes: [],
-            noteId: ""
+            noteId: "",
         }
     }
     componentDidMount() {
@@ -78,7 +78,6 @@ class Drawers extends Component {
                                     bgcolorA: '',
                                     bgcolorB: '',
                                     nameChange: arrNotes,
-                                    noteId: index
                                 })
                                 this.props.panel(this.state.nameChange)
                             }

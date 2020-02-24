@@ -6,7 +6,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
-import { Card, InputBase, IconButton, Button, TextField, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, TextField,Chip, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -302,6 +302,23 @@ class Archive extends React.Component {
                                 value={this.state.content}
                             ></InputBase>
                         </div>
+                        <div classname="usernote_laRe">
+                                        {this.state.notelabel !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                }}
+                                                label={this.state.notelabel}
+                                                onDelete={this.removeLabel} /> : null}
+                                        {this.state.remainder !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                    marginLeft: "3px"
+                                                }}
+                                                label={this.state.remainder}
+                                                onDelete={this.removeRemainder} /> : null}
+                                    </div>
                         <div
                             style={{
                                 visibility:this.state.displayIcon
@@ -539,6 +556,23 @@ class Archive extends React.Component {
                                                 })
                                             }}
                                         />
+                                    </div>
+                                    <div classname="usernote_laRe">
+                                        {this.state.notelabel !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                }}
+                                                label={this.state.notelabel}
+                                                onDelete={this.removeLabel} /> : null}
+                                        {this.state.remainder !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                    marginLeft: "3px"
+                                                }}
+                                                label={this.state.remainder}
+                                                onDelete={this.removeRemainder} /> : null}
                                     </div>
                                     <div className="arrange">
                                         <div className="icon_arrange">

@@ -64,28 +64,34 @@ class Home extends Component {
             userLName: localStorage.getItem("lastName"),
             userEmail: localStorage.getItem("email"),
             search: "",
-            labelName:[]
+            labelName: [],
+            margin:"0%"
         };
     }
     changePanalName =(data) => {
         this.setState({
             panalChange: data,
+            open:false,
+            margin:"0%"
         })
     }
     handleOpen = () => {
         if (this.state.open === false) {
             this.setState({
-                open: true
+                open: true,
+                margin:"20%"
             })
         } else {
             this.setState({
-                open: false
+                open: false,
+                margin:"0%"
             })
         }
     }
     handleClose = () => {
         this.setState({
-            open: false
+            open: false,
+            margin:"0%"
         })
     }
     handleMenuOpen = (event) => {
@@ -129,7 +135,7 @@ class Home extends Component {
     }
     componentDidMount() {
         this.getNote();
-        this.getLabels()
+        this.getLabels();
     }
     render() {
         let count = 0;
@@ -355,9 +361,10 @@ class Home extends Component {
                         panel={this.changePanalName}
                         change={this.state.open}
                         value={this.handleClose}
-
                     />
-                    <div>
+                    <div style={{
+                        marginLeft:this.state.margin
+                    }}>
                     {searchCount>0?
                                 <div className="notesComponent">
                                 {searchObj}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import InsertPhotoOutlinedIcon from '@material-ui/icons/InsertPhotoOutlined';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import AddAlertOutlinedIcon from '@material-ui/icons/AddAlertOutlined';
@@ -8,7 +8,7 @@ import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import CloseIcon from '@material-ui/icons/Close';
-import { Card, InputBase, IconButton, TextField, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase, IconButton, TextField,Chip, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -80,7 +80,7 @@ var colorArray = [
         bcolor: "#e6e6e6"
     }
 ];
-class Label extends Component {
+class Label extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -88,34 +88,24 @@ class Label extends Component {
             dialogopen: false,
             menuanchorEl: null,
             menuOpen: false,
-            title: "",
-            content: "",
             cardOpen: false,
             cardanchorEl: null,
-            trash: false,
-            backcolor: "",
-            inputbcolor: "",
-            docId: "",
-            pin: "",
-            label: "",
-            width: "",
             cardWidth: "",
             border: "none",
-            archive: "",
-            remainder: "",
-            displayIcon: "hidden"
+            displayIcon: "hidden",
+            trash: this.props.labelNotes.data().trash,
+            backcolor: this.props.labelNotes.data().inputbcolor,
+            inputbcolor: this.props.labelNotes.data().inputbcolor,
+            docId: this.props.labelNotes.id,
+            pin: this.props.labelNotes.data().pin,
+            label: this.props.labelNotes.data().notelabel,
+            archive: this.props.labelNotes.data().archive,
+            remainder: this.props.labelNotes.data().remainder,
+            title: this.props.labelNotes.data().title,
+            content: this.props.labelNotes.data().notes,
         }
     }
      UNSAFE_componentWillReceiveProps(props) {
-        if (props.layout === true) {
-            this.setState({
-                cardWidth: "40%"
-            })
-        } else {
-            this.setState({
-                cardWidth: "60%"
-            })
-        }
         this.setState({
             trash: props.labelNotes.data().trash,
             backcolor: props.labelNotes.data().inputbcolor,
@@ -128,6 +118,26 @@ class Label extends Component {
             title: props.labelNotes.data().title,
             content: props.labelNotes.data().notes,
         })
+        if (props.layout === true) {
+            this.setState({
+                cardWidth: "22%"
+            })
+        } else {
+            this.setState({
+                cardWidth: "60%"
+            })
+        }
+    }
+    componentWillMount() {
+        if (this.props.layout === true) {
+            this.setState({
+                cardWidth: "22%"
+            })
+        } else {
+            this.setState({
+                cardWidth: "60%"
+            })
+        }
     }
     handleAddLabel = () => {
         const data = {
@@ -474,37 +484,22 @@ class Label extends Component {
                             ></InputBase>
                         </div>
                     </div>
-                    <div className="label_close" style={{
-                        backgroundColor: this.state.inputbcolor
-                    }}>
-                        <Typography>{this.state.label}</Typography>
-                        <Tooltip title="remove label">
-                            <IconButton
-                                style={{
-                                    padding: "3px"
-                                }}
-                                onClick={this.removeLabel}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                    </div>
-                    {this.state.remainder !== "" ?
-                        <div className="label_close" style={{
-                            backgroundColor: this.state.inputbcolor
-                        }}>
-                            <AccessAlarmIcon />
-                            <Typography>{this.state.remainder}</Typography>
-                            <Tooltip title="remove remainder">
-                                <IconButton
-                                    style={{
-                                        padding: "3px"
-                                    }}
-                                    onClick={this.removeRemainder}>
-                                    <CloseIcon fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-
-                        </div> : <div></div>}
+                    <div classname="usernote_laRe">
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                }}
+                                                label={this.state.label}
+                                                onDelete={this.removeLabel} />
+                                        {this.state.remainder !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                    marginLeft: "3px"
+                                                }}
+                                                label={this.state.remainder}
+                                                onDelete={this.removeRemainder} /> : null}
+                                    </div>
                     <div className="arrange">
                         <div style={{
                             visibility: this.state.displayIcon
@@ -740,38 +735,22 @@ class Label extends Component {
                                             }}
                                         />
                                     </div>
-                                    <div className="label_close" style={{
-                                        marginLeft:"3px",
-                                        backgroundColor: this.state.inputbcolor
-                                    }}>
-                                        <Typography>{this.state.label}</Typography>
-                                        <Tooltip title="remove label">
-                                            <IconButton
+                                    <div classname="usernote_laRe">
+                                            <Chip
                                                 style={{
-                                                    padding: "3px"
+                                                    backgroundColor: "rgba(0,0,0,.2)",
                                                 }}
-                                                onClick={this.removeLabel}>
-                                                <CloseIcon fontSize="small" />
-                                            </IconButton>
-                                        </Tooltip>
+                                                label={this.state.label}
+                                                onDelete={this.removeLabel} />
+                                        {this.state.remainder !== "" ?
+                                            <Chip
+                                                style={{
+                                                    backgroundColor: "rgba(0,0,0,.2)",
+                                                    marginLeft: "3px"
+                                                }}
+                                                label={this.state.remainder}
+                                                onDelete={this.removeRemainder} /> : null}
                                     </div>
-                                    {this.state.remainder !== "" ?
-                                        <div className="label_close" style={{
-                                            backgroundColor: this.state.inputbcolor
-                                        }}>
-                                            <AccessAlarmIcon />
-                                            <Typography>{this.state.remainder}</Typography>
-                                            <Tooltip title="remove remainder">
-                                                <IconButton
-                                                    style={{
-                                                        padding: "3px"
-                                                    }}
-                                                    onClick={this.removeRemainder}>
-                                                    <CloseIcon fontSize="small" />
-                                                </IconButton>
-                                            </Tooltip>
-
-                                        </div> : <div></div>}
                                     <div className="arrange">
                                         <div className="icon_arrange">
                                             <Tooltip title="Add remainder">
