@@ -36,7 +36,7 @@ class Drawers extends Component {
             bgcolorB: '',
             nameChange: "Notes",
             labelNotes: [],
-            noteId: "",
+            labelId: false,
         }
     }
     componentDidMount() {
@@ -50,8 +50,23 @@ class Drawers extends Component {
             })
         })
     }
+    handleLabel = (e) => {
+        e.preventDefault();
+        alert(e.currentTarget.id)
+        this.setState({
+         labelId:!this.state.labelId
+     })
+        
+    }
 
     render() {
+        var a=this.state.labelId?"labelColor":"labelColor2"
+        let labelColor = {
+            backgroundColor:"red"
+        }
+        let labelColor2 = {
+            backgroundColor:"blue"
+        }
         let arrData = [];
         this.props.label.forEach(element => {
             if (element !== "") {
@@ -66,14 +81,19 @@ class Drawers extends Component {
                 <div
                     className="noteIcon_decor">
                     <ListItem
-                        id={index}
+                       id={index}
                         button
-                        onClick={async (event) => {
-                            console.log(event.currentTarget.id);
+                        // className={a}
+                        
+                        onClick={
+                           //(event) => this.handleLabel(event)
+                            async (event) => {
+                            
+                                event.currentTarget.id==index?event.currentTarget.style.backgroundColor="#FFA500":event.currentTarget.style.backgroundColor="#red"
                                 await this.setState({
                                     bgcolorN: '',
                                     bgcolorR: '',
-                                    bgcolorL: '#FFA500',
+                                    bgcolorL: '',
                                     bgcolorE: '',
                                     bgcolorA: '',
                                     bgcolorB: '',
@@ -83,9 +103,9 @@ class Drawers extends Component {
                             }
                         }
                         style={{
-                            flexGrow: "1",
-                            backgroundColor: this.state.bgcolorL
-                        }}>
+                            backgroundColor:"white"
+                        }
+                    }>
                         <ListItemIcon>
                             <LabelOutlinedIcon />
                         </ListItemIcon>

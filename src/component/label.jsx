@@ -120,7 +120,7 @@ class Label extends PureComponent {
         })
         if (props.layout === true) {
             this.setState({
-                cardWidth: "22%"
+                cardWidth: "32%"
             })
         } else {
             this.setState({
@@ -131,7 +131,7 @@ class Label extends PureComponent {
     componentWillMount() {
         if (this.props.layout === true) {
             this.setState({
-                cardWidth: "22%"
+                cardWidth: "32%"
             })
         } else {
             this.setState({

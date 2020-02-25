@@ -68,6 +68,7 @@ class Home extends Component {
             margin:"0%"
         };
     }
+
     changePanalName =(data) => {
         this.setState({
             panalChange: data,
@@ -223,7 +224,7 @@ class Home extends Component {
                         className="header_decor">
                         <AppBar
                             class="appbar_decor"
-                            position="fixed">
+                            position="sticky">
                             <div className="menu_name">
                                 <Toolbar
                                     style={{
@@ -294,10 +295,9 @@ class Home extends Component {
                                         src={bunny}
                                         alt="u"
                                     />
-                                    
                                 </Toolbar>
                             </div>
-                        </AppBar>
+                            </AppBar>
                     </div>
                     <div>
                                         <Menu
@@ -362,8 +362,13 @@ class Home extends Component {
                         change={this.state.open}
                         value={this.handleClose}
                     />
-                    <div style={{
-                        marginLeft:this.state.margin
+                    <div className="notesComponent">
+                                    <Notes get={this.getNote} layout={this.state.close} />
+                                </div>
+                    <div
+                        className="allnotes_width"
+                        style={{
+                        marginLeft: this.state.margin
                     }}>
                     {searchCount>0?
                                 <div className="notesComponent">
@@ -372,9 +377,7 @@ class Home extends Component {
                             }
                         {this.state.panalChange === "Notes" && searchCount<=0?
                             <div>
-                                <div className="notesComponent">
-                                    <Notes get={this.getNote} layout={this.state.close} />
-                                </div>
+                                
                                 
                                 {count > 0?
                                     <div style={{
@@ -408,11 +411,7 @@ class Home extends Component {
                                         <div className={this.state.close?this.state.grid:this.state.list}>
                                         {remObj}
                                     </div>:
-                                        <div className={this.state.close ? this.state.grid : this.state.list} style={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            alignContent:'center'
-                                        }}>
+                                        <div className={this.state.close ? this.state.grid : this.state.list}>
                                         {labelObj}
                                     </div>}
                     </div>

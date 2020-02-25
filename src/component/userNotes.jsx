@@ -10,22 +10,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import userServices from '../services/userServices'
+import MoreMenu from './moreMenu';
+import LabelMenu from './labelMenu';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
             paper: {
                 width: "auto"
-            }
-        },
-        MuiList: {
-            padding: {
-                paddingTop: "0px",
-                paddingBottom: "0px",
-                display: "flex",
-                flexDirection: "row",
-                flexWrap: "wrap",
-                width: "100px",
-                height: "auto",
             }
         },
         MuiDialog: {
@@ -35,6 +26,21 @@ const theme = createMuiTheme({
         }
     }
 })
+const themes = createMuiTheme({
+    overrides: {
+        MuiList: {
+            padding: {
+                paddingTop: "0px",
+                paddingBottom: "0px",
+                display: "flex",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                width: "114px",
+                height: "13vh"
+            }
+        }
+    }
+});
 const colorArray = [
     {
         colors: "#7FDBFF",
@@ -98,6 +104,8 @@ class UserNotes extends PureComponent {
             labelAnchorEl: null,
             remAnchorEl: null,
             remOpen: false,
+            menuOpen: false,
+            menuanchorEl:null,
             cardWidth: '',
             displayIcon: "hidden",
             border: "none",
@@ -114,6 +122,12 @@ class UserNotes extends PureComponent {
             archive: this.props.allNotes.data().archive,
         }
     }
+    moreMenuClose =()=> {
+        this.setState({
+            menuOpen: false,
+            menuanchorEl:null
+        })
+    }
     handleClickAway = () => {
         this.setState({
             remOpen: false,
@@ -122,9 +136,20 @@ class UserNotes extends PureComponent {
             dialogOpen: false
         })
     }
+    labelNoteChange = (event) => {
+        this.setState({
+            noteLabel:event.target.value
+        })
+    }
+    labelMenuClose = () => {
+        this.setState({
+            labelMenu: false,
+            labelAnchorEl:null
+        })
+    }
     removeLabel = async () => {
         await this.setState({
-            label: ""
+            noteLabel: ""
         })
         let data = {
             title: this.state.title,
@@ -431,7 +456,7 @@ class UserNotes extends PureComponent {
     componentDidMount() {
         if (this.props.layout === true) {
             this.setState({
-                cardWidth: "23%"
+                cardWidth: "24%"
             })
         } else {
             this.setState({
@@ -442,7 +467,7 @@ class UserNotes extends PureComponent {
     componentWillReceiveProps(props) {
         if (props.layout === true) {
             this.setState({
-                cardWidth: "23%"
+                cardWidth: "24%"
             })
         } else {
             this.setState({
@@ -475,6 +500,7 @@ class UserNotes extends PureComponent {
                     }}
                     style={{
                         backgroundColor: color.bcolor,
+                        margin:"2px"
                     }}
                 >
                 </IconButton>
@@ -482,7 +508,7 @@ class UserNotes extends PureComponent {
         })
         if (this.state.change) {
             return (
-                <MuiThemeProvider>
+                <MuiThemeProvider theme={theme}>
                     <Card id="card"
                         onMouseEnter={() => {
                             this.setState({
@@ -504,6 +530,7 @@ class UserNotes extends PureComponent {
                             border: "1px solid lightgray",
                             backgroundColor: this.state.inputbcolor,
                             margin: "3px",
+                            display:"flex",
                             flexWrap: "nowrap",
                             padding: "10px",
                             boxShadow: this.state.border
@@ -615,21 +642,23 @@ class UserNotes extends PureComponent {
 
                                 </div>
                             </div>
+                            <MuiThemeProvider theme={themes}>
                             <Menu
                                 open={this.state.cardOpen}
                                 anchorEl={this.state.cardanchorEl}
                                 style={{
-                                    padding: "0px 0px 0px 0px"
+                                    padding: "0px 0px 0px 0px",
                                 }}
+                                elevation={0}
                                 anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
                                     vertical: 'bottom',
                                     horizontal: 'center',
-                                }}
-                                onClick={() => {
+                                  }}
+                                  transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                  }}
+                                onClose={() => {
                                     this.setState({
                                         cardOpen: false,
                                         cardanchorEl: null
@@ -639,34 +668,16 @@ class UserNotes extends PureComponent {
                                 <div >
                                     {colorArr}
                                 </div>
-                            </Menu>
-                            <div className="more_menu">
-                                <Menu
-                                    open={this.state.menuOpen}
-                                    autoFocusItem={this.state.menuOpen}
-                                    anchorEl={this.state.menuanchorEl}
-                                    style={{
-                                        padding: "15px"
-                                    }}
-                                    anchorOrigin={{
-                                        position: "bottom",
-                                        vertical: 'bottom',
-                                        horizontal: 'top',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'bottom',
-                                    }}
-                                >
-                                    <MenuItem onClick={this.handleClickLabel}>Add Label</MenuItem>
-                                    <Divider />
-                                    <MenuItem onClick={this.handleMenuClick}
-                                    >Delete Note</MenuItem>
-                                    <Divider />
-                                    <MenuItem>Add Drawing</MenuItem>
-                                    <Divider />
-                                    <MenuItem>Show tick boxes</MenuItem>
                                 </Menu>
+                                </MuiThemeProvider>
+                            <div className="more_menu">
+                                <MoreMenu
+                                    menuOpen={this.state.menuOpen}
+                                    menuanchorEl={this.state.menuanchorEl}
+                                    handleClickLabel={this.handleClickLabel}
+                                    handleMenuClick={this.handleMenuClick}
+                                    moreMenuClose={this.moreMenuClose}
+                                />
                             </div>
                             <div className="more_menu">
                                 <Menu
@@ -683,6 +694,12 @@ class UserNotes extends PureComponent {
                                     transformOrigin={{
                                         vertical: 'bottom',
                                         horizontal: 'center',
+                                    }}
+                                    onClose={() => {
+                                        this.setState({
+                                            remOpen: false,
+                                            remAnchorEl:null
+                                        })
                                     }}
                                 >
                                     <MenuItem
@@ -706,37 +723,14 @@ class UserNotes extends PureComponent {
                                     </MenuItem>
                                 </Menu>
                             </div>
-                            <Menu
-                                open={this.state.labelMenu}
-                                keepMounted
-                                anchorEl={this.state.labelAnchorEl}
-                                anchorOrigin={{
-                                    position: "bottom",
-                                    vertical: 'bottom',
-                                    horizontal: 'top',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'bottom',
-                                }}
-                            >
-                                <Typography>Label name</Typography>
-                                <TextField
-                                    style={{
-                                        height: "8vh"
-                                    }}
-                                    variant="filled"
-                                    value={this.state.noteLabel}
-                                    onChange={(event) => {
-                                        this.setState({
-                                            noteLabel: event.target.value
-                                        })
-                                    }}
-                                />
-                                <MenuItem onClick={this.handleAddLabel}>
-                                    create : {this.state.noteLabel}
-                                </MenuItem>
-                            </Menu>
+                            <LabelMenu
+                                labelMenu={this.state.labelMenu}
+                                labelAnchorEl={this.state.labelAnchorEl}
+                                handleAddLabel={this.handleAddLabel}
+                                notelabel={this.state.noteLabel}
+                                labelMenuClose={this.labelMenuClose}
+                                labelNoteChange={this.labelNoteChange}
+                            />
                         </div>
                     </Card>
                 </MuiThemeProvider>
@@ -902,54 +896,35 @@ class UserNotes extends PureComponent {
                             open={this.state.cardOpen}
                             anchorEl={this.state.cardanchorEl}
                             style={{
-                                padding: "0px 0px 0px 0px"
+                                padding: "0px 0px 0px 0px",
                             }}
+                            elevation={0}
                             anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                            transformOrigin={{
                                 vertical: 'bottom',
                                 horizontal: 'center',
-                            }}
-                            onClick={() => {
+                              }}
+                              transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                              }}
+                            onClose={() => {
                                 this.setState({
                                     cardOpen: false,
                                     cardanchorEl: null
                                 })
-                            }}
-                        >
+                            }}>
                             <div>
                                 {colorArr}
                             </div>
                         </Menu>
                         <div className="more_menu">
-                            <Menu
-                                open={this.state.menuOpen}
-                                autoFocusItem={this.state.menuOpen}
-                                anchorEl={this.state.menuanchorEl}
-                                style={{
-                                    padding: "15px"
-                                }}
-                                anchorOrigin={{
-                                    position: "bottom",
-                                    vertical: 'bottom',
-                                    horizontal: 'top',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'bottom',
-                                }}
-                            >
-                                <MenuItem onClick={this.handleClickLabel}>Add Label</MenuItem>
-                                <Divider />
-                                <MenuItem onClick={this.handleMenuClick}
-                                >Delete Note</MenuItem>
-                                <Divider />
-                                <MenuItem>Add Drawing</MenuItem>
-                                <Divider />
-                                <MenuItem>Show tick boxes</MenuItem>
-                            </Menu>
+                        <MoreMenu
+                                    menuOpen={this.state.menuOpen}
+                                    menuanchorEl={this.state.menuanchorEl}
+                                    handleClickLabel={this.handleClickLabel}
+                                    handleMenuClick={this.handleMenuClick}
+                                    moreMenuClose={this.moreMenuClose}
+                                />
                         </div>
                         <div className="more_menu">
                             <Menu
@@ -965,6 +940,12 @@ class UserNotes extends PureComponent {
                                 transformOrigin={{
                                     vertical: 'bottom',
                                     horizontal: 'center',
+                                }}
+                                onClose={() => {
+                                    this.setState({
+                                        remOpen: false,
+                                        remAnchorEl:null
+                                    })
                                 }}
                             >
                                 <MenuItem
@@ -1000,6 +981,12 @@ class UserNotes extends PureComponent {
                             transformOrigin={{
                                 vertical: 'top',
                                 horizontal: 'bottom',
+                            }}
+                            onClose={() => {
+                                this.setState({
+                                    labelMenu: false,
+                                    labelAnchorEl:null
+                                })
                             }}
                         >
                             <Typography>Label name</Typography>

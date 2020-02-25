@@ -2,7 +2,8 @@
   text-align: center;
 }
 .body{
-  width: fit-content;
+  width: 100%;
+  height:100%;
 }
 .App-logo {
   height: 40vmin;
@@ -347,8 +348,8 @@
   margin-bottom: 10px;
 }
 /* ============================================Notes page======================================== */
-#card{
-  height: calc(100%-80px);
+.allnotes_width{
+  width: 100%;
 }
 .ncard_decor{
 display: flex;
@@ -430,6 +431,7 @@ margin-top: 40px;
 .usernotes_decor{
   margin-top: 20px;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   margin-left: 15%;
   margin-right: 15%;
@@ -508,4 +510,10 @@ border-color: lightgray;
 .usernote_laRe{
   display: flex;
   flex-direction: row;
+}
+#labelColor{
+  background-color:red;
+}
+#labelColor2{
+  background-color:#FFA500;
 }

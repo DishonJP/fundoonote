@@ -144,18 +144,6 @@ class Notes extends Component {
     handleRemainder = () => {
         let date = Date.now();
         let da = new Date(date);
-        let data = {
-            title: this.state.title,
-            notes: this.state.content,
-            
-            trash: this.state.trash,
-            pin: this.state.pin,
-            label: this.state.notelabel,
-            archive: this.state.archive,
-            remainder: this.state.remainder,
-            backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor
-        }
         let daata = "";
         for (let i = 0; i < this.state.remainder.length; i++) {
             if (i < 4) {
@@ -164,27 +152,9 @@ class Notes extends Component {
                     console.log(daata);
                     console.log(da.getFullYear());
                     if (da.getFullYear() < daata) {
-                        userServices.addNote(data);
-                        this.props.get();
                         this.setState({
-                            change: true,
-                            title: "",
-                            content: "",
-                            cardOpen: false,
-                            cardanchorEl: null,
-                            menuOpen: false,
-                            menuanchorEl: null,
-                            backcolor: "white",
-                            inputbcolor: "white",
-                            archive: false,
-                            pin: false,
-                            remainder: "",
-                            notelabel: '',
-                            labelMenu: false,
-                            labelAnchorEl: null,
                             remOpen: false,
-                            remAnchorEl: null,
-                            trash: false,
+                            remAnchorEl: null
                         })
                         break;
                     } else if (da.getFullYear() === daata) {
@@ -200,27 +170,9 @@ class Notes extends Component {
                 daata += this.state.remainder[i];
                 if (i === 6) {
                     if (da.getMonth() + 1 < daata) {
-                        userServices.addNote(data);
-                        this.props.get();
                         this.setState({
-                            change: true,
-                            title: "",
-                            content: "",
-                            cardOpen: false,
-                            cardanchorEl: null,
-                            menuOpen: false,
-                            menuanchorEl: null,
-                            backcolor: "white",
-                            inputbcolor: "white",
-                            archive: false,
-                            pin: false,
-                            remainder: "",
-                            notelabel: '',
-                            labelMenu: false,
-                            labelAnchorEl: null,
                             remOpen: false,
-                            remAnchorEl: null,
-                            trash: false
+                            remAnchorEl: null
                         })
                         break;
                     }
@@ -237,27 +189,9 @@ class Notes extends Component {
                 daata += this.state.remainder[i];
                 if (i === 9) {
                     if (da.getDay() < daata) {
-                        userServices.addNote(data);
-                        this.props.get();
                         this.setState({
-                            change: true,
-                            title: "",
-                            content: "",
-                            cardOpen: false,
-                            cardanchorEl: null,
-                            menuOpen: false,
-                            menuanchorEl: null,
-                            backcolor: "white",
-                            inputbcolor: "white",
-                            archive: false,
-                            pin: false,
-                            remainder: "",
-                            notelabel: '',
-                            labelMenu: false,
-                            labelAnchorEl: null,
                             remOpen: false,
-                            remAnchorEl: null,
-                            trash: false
+                            remAnchorEl: null
                         })
                         break;
                     }
@@ -274,27 +208,9 @@ class Notes extends Component {
                 daata += this.state.remainder[i];
                 if (i === 12) {
                     if (da.getHours() < daata) {
-                        userServices.addNote(data);
-                        this.props.get();
                         this.setState({
-                            change: true,
-                            title: "",
-                            content: "",
-                            cardOpen: false,
-                            cardanchorEl: null,
-                            menuOpen: false,
-                            menuanchorEl: null,
-                            backcolor: "white",
-                            inputbcolor: "white",
-                            archive: false,
-                            pin: false,
-                            remainder: "",
-                            notelabel: '',
-                            labelMenu: false,
-                            labelAnchorEl: null,
                             remOpen: false,
-                            remAnchorEl: null,
-                            trash: false
+                            remAnchorEl: null
                         })
                         break;
                     }
@@ -311,27 +227,9 @@ class Notes extends Component {
                 daata += this.state.remainder[i];
                 if (i === (this.state.remainder.length - 1)) {
                     if (da.getMinutes() < daata) {
-                        userServices.addNote(data);
-                        this.props.get();
                         this.setState({
-                            change: true,
-                            title: "",
-                            content: "",
-                            cardOpen: false,
-                            cardanchorEl: null,
-                            menuOpen: false,
-                            menuanchorEl: null,
-                            backcolor: "white",
-                            inputbcolor: "white",
-                            archive: false,
-                            pin: false,
-                            remainder: "",
-                            notelabel: '',
-                            labelMenu: false,
-                            labelAnchorEl: null,
                             remOpen: false,
-                            remAnchorEl: null,
-                            trash: false
+                            remAnchorEl: null
                         })
                         break;
                     } else {
@@ -343,54 +241,10 @@ class Notes extends Component {
 
         alert(this.state.remainder);
     }
-    handleAddLabel = async () => {
-        const data = {
-            title: this.state.title,
-            notes: this.state.content,
-            
-            trash: this.state.trash,
-            pin: this.state.pin,
-            label: this.state.notelabel,
-            archive: this.state.archive,
-            remainder: this.state.remainder,
-            backcolor: this.state.backcolor,
-            inputbcolor: this.state.inputbcolor
-        }
-        if (data.title !== '' || data.notes !== '' || data.remainder) {
-            userServices.addNote(data).then((res) => {
-                console.log(res, "done update");
-            })
-        }
-        let label = await userServices.getLabel();
-        let count = 0;
-        for (let i = 0; i < label.length; i++) {
-            if (data.label !== label[i]) {
-                count++;
-            }
-        }
-        if (count === label.length) {
-            userServices.addLabel(data);
-        }
-        this.props.get();
+    handleAddLabel =  () => {
         this.setState({
-            change: true,
-            title: "",
-            content: "",
-            cardOpen: false,
-            cardanchorEl: null,
-            menuOpen: false,
-            menuanchorEl: null,
-            backcolor: "white",
-            inputbcolor: "white",
-            archive: false,
-            pin: false,
-            remainder: "",
-            notelabel: '',
             labelMenu: false,
-            labelAnchorEl: null,
-            remOpen: false,
-            remAnchorEl: null,
-            trash: false
+            labelAnchorEl: null
         })
     }
     handleClickLabel = (event) => {
@@ -416,26 +270,23 @@ class Notes extends Component {
         })
     }
     validation = async () => {
-        if (this.state.title !== '') {
-            const data = {
-                title: this.state.title,
-                notes: this.state.content,
-                
-                trash: this.state.trash,
-                pin: this.state.pin,
-                label: this.state.notelabel,
-                archive: this.state.archive,
-                remainder: this.state.remainder,
-                backcolor: this.state.backcolor,
-                inputbcolor: this.state.inputbcolor
-            }
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.notelabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
             userServices.addNote(data).then((res) => {
                 console.log(res, "ajhskdjhaksdh211342455");
             })
                 .catch((err) => {
                     console.log(err);
                 })
-        }
         this.props.get();
         await this.setState({
             change: true,
@@ -522,6 +373,7 @@ class Notes extends Component {
                     >
                         <div className="inputBase">
                             <InputBase
+                                autoFocus={true}
                                 multiline
                                 onClick={() => {
                                     this.setState({
@@ -569,7 +421,6 @@ class Notes extends Component {
                         <div>
                             <div className="title_pin">
                                 <InputBase
-                                    onFocus
                                     style={{
                                         backgroundColor: this.state.inputbcolor,
                                         borderRadius: "5px",
@@ -577,7 +428,7 @@ class Notes extends Component {
                                         display: "flex",
                                         justifyContent: "center",
                                         alignItems: "center",
-                                        paddingLeft:"7px"
+                                        paddingLeft: "7px"
                                     }}
                                     multiline
                                     value={this.state.title}
@@ -594,7 +445,6 @@ class Notes extends Component {
                                         await this.setState({
                                             pin: true
                                         });
-                                        this.handlePin()
                                     }}>
                                         <PinDropOutlinedIcon
                                             fontSize="small" />
@@ -603,6 +453,7 @@ class Notes extends Component {
                             </div>
                             <div className="title_pin">
                                 <InputBase
+                                    autoFocus={true}
                                     style={{
                                         backgroundColor: this.state.inputbcolor,
                                         borderRadius: "5px",
