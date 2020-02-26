@@ -281,12 +281,17 @@ class Notes extends Component {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
+        if (data.title!=='' || data.notes!=="" || data.trash==true || data.pin==true || data.label!=="" ||data.archive==true||data.remainder!=="") {
             userServices.addNote(data).then((res) => {
                 console.log(res, "ajhskdjhaksdh211342455");
             })
                 .catch((err) => {
                     console.log(err);
                 })
+        }
+        if (data.label !== '') {
+                userServices.addLabel(data).then()
+            }
         this.props.get();
         await this.setState({
             change: true,
@@ -409,9 +414,10 @@ class Notes extends Component {
             return (
                 <MuiThemeProvider theme={theme}>
                     <Card
+                    
                         style={{
                             width: "60%",
-                            marginTop: "5%",
+                            marginTop: "10%",
                             height: "auto",
                             boxShadow: "0px 0px 5px 1px",
                             borderRadius: "10px",

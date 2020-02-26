@@ -36,7 +36,8 @@ class Drawers extends Component {
             bgcolorB: '',
             nameChange: "Notes",
             labelNotes: [],
-            labelId: false,
+            prevLabel: '',
+            change:false
         }
     }
     componentDidMount() {
@@ -50,22 +51,14 @@ class Drawers extends Component {
             })
         })
     }
-    handleLabel = (e) => {
-        e.preventDefault();
-        alert(e.currentTarget.id)
-        this.setState({
-         labelId:!this.state.labelId
-     })
-        
-    }
 
     render() {
-        var a=this.state.labelId?"labelColor":"labelColor2"
+        var a = this.state.labelId ? "labelColor" : "labelColor2"
         let labelColor = {
-            backgroundColor:"red"
+            backgroundColor: "red"
         }
         let labelColor2 = {
-            backgroundColor:"blue"
+            backgroundColor: "blue"
         }
         let arrData = [];
         this.props.label.forEach(element => {
@@ -81,16 +74,12 @@ class Drawers extends Component {
                 <div
                     className="noteIcon_decor">
                     <ListItem
-                       id={index}
+                        id={index}
                         button
-                        // className={a}
-                        
                         onClick={
-                           //(event) => this.handleLabel(event)
-                            async (event) => {
-                            
-                                event.currentTarget.id==index?event.currentTarget.style.backgroundColor="#FFA500":event.currentTarget.style.backgroundColor="#red"
-                                await this.setState({
+                            (event) => {
+                                event.currentTarget.style.backgroundColor = "#FFA500"
+                                this.setState({
                                     bgcolorN: '',
                                     bgcolorR: '',
                                     bgcolorL: '',
@@ -103,9 +92,9 @@ class Drawers extends Component {
                             }
                         }
                         style={{
-                            backgroundColor:"white"
+                            backgroundColor: "white"
                         }
-                    }>
+                        }>
                         <ListItemIcon>
                             <LabelOutlinedIcon />
                         </ListItemIcon>
@@ -123,7 +112,7 @@ class Drawers extends Component {
                     variant="persistent"
                     anchor="left"
                     open={this.props.change}
-
+                    onClose={this.props.value}
                 >
                     <div className="drawer_head">
                         <div className="name_decor">

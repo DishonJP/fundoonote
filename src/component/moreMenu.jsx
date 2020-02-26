@@ -14,13 +14,12 @@ class MoreMenu extends Component{
                                         padding: "15px",
                                     }}
                                     anchorOrigin={{
-                                        position: "bottom",
-                                        vertical: 'bottom',
-                                        horizontal: 'top',
+                                        vertical: 'top',
+                                        horizontal: 'center',
                                     }}
                                     transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'bottom',
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
                                     }}
                                     onClose={this.props.moreMenuClose}
                                 >

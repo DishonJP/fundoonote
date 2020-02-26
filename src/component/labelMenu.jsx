@@ -1,11 +1,11 @@
 import React, { Component } from "react"
-import { Menu, Typography, TextField, MenuItem, MuiThemeProvider, createMuiTheme, Divider } from "@material-ui/core"
+import { Menu, Typography, Card, TextField, MenuItem, Button, MuiThemeProvider, createMuiTheme, Divider, InputBase } from "@material-ui/core"
 import userServices from "../services/userServices"
 const theme = createMuiTheme({
     overrides: {
         MuiList: {
             padding: {
-                padding: "10px"
+                padding: "0px"
             }
         },
         MuiListItem: {
@@ -13,18 +13,49 @@ const theme = createMuiTheme({
                 paddingLeft: "0px",
                 paddingRight: "0px"
             }
+        }, MuiPopover: {
+            paper: {
+                overflowY:"hidden"
+            }
         }
     }
 })
-
 class LabelMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            labelNames:[]
+            labelNames: []
         }
     }
+    getLabel() {
+        let data = userServices.getLabel();
+        data.then(res => {
+            this.setState({
+                labelNames: res
+            })
+        })
+    }
+    componentDidMount() {
+        this.getLabel();
+    }
     render() {
+        let labelObj = this.state.labelNames.map(element => {
+            if (element !== "") {
+                return (
+                    <MenuItem
+                        style={{
+                        padding: "10px",
+                        height:"5vh"
+                        }}
+                        onClick={() => {
+                        this.props.handleLabel(element)
+                    }}>
+                        {element}
+                    </MenuItem>
+                )
+            }
+            return null
+        });
         return (
             <MuiThemeProvider theme={theme}>
                 <Menu
@@ -32,32 +63,47 @@ class LabelMenu extends Component {
                     autoFocusItem={this.props.labelMenu}
                     anchorEl={this.props.labelAnchorEl}
                     anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'top',
+                        vertical: 'top',
+                        horizontal: 'center',
                     }}
                     transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'bottom',
+                        vertical: 'bottom',
+                        horizontal: 'center',
                     }}
                     onClose={this.props.labelMenuClose}
                     style={{
-                        padding: "10px"
+                        maxHeight: "70vh",
                     }}
                 >
-                    <Typography>Label</Typography>
-                    <Divider />
-                    <TextField
-                        style={{
-                            height: "5vh"
+                    <Card class="labelMenu_Decor" >
+                        <Typography style={{
+                            paddingLeft: "10px",
+                            paddingRight:"10px"
+                        }}>Label</Typography>
+                        <InputBase
+                            autoFocus={true}
+                            fullWidth
+                            style={{
+                                height: "5vh",
+                                paddingLeft: "10px",
+                                paddingRight:"10px"
+                            }}
+                            placeholder="enter label name"
+                            value={this.props.notelabel}
+                            onChange={(event) => {
+                                this.props.labelNoteChange(event)
+                            }}
+                        />
+                        <MenuItem style={{
+                            paddingLeft: "10px",
+                            paddingRight:"10px"
                         }}
-                        value={this.props.notelabel}
-                        onChange={(event) => {
-                            this.props.labelNoteChange(event)
-                        }}
-                    />
-                    <MenuItem
-                        onClick={this.props.handleAddLabel}>create : {this.props.notelabel}
-                    </MenuItem>
+                            onClick={this.props.handleAddLabel}>create : {this.props.notelabel}
+                        </MenuItem>
+                    </Card>
+                    <div className="scroll_label">
+                        {labelObj}
+                    </div>
                 </Menu>
             </MuiThemeProvider>
         )

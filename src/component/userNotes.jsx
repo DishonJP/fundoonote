@@ -12,6 +12,8 @@ import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
 import userServices from '../services/userServices'
 import MoreMenu from './moreMenu';
 import LabelMenu from './labelMenu';
+import RemMenu from './remMenu';
+import Message from './message';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -36,7 +38,6 @@ const themes = createMuiTheme({
                 flexDirection: "row",
                 flexWrap: "wrap",
                 width: "114px",
-                height: "13vh"
             }
         }
     }
@@ -120,6 +121,8 @@ class UserNotes extends PureComponent {
             noteLabel: this.props.allNotes.data().notelabel,
             remainder: this.props.allNotes.data().remainder,
             archive: this.props.allNotes.data().archive,
+            msg: "",
+            snackBarOpen:false
         }
     }
     moreMenuClose =()=> {
@@ -145,6 +148,17 @@ class UserNotes extends PureComponent {
         this.setState({
             labelMenu: false,
             labelAnchorEl:null
+        })
+    }
+    remDataChange = (data) => {
+        this.setState({
+            remainder:data
+        })
+    }
+    remClose = () => {
+        this.setState({
+            remOpen: false,
+            remAnchorEl:null
         })
     }
     removeLabel = async () => {
@@ -402,7 +416,7 @@ class UserNotes extends PureComponent {
             dialogOpen: false
         })
     }
-    handlePin = () => {
+    handlePin =() => {
         const data = {
             title: this.state.title,
             notes: this.state.content,
@@ -415,14 +429,43 @@ class UserNotes extends PureComponent {
             backcolor: this.state.backcolor,
             inputbcolor: this.state.inputbcolor
         }
-        userServices.binNotes(data).then((res) => {
-            console.log(res, "done update");
+         userServices.binNotes(data).then((res) => {
+             
         })
             .catch((err) => {
                 console.log(err);
             })
+            this.setState({
+                msg: "note pinned successfully",
+                snackBarOpen:true
+            })
+        this.props.handleMessage(this.state.msg,this.state.snackBarOpen);
         this.props.get();
         this.props.la();
+    }
+    handleLabel = async (lab) => {
+         await this.setState({
+            noteLabel:lab
+        })
+        const data = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: this.state.docId,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.binNotes(data);
+        userServices.addLabel(data);
+        this.props.get();
+        this.props.la();
+        this.setState({
+            labelMenu: false
+        })
     }
     handleAddLabel = () => {
         const data = {
@@ -509,6 +552,7 @@ class UserNotes extends PureComponent {
         if (this.state.change) {
             return (
                 <MuiThemeProvider theme={theme}>
+                    
                     <Card id="card"
                         onMouseEnter={() => {
                             this.setState({
@@ -646,18 +690,14 @@ class UserNotes extends PureComponent {
                             <Menu
                                 open={this.state.cardOpen}
                                 anchorEl={this.state.cardanchorEl}
-                                style={{
-                                    padding: "0px 0px 0px 0px",
-                                }}
-                                elevation={0}
                                 anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                  }}
-                                  transformOrigin={{
                                     vertical: 'top',
                                     horizontal: 'center',
-                                  }}
+                                }}
+                                transformOrigin={{
+                                    vertical: 'center',
+                                    horizontal: 'center',
+                                }}
                                 onClose={() => {
                                     this.setState({
                                         cardOpen: false,
@@ -680,48 +720,13 @@ class UserNotes extends PureComponent {
                                 />
                             </div>
                             <div className="more_menu">
-                                <Menu
-                                    open={this.state.remOpen}
-                                    anchorEl={this.state.remAnchorEl}
-                                    keepMounted
-                                    style={{
-                                        marginTop: "93px"
-                                    }}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                    }}
-                                    transformOrigin={{
-                                        vertical: 'bottom',
-                                        horizontal: 'center',
-                                    }}
-                                    onClose={() => {
-                                        this.setState({
-                                            remOpen: false,
-                                            remAnchorEl:null
-                                        })
-                                    }}
-                                >
-                                    <MenuItem
-                                        style={{
-                                            backgroundColor: 'white'
-                                        }}
-                                    >
-                                        <TextField
-                                            type="datetime-local"
-                                            value={this.state.remainder}
-                                            onChange={(event) => {
-                                                this.setState({
-                                                    remainder: event.target.value
-                                                })
-                                            }}
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        />
-                                        <Button onClick={this.handleRemainder}>submit</Button>
-                                    </MenuItem>
-                                </Menu>
+                                <RemMenu
+                                    remOpen={this.state.remOpen}
+                                    remAnchorEl={this.state.remAnchorEl}
+                                    remainder={this.state.remainder}
+                                    remDataChange={this.remDataChange}
+                                    remClose={this.remClose}
+                                />
                             </div>
                             <LabelMenu
                                 labelMenu={this.state.labelMenu}
@@ -730,6 +735,7 @@ class UserNotes extends PureComponent {
                                 notelabel={this.state.noteLabel}
                                 labelMenuClose={this.labelMenuClose}
                                 labelNoteChange={this.labelNoteChange}
+                                handleLabel={this.handleLabel}
                             />
                         </div>
                     </Card>
@@ -900,13 +906,13 @@ class UserNotes extends PureComponent {
                             }}
                             elevation={0}
                             anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                              }}
-                              transformOrigin={{
                                 vertical: 'top',
                                 horizontal: 'center',
-                              }}
+                            }}
+                            transformOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
                             onClose={() => {
                                 this.setState({
                                     cardOpen: false,
@@ -969,43 +975,15 @@ class UserNotes extends PureComponent {
                                 </MenuItem>
                             </Menu>
                         </div>
-                        <Menu
-                            open={this.state.labelMenu}
-                            autoFocusItem={this.state.labelMenu}
-                            anchorEl={this.state.labelAnchorEl}
-                            anchorOrigin={{
-                                position: "bottom",
-                                vertical: 'bottom',
-                                horizontal: 'top',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'bottom',
-                            }}
-                            onClose={() => {
-                                this.setState({
-                                    labelMenu: false,
-                                    labelAnchorEl:null
-                                })
-                            }}
-                        >
-                            <Typography>Label name</Typography>
-                            <TextField
-                                style={{
-                                    height: "8vh"
-                                }}
-                                variant="filled"
-                                value={this.state.noteLabel}
-                                onChange={(event) => {
-                                    this.setState({
-                                        noteLabel: event.target.value
-                                    })
-                                }}
+                        <LabelMenu
+                                labelMenu={this.state.labelMenu}
+                                labelAnchorEl={this.state.labelAnchorEl}
+                                handleAddLabel={this.handleAddLabel}
+                                notelabel={this.state.noteLabel}
+                                labelMenuClose={this.labelMenuClose}
+                                labelNoteChange={this.labelNoteChange}
+                                handleLabel={this.handleLabel}
                             />
-                            <MenuItem onClick={this.handleAddLabel}>
-                                create : {this.state.noteLabel}
-                            </MenuItem>
-                        </Menu>
                     </MuiThemeProvider>
                 </div>
             )

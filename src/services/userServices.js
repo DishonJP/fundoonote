@@ -128,8 +128,20 @@ async function addLabel(data) {
             curUser: fire.auth().currentUser.uid,
                 notelabel: data.label
         }
-        const response = await db.collection("label").doc().set(datas);
+        let count = 0;
+        let label = getLabel();
+        await label.then(el => {
+            for (let i = 0; i < el.length; i++) {
+                if (el[i]==datas.notelabel) {
+                    count++
+                }
+            }
+        })
+        if (count === 0 && datas.notelabel!=="") {
+            const response = await db.collection("label").doc().set(datas);
         return response;
+        }
+        
     } catch (error) {
         return error;
     }
@@ -175,9 +187,13 @@ async function updateLabel(data) {
        console.log(err,"oooh no");
    })
 }
+async function getColabarator() {
+    let data = service.firebaseAuthorization.tenantId
+    alert(data)
+}
 export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,binNotes,deleteNote,addLabel,getLabel,deletelabel,updateLabel
+    addNote,getNote,binNotes,deleteNote,addLabel,getLabel,deletelabel,updateLabel,getColabarator
 }
