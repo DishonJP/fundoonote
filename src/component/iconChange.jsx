@@ -5,11 +5,13 @@ import ViewListIcon from '@material-ui/icons/ViewList';
 export default class IconChange extends Component{
     render() {
             return (
-                <IconButton onClick={this.props.change}>
-                    {(this.props.data)?<ViewCompactIcon
+                <IconButton
+                id="icon_butSize"
+                    onClick={this.props.change}>
+                    {(this.props.data)?<ViewCompactIcon id="font_sizeicon"
                         fontSize="medium"
                     />:
-                    <ViewListIcon
+                    <ViewListIcon id="font_sizeicon"
                         fontSize="medium"
                     />
                     }

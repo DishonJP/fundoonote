@@ -20,7 +20,6 @@ import Label from './label';
 import Remainder from './remainder';
 import EmptyLabel from './emptyLabel';
 import RemMenu from './remMenu';
-import Message from './message';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -70,7 +69,7 @@ class Home extends Component {
             labelName: [],
             margin: "0%",
             msg: '',
-            snackBarOpen:false
+            snackBarOpen: false
         };
     }
     changePanalName = (data) => {
@@ -80,10 +79,10 @@ class Home extends Component {
             margin: "0%"
         })
     }
-    handleMessage = (data1,data2) => {
+    handleMessage = (data1, data2) => {
         this.setState({
             msg: data1,
-            snackBarOpen:data2
+            snackBarOpen: data2
         })
     }
     handleOpen = () => {
@@ -145,7 +144,6 @@ class Home extends Component {
         })
     }
     componentDidMount() {
-        userServices.getColabarator();
         this.getNote();
         this.getLabels();
     }
@@ -235,7 +233,7 @@ class Home extends Component {
                         style={{
                             position: "fixed",
                             width: "100%",
-                            zIndex:"968"
+                            zIndex: "968",
                         }}
                     >
                         <AppBar
@@ -248,10 +246,10 @@ class Home extends Component {
                                     }}
                                     color="inherit"
                                 >
-                                    <IconButton
+                                    <IconButton id="icon_butSize"
                                         onClick={this.handleOpen}
                                     >
-                                        <MenuIcon fontSize="large" />
+                                        <MenuIcon id="font_sizeicon" fontSize="large" />
                                     </IconButton>
                                 </Toolbar>
                                 <Typography
@@ -272,7 +270,7 @@ class Home extends Component {
                                 </div>
                             </div>
                             <div className="search_icon">
-                                <SearchIcon />
+                                <SearchIcon id="seac_icon" />
                                 <InputBase
                                     fullWidth
                                     placeholder="Search"
@@ -285,8 +283,8 @@ class Home extends Component {
                                     color="inherit"
                                 >
                                     <div className="menu_name">
-                                        <IconButton>
-                                            <CloudQueueIcon
+                                        <IconButton id="icon_butSize">
+                                            <CloudQueueIcon id="seac_icon"
                                                 fontSize="medium"
                                             />
                                         </IconButton>
@@ -294,13 +292,13 @@ class Home extends Component {
                                             data={this.state.close}
                                             change={this.handleChange}
                                         />
-                                        <IconButton>
-                                            <SettingsIcon
+                                        <IconButton id="icon_butSize">
+                                            <SettingsIcon id="font_sizeicon"
                                                 fontSize="medium"
                                             />
                                         </IconButton>
                                     </div>
-                                    <img
+                                    <img className="user_image"
                                         onClick={this.handleMenuOpen}
                                         style={{
                                             width: "1cm",
@@ -376,7 +374,7 @@ class Home extends Component {
                             </div>
                         </Menu>
                     </div>
-                    
+
                     <Drawers
                         label={this.state.labelNotes}
                         panel={this.changePanalName}
@@ -384,86 +382,86 @@ class Home extends Component {
                         value={this.handleClose}
                     />
                     <div>
-            <Snackbar
-                open={this.state.snackBarOpen}
-                autoHideDuration={6000}
-                message={this.state.msg}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                  }}
-                action={
-                    <React.Fragment>
-                        <Button color="secondary" size="small" >
-                            UNDO
+                        <Snackbar
+                            open={this.state.snackBarOpen}
+                            autoHideDuration={6000}
+                            message={this.state.msg}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                            action={
+                                <React.Fragment>
+                                    <Button color="secondary" size="small" >
+                                        UNDO
                 </Button>
-                        <IconButton onClick={() => {
-                            this.setState({
-                                snackBarOpen:false
-                            })
-                        }} size="small" aria-label="close" color="inherit" >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    </React.Fragment>
-                }>
-            </Snackbar>
-                    
-                    <div className="notesComponent">
-                        <RemMenu/>
-                        <Notes get={this.getNote} layout={this.state.close} />
-                    </div>
-                    <div
-                        className="allnotes_width"
-                        style={{
-                            marginLeft: this.state.margin
-                        }}>
-                        {searchCount > 0 ?
-                            <div className="notesComponent">
-                                {searchObj}
-                            </div> : <div></div>
-                        }
-                        {this.state.panalChange === "Notes" && searchCount <= 0 ?
-                            <div>
+                                    <IconButton onClick={() => {
+                                        this.setState({
+                                            snackBarOpen: false
+                                        })
+                                    }} size="small" aria-label="close" color="inherit" >
+                                        <CloseIcon fontSize="small" />
+                                    </IconButton>
+                                </React.Fragment>
+                            }>
+                        </Snackbar>
+
+                        <div className="notesComponent">
+                            <RemMenu />
+                            <Notes get={this.getNote} layout={this.state.close} />
+                        </div>
+                        <div
+                            className="allnotes_width"
+                            style={{
+                                marginLeft: this.state.margin
+                            }}>
+                            {searchCount > 0 ?
+                                <div className="notesComponent">
+                                    {searchObj}
+                                </div> : <div></div>
+                            }
+                            {this.state.panalChange === "Notes" && searchCount <= 0 ?
+                                <div>
 
 
-                                {count > 0 ?
-                                    <div style={{
-                                        marginTop: "10px",
-                                        marginLeft: "10%"
-                                    }} className="pinText">pinned:{pinCount}</div> : <div></div>
-                                }
-                                <div className={this.state.close ? this.state.grid : this.state.list}>
-                                    {pinObj}
-                                </div>
-                                {
-                                    count > 0 ?
+                                    {count > 0 ?
                                         <div style={{
-                                            marginBottom: "20px"
-                                        }}>
-                                            <Divider style={{
-                                                marginTop: "20px"
-                                            }} />
-                                            <span className="pinText">others:{otherCount}</span></div> : <div></div>
-                                }
-                                <div className={this.state.close ? this.state.grid : this.state.list}>
-                                    {notesObj}
+                                            marginTop: "10px",
+                                            marginLeft: "10%"
+                                        }} className="pinText">pinned:{pinCount}</div> : <div></div>
+                                    }
+                                    <div className={this.state.close ? this.state.grid : this.state.list}>
+                                        {pinObj}
+                                    </div>
+                                    {
+                                        count > 0 ?
+                                            <div style={{
+                                                marginBottom: "20px"
+                                            }}>
+                                                <Divider style={{
+                                                    marginTop: "20px"
+                                                }} />
+                                                <span className="pinText">others:{otherCount}</span></div> : <div></div>
+                                    }
+                                    <div className={this.state.close ? this.state.grid : this.state.list}>
+                                        {notesObj}
+                                    </div>
                                 </div>
-                            </div>
-                            : this.state.panalChange === "Archive" ?
-                                <div className={this.state.close ? this.state.grid : this.state.list}>
-                                    {archiveObj}
-                                </div> : this.state.panalChange === "Bin" ? <div className={this.state.close ? this.state.grid : this.state.list}>
-                                    {binObj}
-                                </div> : this.state.panalChange === "Remainder" ?
-                                        <div className={this.state.close ? this.state.grid : this.state.list}>
-                                            {remObj}
-                                        </div> :
-                                        <div className={this.state.close ? this.state.grid : this.state.list}>
-                                            {labelObj}
-                                        </div>}
+                                : this.state.panalChange === "Archive" ?
+                                    <div className={this.state.close ? this.state.grid : this.state.list}>
+                                        {archiveObj}
+                                    </div> : this.state.panalChange === "Bin" ? <div className={this.state.close ? this.state.grid : this.state.list}>
+                                        {binObj}
+                                    </div> : this.state.panalChange === "Remainder" ?
+                                            <div className={this.state.close ? this.state.grid : this.state.list}>
+                                                {remObj}
+                                            </div> :
+                                            <div className={this.state.close ? this.state.grid : this.state.list}>
+                                                {labelObj}
+                                            </div>}
+                        </div>
                     </div>
-                    </div>
-                    </div>
+                </div>
             </MuiThemeProvider>
         )
     }

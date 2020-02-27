@@ -15,6 +15,11 @@ async function userRegistration(data) {
             password: data.password
         }
         db.collection("users").doc(response.user.uid).set(datas);
+        const colData = {
+            curUser: datas.curUser,
+            email:datas.email
+        }
+        db.collection("collaborator").doc().set(colData);
         return response
     } catch (err) {
         return err;
@@ -72,6 +77,26 @@ async function addNote(data) {
     try {
         const datas={
             curUser: fire.auth().currentUser.uid,
+            title: data.title,
+                notes: data.notes,
+                trash: data.trash,
+                backcolor: data.backcolor,
+                inputbcolor: data.inputbcolor,
+                archive: data.archive,
+                pin: data.pin,
+                remainder: data.remainder,
+                notelabel: data.label
+        }
+        const response = await db.collection("Notes").doc().set(datas);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
+async function addColab(data) {
+    try {
+        const datas={
+            curUser: data.id,
             title: data.title,
                 notes: data.notes,
                 trash: data.trash,
@@ -187,13 +212,18 @@ async function updateLabel(data) {
        console.log(err,"oooh no");
    })
 }
-async function getColabarator() {
-    let data = service.firebaseAuthorization.tenantId
-    alert(data)
+async function getCollaborator() {
+    let colData=[]
+    await db.collection("collaborator").get().then((data) => {
+        data.forEach(el => {
+            colData.push(el.data())
+        })
+    })
+    return colData;
 }
 export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,binNotes,deleteNote,addLabel,getLabel,deletelabel,updateLabel,getColabarator
+    addNote,getNote,binNotes,deleteNote,addLabel,getLabel,deletelabel,updateLabel,getCollaborator,addColab
 }

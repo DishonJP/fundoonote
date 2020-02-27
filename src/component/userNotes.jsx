@@ -14,6 +14,8 @@ import MoreMenu from './moreMenu';
 import LabelMenu from './labelMenu';
 import RemMenu from './remMenu';
 import Message from './message';
+import ColabratorDialog from './colabratorDialog';
+import { log } from 'util';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -122,7 +124,8 @@ class UserNotes extends PureComponent {
             remainder: this.props.allNotes.data().remainder,
             archive: this.props.allNotes.data().archive,
             msg: "",
-            snackBarOpen:false
+            snackBarOpen: false,
+            colOpen:false
         }
     }
     moreMenuClose =()=> {
@@ -179,6 +182,30 @@ class UserNotes extends PureComponent {
         }
         console.log(data.pin);
         userServices.binNotes(data);
+        this.props.get();
+        this.props.la();
+    }
+    closeColab = () => {
+        this.setState({
+            colOpen:false
+        })
+    }
+    addColab = (data) => {
+        const datas = {
+            title: this.state.title,
+            notes: this.state.content,
+            id: data,
+            trash: this.state.trash,
+            pin: this.state.pin,
+            label: this.state.noteLabel,
+            archive: this.state.archive,
+            remainder: this.state.remainder,
+            backcolor: this.state.backcolor,
+            inputbcolor: this.state.inputbcolor
+        }
+        userServices.addColab(datas).then(res => {
+            console.log("added");
+        })
         this.props.get();
         this.props.la();
     }
@@ -652,7 +679,11 @@ class UserNotes extends PureComponent {
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Collaborator">
-                                        <IconButton >
+                                        <IconButton onClick={() => {
+                                            this.setState({
+                                                colOpen:true
+                                            })
+                                        }}>
                                             <PersonAddOutlinedIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
@@ -709,7 +740,10 @@ class UserNotes extends PureComponent {
                                     {colorArr}
                                 </div>
                                 </Menu>
-                                </MuiThemeProvider>
+                            </MuiThemeProvider>
+                            <ColabratorDialog
+                                addColab={this.addColab}
+                                colOpen={this.state.colOpen} closeColab={this.closeColab} />
                             <div className="more_menu">
                                 <MoreMenu
                                     menuOpen={this.state.menuOpen}
