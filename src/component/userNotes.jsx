@@ -861,7 +861,9 @@ class UserNotes extends PureComponent {
                                     <div className="arrange">
                                         <div className="icon_arrange">
                                             <Tooltip title="Add remainder">
-                                                <IconButton onClick={(event) => {
+                                                <IconButton
+                                                    id="icon_butSize1"
+                                                    onClick={(event) => {
                                                     this.setState({
                                                         remOpen: true,
                                                         remAnchorEl: event.currentTarget
@@ -871,27 +873,28 @@ class UserNotes extends PureComponent {
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Collaborator">
-                                                <IconButton >
+                                                <IconButton id="icon_butSize1">
                                                     <PersonAddOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Change color" >
-                                                <IconButton onClick={this.handleOnClick}>
+                                                <IconButton id="icon_butSize1" onClick={this.handleOnClick}>
                                                     <ColorLensOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Insert Photo">
-                                                <IconButton>
+                                                <IconButton id="icon_butSize1">
                                                     <InsertPhotoOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Archive">
-                                                <IconButton onClick={this.handleArchive}>
+                                                <IconButton id="icon_butSize1" onClick={this.handleArchive}>
                                                     <ArchiveOutlinedIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="More">
                                                 <IconButton
+                                                    id="icon_butSize1"
                                                     onClick={(event) => {
                                                         this.setState({
                                                             menuanchorEl: event.currentTarget,

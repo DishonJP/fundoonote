@@ -256,6 +256,9 @@
   border-block-end: 1px solid lightgray;
   flex-direction: row;
   align-items: center;
+  position: fixed;
+  top:0;
+  z-index: 968;
 }
 .appname_decor{
   display: flex;
@@ -365,7 +368,7 @@ margin-top: 40px;
   margin-left: 5px;
 }
 .title_pin{
-  display: flex;
+  display: flex; 
   flex-direction: row;
 }
 .title_pin1{
@@ -495,14 +498,7 @@ border-color: lightgray;
   display: flex;
   justify-content: flex-end;
 }
-@media screen and (maxwidth:320px){
-  .appbar_decor{
-    width: 100%;
-  }
-  .note_card{
-    width:60%
-  }
-}
+
 .color_change{
   background-color: #FFA500;
 }
@@ -564,11 +560,18 @@ border-color: lightgray;
   overflow-y: auto;
   overflow-x: hidden;
 }
+#note_ccard{
+  width:60%;
+  margin-top: 10%;
+  height: auto;
+  box-shadow: 0px 0px 5px 1px;
+  border-color: white;
+}
 /* ======================================Media Query============================================= */
 @media screen and (max-width:320px){
   .appbar_decor{
     height: 8vh;
-    width: 100%;
+    width: 320px;
   }
   .menu_name{
     width: auto;
@@ -578,6 +581,30 @@ border-color: lightgray;
   }
   #font_sizeicon{
     font-size: medium;
+  }
+  #inText_size{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    height: auto;
+    font-size: 10px;
+  }
+  #inText_size1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 10px;
+    height: 10px;
+    width:100px;
+  }
+  #notes_inputbase{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 10px;
+    height: 10px;
+    width:100px;
+    content: none;
   }
   .img_decor{
     margin-left: 2px;
@@ -593,10 +620,34 @@ border-color: lightgray;
     display: none;
   }
   #icon_butSize{
-    padding:5px;
+    padding: 5px;
+  }
+  #icon_butSize1{
+    padding: 4px;
   }
   .user_image{
     width: 10px;
     height:10px;
+  }
+  .notesComponent{
+    width: 100%;
+    margin-top: 20px;
+  }
+  .note_card{
+    width: 80%;
+    height: 6vh;
+  }
+  .allnotes_width{
+    width: 100%;
+  }
+  .usernotes_decor{
+    margin-left: 0px;
+    margin-right: 0px;
+    display: flex;
+    justify-content: center;
+  }
+  #note_ccard{
+    width:80%;
+    border-radius: 5px;
   }
 }

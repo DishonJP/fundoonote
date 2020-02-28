@@ -230,11 +230,6 @@ class Home extends Component {
                 <div>
                     <div
                         className="header_decor"
-                        style={{
-                            position: "fixed",
-                            width: "100%",
-                            zIndex: "968",
-                        }}
                     >
                         <AppBar
                             class="appbar_decor">
@@ -271,7 +266,7 @@ class Home extends Component {
                             </div>
                             <div className="search_icon">
                                 <SearchIcon id="seac_icon" />
-                                <InputBase
+                                <InputBase id="inText_size"
                                     fullWidth
                                     placeholder="Search"
                                     value={this.state.search}

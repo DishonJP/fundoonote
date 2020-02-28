@@ -378,6 +378,7 @@ class Notes extends Component {
                     >
                         <div className="inputBase">
                             <InputBase
+                                id="inText_size1"
                                 autoFocus={true}
                                 multiline
                                 onClick={() => {
@@ -391,18 +392,18 @@ class Notes extends Component {
                         </div>
                         <div className="inputBase2">
                             <Tooltip title="Note list">
-                                <IconButton>
-                                    <ListAltIcon />
+                                <IconButton id="icon_butSize">
+                                    <ListAltIcon id="font_sizeicon"/>
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="New note with drawing">
-                                <IconButton>
-                                    <BrushIcon />
+                                <IconButton id="icon_butSize">
+                                    <BrushIcon id="font_sizeicon"/>
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title="New note with image">
-                                <IconButton>
-                                    <InsertPhotoOutlinedIcon />
+                                <IconButton id="icon_butSize">
+                                    <InsertPhotoOutlinedIcon id="font_sizeicon"/>
                                 </IconButton>
                             </Tooltip>
                         </div>
@@ -414,14 +415,8 @@ class Notes extends Component {
             return (
                 <MuiThemeProvider theme={theme}>
                     <Card
-                    
+                        id="note_ccard"
                         style={{
-                            width: "60%",
-                            marginTop: "10%",
-                            height: "auto",
-                            boxShadow: "0px 0px 5px 1px",
-                            borderRadius: "10px",
-                            borderColor: "white",
                             backgroundColor: this.state.backcolor
                         }}>
                         <div>
@@ -447,7 +442,8 @@ class Notes extends Component {
                                     placeholder="Title"
                                 />
                                 <Tooltip title="Pin it">
-                                    <IconButton onClick={async () => {
+                                    <IconButton id="icon_butSize"
+                                        onClick={async () => {
                                         await this.setState({
                                             pin: true
                                         });
@@ -481,7 +477,9 @@ class Notes extends Component {
                             <div className="arrang">
                                 <div className="icon_arrange">
                                     <Tooltip title="Add remainder">
-                                        <IconButton onClick={(event) => {
+                                        <IconButton
+                                             id="icon_butSize"
+                                            onClick={(event) => {
                                             this.setState({
                                                 remOpen: true,
                                                 remAnchorEl: event.currentTarget
@@ -491,27 +489,27 @@ class Notes extends Component {
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Collaborator">
-                                        <IconButton >
+                                        <IconButton id="icon_butSize" >
                                             <PersonAddOutlinedIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Change color" >
-                                        <IconButton onClick={this.handleOnClick}>
+                                        <IconButton id="icon_butSize" onClick={this.handleOnClick}>
                                             <ColorLensOutlinedIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Insert Photo">
-                                        <IconButton>
+                                        <IconButton id="icon_butSize">
                                             <InsertPhotoOutlinedIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Archive">
-                                        <IconButton onClick={this.handleArchive}>
+                                        <IconButton id="icon_butSize" onClick={this.handleArchive}>
                                             <ArchiveOutlinedIcon fontSize="small" />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="More">
-                                        <IconButton
+                                        <IconButton id="icon_butSize"
                                             onClick={(event) => {
                                                 this.setState({
                                                     menuanchorEl: event.currentTarget,
