@@ -27,6 +27,11 @@ const theme = createMuiTheme({
             paper: {
                 borderRadius: "10px"
             }
+        },
+        MuiIconButton: {
+            root: {
+                padding:"9px"
+            }
         }
     }
 })
@@ -526,7 +531,7 @@ class UserNotes extends PureComponent {
     componentDidMount() {
         if (this.props.layout === true) {
             this.setState({
-                cardWidth: "24%"
+                cardWidth: "32%"
             })
         } else {
             this.setState({
@@ -537,7 +542,7 @@ class UserNotes extends PureComponent {
     componentWillReceiveProps(props) {
         if (props.layout === true) {
             this.setState({
-                cardWidth: "24%"
+                cardWidth: "32%"
             })
         } else {
             this.setState({
@@ -595,7 +600,6 @@ class UserNotes extends PureComponent {
                         }}
                         style={{
                             width: this.state.cardWidth,
-                            minWidth: "280px",
                             height: "fit-content",
                             borderRadius: "10px",
                             border: "1px solid lightgray",
@@ -649,7 +653,7 @@ class UserNotes extends PureComponent {
                             {this.state.noteLabel !== "" ?
                                 <Chip
                                     style={{
-                                        backgroundColor: "rgba(0,0,0,.2)",
+                                            backgroundColor: "rgba(0,0,0,.2)",
                                     }}
                                     label={this.state.noteLabel}
                                     onDelete={this.removeLabel} /> : null}

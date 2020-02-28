@@ -13,10 +13,10 @@ export  class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Route path="/login" component={Login}></Route> 
+          <Route path="/" component={Login}></Route> 
           <Route path="/registration" component={Registration}></Route>
           <Route path="/forgetPassword" component={ForgetPassword}></Route>
-          <Route path="/" component={Home} />
+          <Route path="/home" component={Home} />
         </Switch>
       </Router>
       )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AppBar, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Button, MuiThemeProvider, createMuiTheme, Divider, Snackbar } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, InputBase, IconButton, Menu, MenuItem, Button, MuiThemeProvider, createMuiTheme, Divider, Snackbar, Popover } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
@@ -41,7 +41,11 @@ const theme = createMuiTheme({
                 paddingRight: "0px"
             }
         },
-
+        MuiInputBase: {
+            inputMultiline: {
+                height:"20px"
+            }
+        }
     }
 }
 )
@@ -69,7 +73,8 @@ class Home extends Component {
             labelName: [],
             margin: "0%",
             msg: '',
-            snackBarOpen: false
+            snackBarOpen: false,
+            openSearch:false
         };
     }
     changePanalName = (data) => {
@@ -252,16 +257,14 @@ class Home extends Component {
                                         margin: "0px"
                                     }}
                                     noWrap
-                                    class="appname_decor"
-                                >
+                                    class="appname_decor">
                                     FundooNote
                     </Typography>
                                 <div className="img_place">
                                     <img
                                         className="img_decor"
                                         src={notes}
-                                        alt="N"
-                                    />
+                                        alt="N" />
                                 </div>
                             </div>
                             <div className="search_icon">
@@ -272,6 +275,27 @@ class Home extends Component {
                                     value={this.state.search}
                                     onChange={this.handleSearch}
                                 />
+                            </div>
+                            <div className="search_icon2">
+                                <IconButton onClick={() => {
+                                    this.setState({
+                                        openSearch:true
+                                    })
+                                }}>
+                                    <SearchIcon fontSize="small" />
+                                </IconButton>
+                                <Popover open={this.state.openSearch} onClose={() => {
+                                    this.setState({
+                                        openSearch:false
+                                    })
+                                }}>
+                                    <InputBase
+                                        autoFocus={true}
+                                        fullWidth
+                                        placeholder="Search"
+                                        value={this.state.search}
+                                        onChange={this.handleSearch} />
+                                </Popover>
                             </div>
                             <div className="acc_decor">
                                 <Toolbar id="toolbar"

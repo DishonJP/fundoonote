@@ -433,11 +433,12 @@ margin-top: 40px;
 }
 .usernotes_decor{
   margin-top: 20px;
+  width: 60%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 20%;
+  margin-right: 22%;
 }
 .usersNote_decor{
   display: flex;
@@ -567,11 +568,15 @@ border-color: lightgray;
   box-shadow: 0px 0px 5px 1px;
   border-color: white;
 }
+.search_icon2{
+  display: none;
+}
 /* ======================================Media Query============================================= */
 @media screen and (max-width:320px){
   .appbar_decor{
     height: 8vh;
-    width: 320px;
+    width: 100%;
+    justify-content: space-around;
   }
   .menu_name{
     width: auto;
@@ -583,7 +588,7 @@ border-color: lightgray;
     font-size: medium;
   }
   #inText_size{
-    display: flex;
+    display: none;
     flex-direction: row;
     align-content: center;
     height: auto;
@@ -594,8 +599,7 @@ border-color: lightgray;
     flex-direction: row;
     flex-wrap: wrap;
     font-size: 10px;
-    height: 10px;
-    width:100px;
+    width:auto;
   }
   #notes_inputbase{
     display: flex;
@@ -611,13 +615,14 @@ border-color: lightgray;
     height: 5vh;
   }
   .search_icon{
-    width: 15vh ;
-    height: 5vh;
-    margin-left: 2px;
-    padding-left: 2px;
+    display: none;
+  }
+  .search_icon2{
+    display: contents;
   }
   #seac_icon{
-    display: none;
+    display: block;
+    font-size: medium;
   }
   #icon_butSize{
     padding: 5px;
@@ -640,14 +645,12 @@ border-color: lightgray;
   .allnotes_width{
     width: 100%;
   }
-  .usernotes_decor{
-    margin-left: 0px;
-    margin-right: 0px;
-    display: flex;
-    justify-content: center;
-  }
+
   #note_ccard{
     width:80%;
     border-radius: 5px;
   }
+}
+@media screen and (max-width:320px){
+
 }
