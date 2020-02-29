@@ -636,7 +636,18 @@ border-color: lightgray;
   }
   .notesComponent{
     width: 100%;
+    height: 100%;
     margin-top: 20px;
+  }
+  .usernotes_decor{
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    justify-content: center;
   }
   .note_card{
     width: 80%;
@@ -645,12 +656,166 @@ border-color: lightgray;
   .allnotes_width{
     width: 100%;
   }
-
+  .card{
+    width: 100%;
+  }
   #note_ccard{
     width:80%;
     border-radius: 5px;
   }
+  .container{
+    width: 100%;
+    height: 100%;
+    background-size: 100% 100%;
+  }
+  .appname2_decor{
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .content_decor{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .button1{
+    position:absolute;
+    top: 40%;
+    left: 31%;
+  }
 }
-@media screen and (max-width:320px){
-
+/* ==============================================WelcomePage======================================= */
+.container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+ background-image: url("../src/assets/welcome.jpg");
+ background-repeat: no-repeat;
+ background-size: 100% 100%;
+ 
+}
+.appname2_decor{
+  display: flex;
+  justify-content: center;
+  font-family: monospace;
+  font-weight: 800;
+  font-size: 40px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  color: #eee;
+  animation: appName;
+  animation-duration: 2s;
+}
+.content_decor{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+.data_Decor{
+  position: absolute;
+  /* left: 43%; */
+  color: #eee;
+  font-family: monospace;
+  font-weight: 500;
+  font-size: 15px;
+  margin-bottom: 20px;
+  animation: contentss;
+  animation-duration: 2s;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;
+}
+.button1{
+  /* position: absolute;
+  left: 20%; */
+  font-family: monospace;
+  border: 2px solid black;
+  padding:10px;
+  border-radius: 40px;
+  background-color: black;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #eee;
+  cursor: pointer;
+  animation: leftToRight;
+  animation-duration: 2s;
+  animation-delay: 1s;
+  outline: none;
+  animation-fill-mode: backwards;
+}
+.button2{
+  position: absolute;
+  left: 70%;
+  font-family: monospace;
+  border: 2px solid black;
+  padding:10px;
+  border-radius: 40px;
+  background-color: black;
+  font-size: 20px;
+  letter-spacing: 2px;
+  outline: none;
+  color: #eee;
+  cursor: pointer;
+  animation: rightToLeft;
+  animation-duration: 2s;
+  animation-delay: 1s;
+  animation-fill-mode: backwards;
+}
+*{
+  margin: 0px;
+  padding: 0px;
+}
+@keyframes appName{
+  0%{
+    transform: translatey(-50px);
+    opacity: 0;
+  }
+  100%{
+    transform: translatey(0px);
+    opacity: 1;
+  }
+}
+@keyframes contentss{
+  0%{
+    opacity: 0;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+@keyframes leftToRight{
+  0%{
+    transform: translatex(-140px);
+    opacity: 0;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    transform: translatex(0px);
+    opacity: 1;
+  }
+}
+@keyframes rightToLeft{
+  0%{
+    transform: translatex(+140px);
+    opacity: 0;
+  }
+  50%{
+    opacity: 0.5;
+  }
+  100%{
+    transform: translatex(0px);
+    opacity: 1;
+  }
 }

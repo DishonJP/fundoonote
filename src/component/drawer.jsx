@@ -77,9 +77,9 @@ class Drawers extends Component {
                         id={index}
                         button
                         onClick={
-                            (event) => {
+                            async (event) => {
                                 event.currentTarget.style.backgroundColor = "#FFA500"
-                                this.setState({
+                                await this.setState({
                                     bgcolorN: '',
                                     bgcolorR: '',
                                     bgcolorL: '',
