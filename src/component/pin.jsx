@@ -430,6 +430,7 @@ class Pin extends Component {
         if (this.state.change) {
             return (
                 <Card
+                    id={this.props.layout?"card":"car"}
                     onMouseEnter={() => {
                         this.setState({
                             displayIcon: "",
@@ -443,8 +444,6 @@ class Pin extends Component {
                         })
                     }}
                     style={{
-                        width: this.state.cardWidth,
-                        minWidth: "280px",
                         height: "fit-content",
                         minHeight: "22vh",
                         borderRadius: "10px",

@@ -585,7 +585,8 @@ class UserNotes extends PureComponent {
             return (
                 <MuiThemeProvider theme={theme}>
                     
-                    <Card id="card"
+                    <Card id={this.props.layout ? "card" : "car"}
+                        key={this.state.docId}
                         onMouseEnter={() => {
                             this.setState({
                                 displayIcon: "",
@@ -599,7 +600,6 @@ class UserNotes extends PureComponent {
                             })
                         }}
                         style={{
-                            width: this.state.cardWidth,
                             height: "fit-content",
                             borderRadius: "10px",
                             border: "1px solid lightgray",

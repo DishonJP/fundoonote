@@ -161,7 +161,7 @@ class Home extends Component {
             if (((arrNotes.data().title).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notes).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase())) || (arrNotes.data().notelabel).toLocaleLowerCase().includes((this.state.search.toLocaleLowerCase()))) && this.state.search !== "") {
                 searchCount++;
                 return (
-                    <Search searchNotes={arrNotes} get={this.getNote} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close} la={this.getLabels} />
+                    <Search key={arrNotes.id} searchNotes={arrNotes} get={this.getNote} gridList={this.state.gridList} getRem={this.getRemainder} layout={this.state.close} la={this.getLabels} />
                 )
             }
             return null;
@@ -170,7 +170,7 @@ class Home extends Component {
             if (arrNotes.data().trash === false && arrNotes.data().archive === false && arrNotes.data().pin === false) {
                 otherCount++;
                 return (
-                    <UserNotes allNotes={arrNotes} handleMessage={this.handleMessage} get={this.getNote} gridList={this.state.gridList} la={this.getLabels} layout={this.state.close} />
+                    <UserNotes key={arrNotes.id} allNotes={arrNotes} handleMessage={this.handleMessage} get={this.getNote} gridList={this.state.gridList} la={this.getLabels} layout={this.state.close} />
                 )
             }
             return null;
@@ -178,7 +178,7 @@ class Home extends Component {
         let archiveObj = this.state.allNotes.map(arrNotes => {
             if (arrNotes.data().trash === false && arrNotes.data().archive === true && arrNotes.data().pin === false) {
                 return (
-                    <Archive archiveNotes={arrNotes} la={this.getLabels} layout={this.state.close} get={this.getNote} />
+                    <Archive key={arrNotes.id} archiveNotes={arrNotes} la={this.getLabels} layout={this.state.close} get={this.getNote} />
                 )
             }
             return null;
@@ -186,7 +186,7 @@ class Home extends Component {
         let binObj = this.state.allNotes.map(arrNotes => {
             if (arrNotes.data().trash) {
                 return (
-                    <Bin binNotes={arrNotes} layout={this.state.close} />
+                    <Bin key={arrNotes.id} binNotes={arrNotes} layout={this.state.close} />
                 )
             }
             return null;
@@ -196,7 +196,7 @@ class Home extends Component {
                 count++;
                 pinCount++;
                 return (
-                    <Pin pinNotes={arrNotes} la={this.getLabels} get={this.getNote} layout={this.state.close} />
+                    <Pin key={arrNotes.id} pinNotes={arrNotes} la={this.getLabels} get={this.getNote} layout={this.state.close} />
                 )
             }
             return null;
@@ -208,7 +208,7 @@ class Home extends Component {
                 if (arrNotes.data().notelabel === this.state.labelNotes[i] && this.state.panalChange === this.state.labelNotes[i]) {
                     count1 = 0;
                     return (
-                        <Label labelNotes={arrNotes} la={this.getLabels} get={this.getNote} layout={this.state.close} />
+                        <Label key={arrNotes.id} labelNotes={arrNotes} la={this.getLabels} get={this.getNote} layout={this.state.close} />
                     )
                 }
                 else if (arrNotes.data().notelabel !== this.state.labelNotes[i] && this.state.panalChange === this.state.labelNotes[i]) {
@@ -225,7 +225,7 @@ class Home extends Component {
         let remObj = this.state.allNotes.map(arrNotes => {
             if (arrNotes.data().remainder !== "" && arrNotes.data().trash === false) {
                 return (
-                    <Remainder remNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close} la={this.getLabels} />
+                    <Remainder key={arrNotes.id} remNotes={arrNotes} pin={this.pinNote} bin={this.binNote} get={this.getNote} getRem={this.getRemainder} label={this.getLabel} archive={this.getArchive} layout={this.state.close} la={this.getLabels} />
                 )
             }
             return null;
@@ -424,7 +424,8 @@ class Home extends Component {
                                 </React.Fragment>
                             }>
                         </Snackbar>
-
+                        {this.state.allNotes.length === 0 ? <div><div id="spinner"></div>
+                            <span id="spinner_data">Loading please wait</span></div>: null}
                         <div className="notesComponent">
                             <RemMenu />
                             <Notes get={this.getNote} layout={this.state.close} />

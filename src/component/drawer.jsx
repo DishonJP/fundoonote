@@ -74,7 +74,7 @@ class Drawers extends Component {
                 <div
                     className="noteIcon_decor">
                     <ListItem
-                        id={index}
+                        key={index}
                         button
                         onClick={
                             async (event) => {

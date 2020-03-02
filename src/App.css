@@ -433,7 +433,7 @@ margin-top: 40px;
 }
 .usernotes_decor{
   margin-top: 20px;
-  width: 60%;
+  width: 62%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -523,6 +523,27 @@ border-color: lightgray;
   height: 40vh;
   scroll-behavior: smooth;
 }
+#spinner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  border: 5px solid transparent;
+  border-top-color: #FFA500;
+  border-radius: 50%;
+}
+#spinner_data{
+  position: absolute;
+  top: 60%;
+  left: 47%;
+}
+@keyframes spin{
+  to{
+    transform: rotate(360deg);
+  }
+}
 /* ===========================================Collabrator===================================== */
 .add_icon{
   margin-left: 15px;
@@ -571,12 +592,22 @@ border-color: lightgray;
 .search_icon2{
   display: none;
 }
+#card{
+  width: 32%;
+}
+#car{
+  width: 60%;
+}
 /* ======================================Media Query============================================= */
-@media screen and (max-width:320px){
+@media only screen and (max-width:320px){
   .appbar_decor{
     height: 8vh;
     width: 100%;
     justify-content: space-around;
+  }
+  .body{
+    width: 100%;
+    height: 100%;
   }
   .menu_name{
     width: auto;
@@ -586,6 +617,9 @@ border-color: lightgray;
   }
   #font_sizeicon{
     font-size: medium;
+  }
+  #card{
+    width: 85%;
   }
   #inText_size{
     display: none;
@@ -597,9 +631,11 @@ border-color: lightgray;
   #inText_size1{
     display: flex;
     flex-direction: row;
+    align-content: center;
     flex-wrap: wrap;
     font-size: 10px;
-    width:auto;
+    width:inherit;
+    height: inherit;
   }
   #notes_inputbase{
     display: flex;
@@ -644,7 +680,7 @@ border-color: lightgray;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: 0px;
+    margin-left: 10%;
     margin-top: 0px;
     margin-right: 0px;
     justify-content: center;
@@ -652,6 +688,8 @@ border-color: lightgray;
   .note_card{
     width: 80%;
     height: 6vh;
+    justify-content: center;
+    align-items: end;
   }
   .allnotes_width{
     width: 100%;
@@ -663,27 +701,36 @@ border-color: lightgray;
     width:80%;
     border-radius: 5px;
   }
+  /* =================== */
   .container{
     width: 100%;
     height: 100%;
     background-size: 100% 100%;
   }
   .appname2_decor{
-    font-weight: 600;
-    font-size: 20px;
+    position: absolute;
+    top: 10%;
   }
   .content_decor{
-    position: relative;
-    width: 100%;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    flex-direction: column;
     height: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+    width: 100%;
   }
   .button1{
     position:absolute;
-    top: 40%;
-    left: 31%;
+    top:5%;
+    left: 20%;
+  }
+}
+@media only screen and (max-width:768px){
+  #card{
+    width:240px
+  }
+  .usernotes_decor{
+    width: 80%;
   }
 }
 /* ==============================================WelcomePage======================================= */
@@ -693,15 +740,15 @@ border-color: lightgray;
   display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: absolute;
  background-image: url("../src/assets/welcome.jpg");
  background-repeat: no-repeat;
  background-size: 100% 100%;
  
 }
 .appname2_decor{
-  display: flex;
-  justify-content: center;
+  position: absolute;
+  top: 80%;
   font-family: monospace;
   font-weight: 800;
   font-size: 40px;
@@ -712,6 +759,7 @@ border-color: lightgray;
   animation-duration: 2s;
 }
 .content_decor{
+  position:relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -721,7 +769,7 @@ border-color: lightgray;
 }
 .data_Decor{
   position: absolute;
-  /* left: 43%; */
+  top: 86%;
   color: #eee;
   font-family: monospace;
   font-weight: 500;
@@ -733,8 +781,9 @@ border-color: lightgray;
   animation-fill-mode: backwards;
 }
 .button1{
-  /* position: absolute;
-  left: 20%; */
+  position: absolute;
+  top:90%;
+  left: 20%;
   font-family: monospace;
   border: 2px solid black;
   padding:10px;
@@ -752,7 +801,8 @@ border-color: lightgray;
 }
 .button2{
   position: absolute;
-  left: 70%;
+  top: 90%;
+  right: 20%;
   font-family: monospace;
   border: 2px solid black;
   padding:10px;
