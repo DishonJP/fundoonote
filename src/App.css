@@ -690,6 +690,7 @@ border-color: lightgray;
     height: 6vh;
     justify-content: center;
     align-items: end;
+    display: flex;
   }
   .allnotes_width{
     width: 100%;

@@ -15,6 +15,7 @@
     "bcrypt": "^3.0.8",
     "contentful": "^7.13.1",
     "date-fns": "^2.9.0",
+    "dotenv": "^8.2.0",
     "firebase": "^7.7.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
@@ -44,5 +45,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "babel-jest": "^25.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.4.4",
+    "jest": "^25.1.0"
   }
 }

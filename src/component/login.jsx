@@ -112,7 +112,7 @@ class Login extends React.Component {
                             </React.Fragment>
                         } />
 
-                    <div className="set_Div">
+                    <div className="set_Div" data-test="EMAIL">
                         <TextField
                             required
                             variant="outlined"
