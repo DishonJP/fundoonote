@@ -4,11 +4,12 @@ import jwt from 'jsonwebtoken'
 import jwt_decode from 'jwt-decode'
 import service from '../services/constant'
 const db = firebase.firestore();
-async function userRegistration(data) {
+
+const userRegistration = async (data) => {
     try {
         const response = await fire.auth().createUserWithEmailAndPassword(data.email, data.password);
         const datas = {
-            curUser:response.user.uid,
+            curUser: response.user.uid,
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
@@ -17,7 +18,7 @@ async function userRegistration(data) {
         db.collection("users").doc(response.user.uid).set(datas);
         const colData = {
             curUser: datas.curUser,
-            email:datas.email
+            email: datas.email
         }
         db.collection("collaborator").doc().set(colData);
         return response
@@ -26,7 +27,7 @@ async function userRegistration(data) {
     }
 }
 
-async function userLogin(data) {
+const userLogin = async (data) => {
     try {
         const datas = {
             email: data.email,
@@ -38,31 +39,31 @@ async function userLogin(data) {
                 email: service.firebaseAuthorization.currentUser.email,
                 fname: doc.data().firstName,
                 lname: doc.data().lastName,
-                userId:response.user.uid    
+                userId: response.user.uid
             }
-            let token =await jwt.sign(userData, service.firebaseAuthorization.currentUser.uid, {
-                expiresIn:1440
+            let token = await jwt.sign(userData, service.firebaseAuthorization.currentUser.uid, {
+                expiresIn: 1440
             })
             localStorage.setItem('usertoken', token);
             localStorage.setItem("firstName", userData.fname);
             localStorage.setItem("lastName", userData.lname);
-            localStorage.setItem("email",userData.email)
+            localStorage.setItem("email", userData.email)
         })
         return response
     } catch (err) {
         return err;
     }
 }
-async function userLogout(){
+const userLogout = async () => {
     try {
         const response = await fire.auth().currentUser.signOut();
         localStorage.clear();
-    return response;
+        return response;
     } catch (error) {
         return error;
     }
 }
-async function emailVerify(data) {
+const emailVerify = async (data) => {
     try {
         const datas = {
             email: data.email
@@ -73,19 +74,19 @@ async function emailVerify(data) {
         return error;
     }
 }
-async function addNote(data) {
+const addNote = async (data) => {
     try {
-        const datas={
+        const datas = {
             curUser: fire.auth().currentUser.uid,
             title: data.title,
-                notes: data.notes,
-                trash: data.trash,
-                backcolor: data.backcolor,
-                inputbcolor: data.inputbcolor,
-                archive: data.archive,
-                pin: data.pin,
-                remainder: data.remainder,
-                notelabel: data.label
+            notes: data.notes,
+            trash: data.trash,
+            backcolor: data.backcolor,
+            inputbcolor: data.inputbcolor,
+            archive: data.archive,
+            pin: data.pin,
+            remainder: data.remainder,
+            notelabel: data.label
         }
         const response = await db.collection("Notes").doc().set(datas);
         return response;
@@ -93,19 +94,19 @@ async function addNote(data) {
         return error;
     }
 }
-async function addColab(data) {
+const addColab = async (data) => {
     try {
-        const datas={
+        const datas = {
             curUser: data.id,
             title: data.title,
-                notes: data.notes,
-                trash: data.trash,
-                backcolor: data.backcolor,
-                inputbcolor: data.inputbcolor,
-                archive: data.archive,
-                pin: data.pin,
-                remainder: data.remainder,
-                notelabel: data.label
+            notes: data.notes,
+            trash: data.trash,
+            backcolor: data.backcolor,
+            inputbcolor: data.inputbcolor,
+            archive: data.archive,
+            pin: data.pin,
+            remainder: data.remainder,
+            notelabel: data.label
         }
         const response = await db.collection("Notes").doc().set(datas);
         return response;
@@ -113,13 +114,13 @@ async function addColab(data) {
         return error;
     }
 }
-async function getNote() {
+const getNote = async () => {
     try {
         let getNotes = [];
         let getToken = localStorage.getItem("usertoken");
         let data = jwt_decode(getToken)
-        await db.collection('Notes').where("curUser", '==', data.userId).get().then(function (querySnapShot) {      
-            querySnapShot.forEach(function(doc){   
+        await db.collection('Notes').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
+            querySnapShot.forEach(function (doc) {
                 getNotes.push(doc);
             })
         })
@@ -128,7 +129,7 @@ async function getNote() {
         return error
     }
 }
-async function binNotes(data) {
+const binNotes = async (data) => {
     let datas = {
         curUser: fire.auth().currentUser.uid,
         trash: data.trash,
@@ -139,42 +140,42 @@ async function binNotes(data) {
         archive: data.archive,
         remainder: data.remainder,
         backcolor: data.backcolor,
-        inputbcolor:data.inputbcolor
+        inputbcolor: data.inputbcolor
     }
     await db.collection("Notes").doc(data.id).update(datas).then((res) => {
-       console.log(res,"how lol");
+        console.log(res, "how lol");
     }).catch((err) => {
-       console.log(err,"oooh no");
-   })
+        console.log(err, "oooh no");
+    })
 }
-async function addLabel(data) {
+const addLabel = async (data) => {
     try {
-        const datas={
+        const datas = {
             curUser: fire.auth().currentUser.uid,
-                notelabel: data.label
+            notelabel: data.label
         }
         let count = 0;
         let label = getLabel();
         await label.then(el => {
             for (let i = 0; i < el.length; i++) {
-                if (el[i]==datas.notelabel) {
+                if (el[i] == datas.notelabel) {
                     count++
                 }
             }
         })
-        if (count === 0 && datas.notelabel!=="") {
+        if (count === 0 && datas.notelabel !== "") {
             const response = await db.collection("label").doc().set(datas);
-        return response;
+            return response;
         }
-        
+
     } catch (error) {
         return error;
     }
 }
-async function getLabel() {
+const getLabel = async () => {
     try {
         let getLabel = [];
-        
+
         let getToken = localStorage.getItem("usertoken");
         let data = jwt_decode(getToken)
         await db.collection('label').where("curUser", '==', data.userId).get().then(function (querySnapShot) {
@@ -187,13 +188,16 @@ async function getLabel() {
         return error
     }
 }
-async function deleteNote(data) {
-    await db.collection("Notes").doc(data.id).delete().then((res)=>console.log("done deleting"))
+
+const deleteNote = async (data) => {
+    await db.collection("Notes").doc(data.id).delete().then((res) => console.log("done deleting"))
 }
-async function deletelabel(data) {
-    await db.collection("label").doc(data.id).delete().then((res)=>console.log("done deleting"))
+
+const deletelabel = async (data) => {
+    await db.collection("label").doc(data.id).delete().then((res) => console.log("done deleting"))
 }
-async function updateLabel(data) {
+
+const updateLabel = async (data) => {
     let datas = {
         curUser: fire.auth().currentUser.uid,
         trash: data.trash,
@@ -204,16 +208,17 @@ async function updateLabel(data) {
         archive: data.archive,
         remainder: data.remainder,
         backcolor: data.backcolor,
-        inputbcolor:data.inputbcolor
+        inputbcolor: data.inputbcolor
     }
     await db.collection("label").doc(data.id).update(datas).then((res) => {
-       console.log(res,"how lol");
+        console.log(res, "how lol");
     }).catch((err) => {
-       console.log(err,"oooh no");
-   })
+        console.log(err, "oooh no");
+    })
 }
-async function getCollaborator() {
-    let colData=[]
+
+const getCollaborator = async () => {
+    let colData = []
     await db.collection("collaborator").get().then((data) => {
         data.forEach(el => {
             colData.push(el.data())
@@ -225,5 +230,5 @@ export default {
     userRegistration,
     userLogin,
     emailVerify, userLogout,
-    addNote,getNote,binNotes,deleteNote,addLabel,getLabel,deletelabel,updateLabel,getCollaborator,addColab
+    addNote, getNote, binNotes, deleteNote, addLabel, getLabel, deletelabel, updateLabel, getCollaborator, addColab
 }
