@@ -6,20 +6,20 @@ import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import notes from '../assets/keep.png'
 import Drawers from '../component/drawer'
 import SettingsIcon from '@material-ui/icons/Settings';
-import IconChange from './iconChange';
+import IconChange from '../components/iconChange';
 import userServices from '../services/userServices'
 import bunny from '../assets/bunny.jpg'
-import Notes from './notes';
-import UserNotes from './userNotes';
-import Archive from './archive';
-import Bin from './bin';
+import Notes from '../components/notes';
+import UserNotes from '../components/userNotes';
+import Archive from '../components/archive';
+import Bin from '../components/bin';
 import CloseIcon from '@material-ui/icons/Close'
-import Pin from './pin'
-import Search from './search'
-import Label from './label';
-import Remainder from './remainder';
-import EmptyLabel from './emptyLabel';
-import RemMenu from './remMenu';
+import Pin from '../components/pin'
+import Search from '../components/search'
+import Label from '../components/label';
+import Remainder from '../components/remainder';
+import EmptyLabel from '../components/emptyLabel';
+import RemMenu from '../components/remMenu';
 const theme = createMuiTheme({
     overrides: {
         MuiMenu: {
@@ -43,7 +43,7 @@ const theme = createMuiTheme({
         },
         MuiInputBase: {
             inputMultiline: {
-                height:"20px"
+                height: "20px"
             }
         }
     }
@@ -74,7 +74,7 @@ class Home extends Component {
             margin: "0%",
             msg: '',
             snackBarOpen: false,
-            openSearch:false
+            openSearch: false
         };
     }
     changePanalName = (data) => {
@@ -279,14 +279,14 @@ class Home extends Component {
                             <div className="search_icon2">
                                 <IconButton onClick={() => {
                                     this.setState({
-                                        openSearch:true
+                                        openSearch: true
                                     })
                                 }}>
                                     <SearchIcon fontSize="small" />
                                 </IconButton>
                                 <Popover open={this.state.openSearch} onClose={() => {
                                     this.setState({
-                                        openSearch:false
+                                        openSearch: false
                                     })
                                 }}>
                                     <InputBase
@@ -425,7 +425,7 @@ class Home extends Component {
                             }>
                         </Snackbar>
                         {this.state.allNotes.length === 0 ? <div><div id="spinner"></div>
-                            <span id="spinner_data">Loading please wait</span></div>: null}
+                            <span id="spinner_data">Loading please wait</span></div> : null}
                         <div className="notesComponent">
                             <RemMenu />
                             <Notes get={this.getNote} layout={this.state.close} />
