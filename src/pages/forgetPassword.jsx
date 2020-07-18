@@ -21,10 +21,10 @@ class ForgetPassword extends React.Component {
     validation = () => {
         if (this.state.email !== '') {
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)) {
-                    const data = {
-                        email: this.state.email,
-                        password:this.state.password
-                    }
+                const data = {
+                    email: this.state.email,
+                    password: this.state.password
+                }
                 userServices.emailVerify(data).then(res => {
                     if (res === undefined) {
                         this.setState({
@@ -50,7 +50,7 @@ class ForgetPassword extends React.Component {
                     })
                 }
                 );
-                 
+
             } else {
                 this.setState(
                     {
@@ -94,7 +94,7 @@ class ForgetPassword extends React.Component {
                         </IconButton>
                     }
                 />
-                <Card id ="card_decor">
+                <Card id="card_decor">
                     <div className="name_decor"><span>Forget Password</span></div>
 
                     <TextField id="email_space"

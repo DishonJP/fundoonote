@@ -1,7 +1,7 @@
 import React from 'react'
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem,DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -84,18 +84,18 @@ class Bin extends React.Component {
             inputbcolor: "lightgray",
             trash: this.props.binNotes.data().trash,
             docId: this.props.binNotes.id,
-            width:this.props.layout,
-            cardWidth:""
+            width: this.props.layout,
+            cardWidth: ""
         }
     }
     componentDidMount() {
         if (this.state.width) {
             this.setState({
-                cardWidth:"40%"
+                cardWidth: "40%"
             })
         } else {
             this.setState({
-                cardWidth:"60%"
+                cardWidth: "60%"
             })
         }
     }
@@ -107,9 +107,9 @@ class Bin extends React.Component {
         })
     }
     handleDelete = () => {
-       let data = {
-            id:this.state.docId
-       }
+        let data = {
+            id: this.state.docId
+        }
         userServices.deleteNote(data);
         this.setState({
             dialogOpen: false
@@ -123,7 +123,7 @@ class Bin extends React.Component {
         })
         let data = {
             trash: this.state.trash,
-            id:this.state.docId
+            id: this.state.docId
         }
         userServices.binNotes(data)
     }
@@ -196,7 +196,7 @@ class Bin extends React.Component {
                                             variant="h4"
                                             style={{
                                                 backgroundColor: this.state.inputbcolor
-                                        }}
+                                            }}
                                         >
                                             {this.state.title}
                                         </Typography>
@@ -205,7 +205,7 @@ class Bin extends React.Component {
                                         <Typography
                                             style={{
                                                 backgroundColor: this.state.inputbcolor
-                                        }}
+                                            }}
                                         >
                                             {this.state.content}
                                         </Typography>

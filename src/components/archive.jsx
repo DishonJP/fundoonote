@@ -6,7 +6,7 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import ColorLensOutlinedIcon from '@material-ui/icons/ColorLensOutlined';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import MoreVertOutlinedIcon from '@material-ui/icons/MoreVertOutlined';
-import { Card, InputBase, IconButton, Button, TextField,Chip, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
+import { Card, InputBase, IconButton, Button, TextField, Chip, Tooltip, Menu, MenuItem, DialogContent, MuiThemeProvider, createMuiTheme, Divider, Typography, Dialog } from '@material-ui/core'
 import userServices from '../services/userServices'
 const theme = createMuiTheme({
     overrides: {
@@ -96,7 +96,7 @@ class Archive extends React.Component {
             docId: this.props.archiveNotes.id,
             pin: this.props.archiveNotes.data().pin,
             notelabel: this.props.archiveNotes.data().notelabel,
-            remainder:this.props.archiveNotes.data().remainder,
+            remainder: this.props.archiveNotes.data().remainder,
             width: "",
             cardWidth: "",
             displayIcon: "hidden",
@@ -104,7 +104,7 @@ class Archive extends React.Component {
         }
     }
     componentWillReceiveProps(props) {
-       this.setState({
+        this.setState({
             width: props.layout
         })
         if (props.layout === true) {
@@ -127,7 +127,7 @@ class Archive extends React.Component {
     }
     handleArchive = async () => {
         await this.setState({
-            archive:false
+            archive: false
         })
         const data = {
             title: this.state.title,
@@ -272,20 +272,20 @@ class Archive extends React.Component {
                             className="title_pin1">
                             <Typography variant="h5">{this.state.title}</Typography>
                             <div style={{
-                                visibility:this.state.displayIcon
+                                visibility: this.state.displayIcon
                             }}>
-                            <Tooltip title="Pin it">
-                                <IconButton onClick={async () => {
-                                    await this.setState({
-                                        pin: true
-                                    });
-                                    this.handlePin()
-                                }}>
-                                    <PinDropOutlinedIcon
-                                        fontSize="small" />
-                                </IconButton>
+                                <Tooltip title="Pin it">
+                                    <IconButton onClick={async () => {
+                                        await this.setState({
+                                            pin: true
+                                        });
+                                        this.handlePin()
+                                    }}>
+                                        <PinDropOutlinedIcon
+                                            fontSize="small" />
+                                    </IconButton>
                                 </Tooltip>
-                                </div>
+                            </div>
                         </div>
                         <div
                             onClick={() => {
@@ -303,25 +303,25 @@ class Archive extends React.Component {
                             ></InputBase>
                         </div>
                         <div classname="usernote_laRe">
-                                        {this.state.notelabel !== "" ?
-                                            <Chip
-                                                style={{
-                                                    backgroundColor: "rgba(0,0,0,.2)",
-                                                }}
-                                                label={this.state.notelabel}
-                                                onDelete={this.removeLabel} /> : null}
-                                        {this.state.remainder !== "" ?
-                                            <Chip
-                                                style={{
-                                                    backgroundColor: "rgba(0,0,0,.2)",
-                                                    marginLeft: "3px"
-                                                }}
-                                                label={this.state.remainder}
-                                                onDelete={this.removeRemainder} /> : null}
-                                    </div>
+                            {this.state.notelabel !== "" ?
+                                <Chip
+                                    style={{
+                                        backgroundColor: "rgba(0,0,0,.2)",
+                                    }}
+                                    label={this.state.notelabel}
+                                    onDelete={this.removeLabel} /> : null}
+                            {this.state.remainder !== "" ?
+                                <Chip
+                                    style={{
+                                        backgroundColor: "rgba(0,0,0,.2)",
+                                        marginLeft: "3px"
+                                    }}
+                                    label={this.state.remainder}
+                                    onDelete={this.removeRemainder} /> : null}
+                        </div>
                         <div
                             style={{
-                                visibility:this.state.displayIcon
+                                visibility: this.state.displayIcon
                             }}
                             className="arrange">
                             <div className="icon_arrange">

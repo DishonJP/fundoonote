@@ -4,7 +4,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import notes from '../assets/keep.png'
-import Drawers from '../component/drawer'
+import Drawers from '../components/drawer'
 import SettingsIcon from '@material-ui/icons/Settings';
 import IconChange from '../components/iconChange';
 import userServices from '../services/userServices'
