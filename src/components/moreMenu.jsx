@@ -1,11 +1,11 @@
 import React from 'react'
 import { Menu, MenuItem, Divider } from '@material-ui/core'
-const MoreMenu = () => {
+const MoreMenu = (props) => {
     return (
         <Menu
-            open={this.props.menuOpen}
-            autoFocusItem={this.props.menuOpen}
-            anchorEl={this.props.menuanchorEl}
+            open={props.menuOpen}
+            autoFocusItem={props.menuOpen}
+            anchorEl={props.menuanchorEl}
             style={{
                 padding: "15px",
             }}
@@ -17,11 +17,11 @@ const MoreMenu = () => {
                 vertical: 'bottom',
                 horizontal: 'center',
             }}
-            onClose={this.props.moreMenuClose}
+            onClose={props.moreMenuClose}
         >
-            <MenuItem onClick={this.props.handleClickLabel}>Add Label</MenuItem>
+            <MenuItem onClick={props.handleClickLabel}>Add Label</MenuItem>
             <Divider />
-            <MenuItem onClick={this.props.handleMenuClick}
+            <MenuItem onClick={props.handleMenuClick}
             >Delete Note</MenuItem>
             <Divider />
             <MenuItem>Add Drawing</MenuItem>
