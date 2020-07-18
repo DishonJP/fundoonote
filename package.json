@@ -16,6 +16,7 @@
     "contentful": "^7.14.5",
     "date-fns": "^2.15.0",
     "dotenv": "^8.2.0",
+    "firebase": "^7.16.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "prop-types": "^15.7.2",

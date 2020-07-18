@@ -1,38 +1,33 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Menu, MenuItem, Divider } from '@material-ui/core'
-class MoreMenu extends Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        return (
-            <Menu
-                open={this.props.menuOpen}
-                autoFocusItem={this.props.menuOpen}
-                anchorEl={this.props.menuanchorEl}
-                style={{
-                    padding: "15px",
-                }}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
-                transformOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                }}
-                onClose={this.props.moreMenuClose}
-            >
-                <MenuItem onClick={this.props.handleClickLabel}>Add Label</MenuItem>
-                <Divider />
-                <MenuItem onClick={this.props.handleMenuClick}
-                >Delete Note</MenuItem>
-                <Divider />
-                <MenuItem>Add Drawing</MenuItem>
-                <Divider />
-                <MenuItem>Show tick boxes</MenuItem>
-            </Menu>
-        )
-    }
+const MoreMenu = () => {
+    return (
+        <Menu
+            open={this.props.menuOpen}
+            autoFocusItem={this.props.menuOpen}
+            anchorEl={this.props.menuanchorEl}
+            style={{
+                padding: "15px",
+            }}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+            }}
+            transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+            }}
+            onClose={this.props.moreMenuClose}
+        >
+            <MenuItem onClick={this.props.handleClickLabel}>Add Label</MenuItem>
+            <Divider />
+            <MenuItem onClick={this.props.handleMenuClick}
+            >Delete Note</MenuItem>
+            <Divider />
+            <MenuItem>Add Drawing</MenuItem>
+            <Divider />
+            <MenuItem>Show tick boxes</MenuItem>
+        </Menu>
+    )
 }
 export default MoreMenu
